@@ -1,10 +1,25 @@
 <template>
   <div class="navbar">
-    <h1 class="navbar__title">Groupomania</h1>
-    
+    <div class="navbar__head">
+      <img
+        class="navbar__logo"
+        src="../assets/icon.png"
+        alt="logo Groupomania"
+      />
+      <h1 class="navbar__title">Groupomania</h1>
+    </div>
     <ul class="navbar__liste">
-      <li class="navbar__liste__actu">Fil d'actualité</li>      
-      <li class="navbar__liste__monprofil">Mon profil</li>
+      <li class="navbar__liste__filactu">
+        <i class="fas fa-poll-h"></i>Fil d'actualité
+      </li>
+      
+      <li class="navbar__liste__mesposts">
+        <i class="fas fa-address-card"></i>Mes posts
+      </li>
+      
+      <li class="navbar__liste__monprofil">
+        <i class="fas fa-user"></i>Mon profil
+      </li>
     </ul>
   </div>
 </template>
@@ -18,16 +33,49 @@ export default {
 <!-- lang="scss" ?-->
 <style scoped lang="scss">
 h1 {
-  font-size: 4rem;
-  color: rgb(8, 190, 166);
+  font-size: 3rem;
+  color: rgb(0, 0, 0);
 }
 
 .navbar {
- &__liste {
- display: flex;
- list-style: none;
- 
- 
- }
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__logo {
+    height: 60px;
+  }
+  &__title {
+    font-style:italic  ;
+  }
+  &__liste {
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    width: 370px;
+    margin: 1rem auto 1rem auto;
+    list-style: none;
+    box-shadow: 3px 4px 10px #b9b9b975;
+    border-radius: 25px;
+    padding: 1.2rem 0.1rem 1.2rem 0.1rem;
+    background: #f3f3f3ad;
+      &__filactu {
+    margin: 0rem 0.5rem 0rem 0.2rem; 
+      }
+      &__mesposts {
+    margin: 0rem 0.5rem 0rem 0.2rem; 
+      }
+      &__monprofil {
+    margin: 0rem 0.5rem 0rem 0.2rem; 
+      }
+  }
+
+
+}
+
+.fas.fa-poll-h, .fas.fa-address-card, .fas.fa-user {
+  color: #9356dc;
+  margin: 0 0.3rem 0 0.7rem;
 }
 </style>

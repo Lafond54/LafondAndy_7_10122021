@@ -1,0 +1,95 @@
+<template>
+  <div class="newmessage">
+    <Avatar />
+    <div class="newmessage__form">
+      <form class="newmessage_form" method="post">
+        <textarea
+          placeholder="Bonjour Username, écrivez votre message ici..."
+          name="newmessage__field"
+          id="newmessage__field"
+          class="newmessage__field"
+          rows="3"
+        ></textarea>
+        <div class="newmessage__action">
+          <div class="newmessage__upfile">
+            <i class="fas fa-plus-circle"></i>Ajouter un(e) image/GIF
+          </div>
+          <input
+            type="submit"
+            formaction=""
+            id="submitpost"
+            class="newmessage__post"
+            value="Poster mon message"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+import Avatar from "@/components/Avatar.vue";
+export default {
+  name: "NewMessage",
+  components: { Avatar },
+};
+</script>
+
+<!-- lang="scss" ?-->
+<style scoped lang="scss">
+.newmessage {
+  padding: 2rem 1rem 1.5rem 1rem;
+  display: flex;
+  align-items: center;
+
+  margin: 2rem auto 2rem auto;
+  max-width: 800px;
+  background: rgb(255, 255, 255);
+  border-bottom: solid 5px #9356dc;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-radius: 20px 20px 4px 4px;
+  &__field {
+    width: 100%;
+    resize : none;
+  }
+  &__form {
+    flex-grow: 1;
+  }
+  &__action {
+    display: flex;
+    margin-top: 0.3rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__upfile {
+    font-size: 0.8rem;
+ 
+  }
+  &__post {
+    padding: 0.3rem;
+    background: #6ed8bd;
+    border: none;
+    border: solid 1px black;
+    border-radius: 2px;
+    &:hover {
+      background: #6ed8bd98;
+      box-shadow: 3px 4px 10px #b9b9b99d;
+      transition: 0.5s;
+    }
+  }
+}
+.avatar {
+  display: flex;
+  min-width: 45px;
+  margin-right: 1rem;
+}
+
+.fas.fa-plus-circle {
+    font-size: 1rem;
+  color: #6ed8bd;
+  margin: 0 0.2rem 0 0.2rem;
+  padding-top: 0.2rem;
+}
+</style>

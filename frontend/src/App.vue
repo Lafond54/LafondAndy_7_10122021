@@ -1,16 +1,27 @@
 <template>
   <nav-bar />
-  <router-view/>
+  <div class="backgris">
+  <new-message />
+  <Article />
+  <router-view/>  
+  </div>
 </template>
 
 
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import NewMessage from "@/components/NewMessage.vue";
+import Article from "@/components/Article.vue";
+
+
 
 export default {
    components: {
     NavBar,
+    NewMessage,
+    Article,
+  
   },
 };
 </script>
@@ -36,5 +47,10 @@ export default {
       color: #42b983;
     }
   }
+}
+.backgris {
+  padding: 2rem 1rem 2rem 1rem ;
+  background: linear-gradient(0deg, #FFD7D7 0%, rgb(255, 255, 255) 95%, rgba(255, 255, 255, 0) 100%);
+
 }
 </style>

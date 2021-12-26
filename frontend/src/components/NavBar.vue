@@ -27,6 +27,7 @@
 <script>
 export default {
   name: "NavBar",
+  
 };
 </script>
 
@@ -42,12 +43,14 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 0.5rem;
   }
   &__logo {
     height: 60px;
   }
   &__title {
-    font-style:italic  ;
+    font-style:italic;
+    font-size: 2.5rem;
   }
   &__liste {
     display: flex;
@@ -59,7 +62,7 @@ h1 {
     box-shadow: 3px 4px 10px #b9b9b975;
     border-radius: 25px;
     padding: 1.2rem 0.1rem 1.2rem 0.1rem;
-    background: #f3f3f3ad;
+    
       &__filactu {
     margin: 0rem 0.5rem 0rem 0.2rem; 
       }
@@ -75,7 +78,8 @@ h1 {
 }
 
 .fas.fa-poll-h, .fas.fa-address-card, .fas.fa-user {
-  color: #9356dc;
+  color:#6ed8bd;
+;
   margin: 0 0.3rem 0 0.7rem;
 }
 </style>

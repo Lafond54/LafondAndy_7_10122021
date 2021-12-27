@@ -44,7 +44,7 @@ export default {
 
   margin: 2rem auto 2rem auto;
   max-width: 800px;
-  background: rgb(255, 255, 255);
+  background: rgb(240, 240, 240);
   border-bottom: solid 5px #9356dc;
   border-top: 1px solid black;
   border-right: 1px solid black;
@@ -84,6 +84,7 @@ export default {
   display: flex;
   min-width: 45px;
   margin-right: 1rem;
+  margin-top: -35px;
 }
 
 .fas.fa-plus-circle {
@@ -92,4 +93,14 @@ export default {
   margin: 0 0.2rem 0 0.2rem;
   padding-top: 0.2rem;
 }
+textarea {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 10px;
+    max-width: 100%;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;   
+}
+
 </style>

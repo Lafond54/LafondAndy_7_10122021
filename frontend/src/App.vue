@@ -1,28 +1,21 @@
 <template>
-  <nav-bar />
-  <div class="backgris">
-  <new-message />
-  <Article />
-  <router-view/>  
-  </div>
+  <nav id="nav">
+    <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
+    <router-link to=""
+      ><i class="fas fa-sign-in-alt"></i>S'identifier</router-link
+    >
+    |
+    <router-link to=""><i class="fas fa-user-plus"></i>S'inscrire</router-link>
+  </nav>
+
+  <router-view />
 </template>
 
 
 
 <script>
-import NavBar from "@/components/NavBar.vue";
-import NewMessage from "@/components/NewMessage.vue";
-import Article from "@/components/Article.vue";
-
-
-
 export default {
-   components: {
-    NavBar,
-    NewMessage,
-    Article,
-  
-  },
+  components: {},
 };
 </script>
 
@@ -37,20 +30,49 @@ export default {
 }
 
 #nav {
-  padding: 30px;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: end;
+  background: #425e7a;
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #ffffff;
+    margin: 0 1.5rem 0 1.5rem;
+    text-decoration: none;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #ffffff;
+      &::after {
+        content: "";
+        display: flex;
+        justify-content: end;
+        height: 3px;
+        background: white;
+        transform: scale(0);
+        transition: transform 0.2s ease-in-out;
+      }
+      &:hover::after {
+        transform: scale(1);
+
+      }
     }
   }
 }
 .backgris {
-  padding: 2rem 1rem 2rem 1rem ;
-  background: linear-gradient(0deg, #FFD7D7 0%, rgb(255, 255, 255) 95%, rgba(255, 255, 255, 0) 100%);
+  padding: 2rem 1rem 2rem 1rem;
+  background: linear-gradient(
+    0deg,
+    #2c3e5073 0%,
+    rgba(230, 230, 230, 1) 95%,
+    rgb(255, 255, 255) 100%
+  );
+}
 
+.fas.fa-home,
+.fas.fa-sign-in-alt,
+.fas.fa-user-plus {
+  padding-right: 0.4rem;
 }
 </style>

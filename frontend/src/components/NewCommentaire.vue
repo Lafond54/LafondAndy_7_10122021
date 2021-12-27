@@ -8,7 +8,7 @@
           name="newcommentaire__field"
           id="newcommentaire__field"
           class="newcommentaire__field"
-          rows="3"
+          rows="2"
         ></textarea>
         <div class="newcommentaire__action">
           <div class="newcommentaire__upfile">
@@ -84,5 +84,14 @@ margin-top: 2rem;
   color: #6ed8bd;
   margin: 0 0.2rem 0 0.2rem;
   padding-top: 0.2rem;
+}
+textarea {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 10px;
+    max-width: 100%;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;   
 }
 </style>

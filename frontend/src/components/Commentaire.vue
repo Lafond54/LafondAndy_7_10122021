@@ -49,15 +49,15 @@ export default {
     border-radius: 20px;
     padding: 1rem;
     background: #9256dc18;
-
   }
   &__dots {
-          display: flex;
-          align-items: center;      
+    display: flex;
+    align-items: center;
   }
 }
 
 .fas.fa-ellipsis-v {
-    padding: 0.5rem;
+  padding: 0.4rem;
+  
 }
 </style>

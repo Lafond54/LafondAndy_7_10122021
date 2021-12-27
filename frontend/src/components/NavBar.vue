@@ -10,15 +10,15 @@
     </div>
     <ul class="navbar__liste">
       <li class="navbar__liste__filactu">
-        <i class="fas fa-poll-h"></i>Fil d'actualité
+        <i class="fas fa-poll-h"></i><a href="">Fil d'actualité</a>
       </li>
-      
+
       <li class="navbar__liste__mesposts">
-        <i class="fas fa-address-card"></i>Mes posts
+        <i class="fas fa-address-card"></i><a href="">Mes posts</a>
       </li>
-      
+
       <li class="navbar__liste__monprofil">
-        <i class="fas fa-user"></i>Mon profil
+        <i class="fas fa-user"></i><a href="">Mon profil</a>
       </li>
     </ul>
   </div>
@@ -27,7 +27,6 @@
 <script>
 export default {
   name: "NavBar",
-  
 };
 </script>
 
@@ -49,37 +48,54 @@ h1 {
     height: 60px;
   }
   &__title {
-    font-style:italic;
+    font-style: italic;
     font-size: 2.5rem;
   }
   &__liste {
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;
     width: 370px;
     margin: 1rem auto 1rem auto;
     list-style: none;
     box-shadow: 3px 4px 10px #b9b9b975;
     border-radius: 25px;
     padding: 1.2rem 0.1rem 1.2rem 0.1rem;
-    
-      &__filactu {
-    margin: 0rem 0.5rem 0rem 0.2rem; 
-      }
-      &__mesposts {
-    margin: 0rem 0.5rem 0rem 0.2rem; 
-      }
-      &__monprofil {
-    margin: 0rem 0.5rem 0rem 0.2rem; 
-      }
+
+    &__filactu {
+      margin: 0rem 0.9rem 0rem 0.2rem;
+    }
+    &__mesposts {
+      margin: 0rem 0.5rem 0rem 0.2rem;
+    }
+    &__monprofil {
+      margin: 0rem 0.5rem 0rem 0.2rem;
+    }
   }
-
-
 }
 
-.fas.fa-poll-h, .fas.fa-address-card, .fas.fa-user {
-  color:#6ed8bd;
-;
-  margin: 0 0.3rem 0 0.7rem;
+.fas.fa-poll-h,
+.fas.fa-address-card,
+.fas.fa-user {
+  color: #6ed8bd;
+  margin: 0 0.5rem 0 0rem;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  &::after {
+    content: "";
+    display: flex;
+    justify-content: end;
+    
+    height: 2px;
+    background: #9356dc;
+    transform: scale(0);
+    transition: transform 0.16s ease-in-out;
+  }
+  &:hover::after {
+    transform: scale(1);
+  }
 }
 </style>

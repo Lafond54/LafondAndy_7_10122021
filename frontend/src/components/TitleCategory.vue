@@ -1,17 +1,18 @@
 <template>
-  <h2 class="triarticle">Publications récentes</h2>
+  <h2 class="titlecategory">{{ titleText }}</h2>
 </template>
 
 <script>
 export default {
-  name: "ArticleBySort",
+  name: "TitleCategory",
   components: {},
+  props: ['titleText']
 };
 </script>
 
 <!-- lang="scss" ?-->
 <style scoped lang="scss">
-.triarticle {
+.titlecategory {
   display: flex;
   padding: 0rem 0rem 0rem 1rem;
   margin: 1rem auto 0rem auto;

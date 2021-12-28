@@ -18,7 +18,7 @@
       </li>
 
       <li class="navbar__liste__monprofil">
-        <i class="fas fa-user"></i><a href="">Mon profil</a>
+        <i class="fas fa-user"></i><a v-bind:href="'/User/:id'">Mon profil</a>
       </li>
     </ul>
   </div>

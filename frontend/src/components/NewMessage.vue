@@ -12,7 +12,7 @@
         ></textarea>
         <div class="newmessage__action">
           <div class="newmessage__upfile">
-            <i class="fas fa-plus-circle"></i>Ajouter un(e) image/GIF
+            <i class="fas fa-plus-circle"></i>Ajouter Image/GIF
           </div>
           <input
             type="submit"
@@ -44,7 +44,7 @@ export default {
 
   margin: 2rem auto 2rem auto;
   max-width: 800px;
-  background: rgb(240, 240, 240);
+  background: rgba(240, 240, 240, 0.671);
   border-bottom: solid 5px #9356dc;
   border-top: 1px solid black;
   border-right: 1px solid black;
@@ -81,10 +81,13 @@ export default {
   }
 }
 .avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 22.5px;
   display: flex;
   min-width: 45px;
   margin-right: 1rem;
-  margin-top: -35px;
+  margin-top: -60px;
 }
 
 .fas.fa-plus-circle {

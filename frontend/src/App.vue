@@ -1,11 +1,9 @@
 <template>
   <nav id="nav">
     <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
-    <router-link to=""
-      ><i class="fas fa-sign-in-alt"></i>S'identifier</router-link
-    >
+    <router-link to="/login"><i class="fas fa-sign-in-alt"></i>S'identifier</router-link>
     |
-    <router-link to=""><i class="fas fa-user-plus"></i>S'inscrire</router-link>
+    <router-link to="/signup"><i class="fas fa-user-plus"></i>S'inscrire</router-link>
   </nav>
 
   <router-view />
@@ -55,7 +53,6 @@ export default {
       }
       &:hover::after {
         transform: scale(1);
-
       }
     }
   }
@@ -64,8 +61,8 @@ export default {
   padding: 2rem 1rem 2rem 1rem;
   background: linear-gradient(
     0deg,
-    #2c3e5073 0%,
-    rgba(230, 230, 230, 1) 95%,
+    #4477aa73 0%,
+    #93c0ee73 40%,
     rgb(255, 255, 255) 100%
   );
 }

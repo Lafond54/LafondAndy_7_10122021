@@ -53,10 +53,11 @@ margin-top: 2rem;
     display: flex;
     margin-top: 0.3rem;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
   }
   &__upfile {
     font-size: 0.8rem;
+    padding-right: 1rem;
  
   }
   &__post {
@@ -76,7 +77,7 @@ margin-top: 2rem;
   display: flex;
   min-width: 45px;
   margin-right: 1rem;
-  margin-top: -35px;
+  margin-top: -45px;
 }
 
 .fas.fa-plus-circle {

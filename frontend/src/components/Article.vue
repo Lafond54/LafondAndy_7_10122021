@@ -1,6 +1,6 @@
-<template>  
-    <ArticleBySort />
-  <div class="article">      
+<template>
+  <TitleCategory v-bind:titleText="'Publications Récentes'" />
+  <div class="article">
     <div class="article__head">
       <Avatar />
       <div class="article__auteur">Auteur + Date et Heure</div>
@@ -8,7 +8,7 @@
         <i class="fas fa-ellipsis-h"></i> Hover : Modif / Delete
       </div>
     </div>
-    <div class="article__media">MEDIA<br />PHOTO</div>
+    <div class="article__media">TEXT<br />PICS</div>
     <Commentaire />
     <Commentaire />
     <new-commentaire />
@@ -18,11 +18,11 @@
 <script>
 import Avatar from "@/components/Avatar.vue";
 import NewCommentaire from "@/components/NewCommentaire.vue";
-import ArticleBySort from "@/components/ArticleBySort.vue";
+import TitleCategory from "@/components/TitleCategory.vue";
 import Commentaire from "./Commentaire.vue";
 export default {
   name: "Article",
-  components: { Avatar, Commentaire, NewCommentaire, ArticleBySort },
+  components: { Avatar, Commentaire, NewCommentaire, TitleCategory },
 };
 </script>
 
@@ -33,7 +33,7 @@ export default {
 
   margin: 2rem auto 2rem auto;
   max-width: 800px;
-  background: rgb(240, 240, 240);
+  background: rgba(240, 240, 240, 0.671);
   border-bottom: solid 5px #ff79da;
   border-top: 1px solid black;
   border-right: 1px solid black;

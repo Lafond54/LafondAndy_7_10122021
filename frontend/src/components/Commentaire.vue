@@ -45,7 +45,7 @@ export default {
   }
   &__contenu {
     text-align: start;
-    border: black 1px solid;
+    
     border-radius: 20px;
     padding: 1rem;
     background: #9256dc18;
@@ -58,6 +58,7 @@ export default {
 
 .fas.fa-ellipsis-v {
   padding: 0.4rem;
+  font-size: 0.9rem;
   
 }
 </style>

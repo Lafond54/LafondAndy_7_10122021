@@ -1,0 +1,82 @@
+const express = require('express');
+const cors = require('cors');
+const helmet = require("helmet");
+const path = require('path');
+const sqlite3 = require('sqlite3')
+
+
+
+const { sequelize } = require('./database');
+sequelize.sync().then(() => console.log('db is ready'));
+
+
+//Creer une application express
+const app = express();
+//
+require('dotenv').config()
+// 
+const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
+const dbname = 'main.db'
+
+
+
+
+
+
+
+// ******************* Sequelize ***********************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const mongoose = require('mongoose');
+// const { signup } = require('./controllers/user');
+// mongoose.connect(process.env.SECRETDB,
+//   {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+//   })
+//   .then(() => console.log('Connexion à MongoDB réussie !'))
+//   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+
+
+//********************* Rend le serveur accessible par d'autres origines  *************************
+app.use(cors());
+
+
+
+// Definit que l'on utilise du JSON pour le passage et la recuperation de parametre (bodyparser)
+app.use(express.json());
+
+
+// Encoder le contenu et bien gerer les accents
+app.use(express.urlencoded({ extended: true }))
+
+//
+// app.use(express.static('images'))
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// Routes + //Helmet protéger votre application de certaines des vulnérabilités bien connues du Web en configurant de manière appropriée des en-têtes HTTP
+app.use('/', helmet(), stuffRoutes);
+app.use('/auth', helmet(), userRoutes);
+
+
+
+
+
+// *************************************
+module.exports = app;
+
+

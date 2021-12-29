@@ -9,14 +9,21 @@
       <form action="" method="get" class="form-example">
         <div class="form-example">
           <label for="name">Adresse mail : </label>
-          <input type="text" name="name" id="name" required />
+          <input type="text" v-model="email" name="email" id="email" required />
         </div>
         <div class="form-example">
           <label for="email">Mot de passe : </label>
-          <input type="email" name="email" id="email" required />
+          <input
+            type="password"
+            v-model="password"
+            name="password"
+            id="password"
+            required
+          />
         </div>
         <div class="form-example">
-          <input class="mainlogin__sub" type="submit" value="M'identifier" />
+           <!-- remettre en submit au lieu de button -->
+          <input @click="loginAccount" class="mainlogin__sub" type="button" value="M'identifier" />
         </div>
         <div class="mainlogin__deja">
           Pas encore inscrit?
@@ -32,6 +39,32 @@
 <script>
 export default {
   name: "UserLogin",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    loginAccount() {
+      
+      // Fetch
+// const userApiUrl = "http://localhost:3000/????"
+// export async function getUser() {
+//     try {
+//         const res = await fetch(ApiUrl)
+//         if (!res.ok) {
+//             throw res
+//         }
+//         return await res.json();
+//     }
+//     catch (err) {
+//         console.error(err)
+//     }
+// }
+      console.log(this.email, this.password);
+    },
+  },
 };
 </script>
 
@@ -71,7 +104,7 @@ export default {
   }
 
   &__sub {
-      font-size: 1rem;
+    font-size: 1rem;
     padding: 0.3rem;
     background: #6ed8bd;
     border: none;
@@ -86,7 +119,7 @@ export default {
 }
 .form-example {
   margin: 1rem;
-   text-align: right;
+  text-align: right;
 }
 
 .fas.fa-user-plus {

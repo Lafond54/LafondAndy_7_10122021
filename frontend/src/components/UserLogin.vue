@@ -6,14 +6,14 @@
         src="../assets/icon-left-font.png"
         alt="logo Groupomania"
       />
-      <form action="" method="get" class="form-example">
+      <form  action="" method="" class="form-example">
         <div class="form-example">
           <label for="name">Adresse mail : </label>
           <input type="text" v-model="email" name="email" id="email" required />
         </div>
         <div class="form-example">
           <label for="email">Mot de passe : </label>
-          <input
+          <input 
             type="password"
             v-model="password"
             name="password"
@@ -22,7 +22,7 @@
           />
         </div>
         <div class="form-example">
-           <!-- remettre en submit au lieu de button -->
+          <!-- remettre en submit au lieu de button -->
           <input @click="loginAccount" class="mainlogin__sub" type="button" value="M'identifier" />
         </div>
         <div class="mainlogin__deja">
@@ -46,29 +46,31 @@ export default {
     };
   },
   methods: {
-    loginAccount() {
-      
-      // Fetch
-// const userApiUrl = "http://localhost:3000/????"
-// export async function getUser() {
-//     try {
-//         const res = await fetch(ApiUrl)
-//         if (!res.ok) {
-//             throw res
-//         }
-//         return await res.json();
-//     }
-//     catch (err) {
-//         console.error(err)
-//     }
-// }
+    async loginAccount() {      
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: this.email,
+          password: this.password,
+        }),
+      });
+      if (res.status === 200) {
+        const data = await res.json();
+        localStorage.setItem("token", data.token);
+        this.$router.push({ name: "Home" });
+      }
+
       console.log(this.email, this.password);
     },
   },
 };
 </script>
 
-<!-- lang="scss" ?-->
+
 <style scoped lang="scss">
 .mainlogin {
   background: rgb(245, 245, 245);

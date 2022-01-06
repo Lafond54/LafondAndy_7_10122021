@@ -32,25 +32,6 @@ const dbname = 'main.db'
 
 
 
-
-
-
-
-
-
-
-// const mongoose = require('mongoose');
-// const { signup } = require('./controllers/user');
-// mongoose.connect(process.env.SECRETDB,
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-//   })
-//   .then(() => console.log('Connexion à MongoDB réussie !'))
-//   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-
-
 //********************* Rend le serveur accessible par d'autres origines  *************************
 app.use(cors());
 

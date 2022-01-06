@@ -6,7 +6,7 @@
         src="../assets/icon-left-font.png"
         alt="logo Groupomania"
       />
-      <form action="" method="get" class="form-example">
+      <form action="" method="" class="form-example">
         <div class="form-example">
           <!-- lastName avec N en maj ne fonctionne pas -->
           <label for="lastname">Nom : </label>

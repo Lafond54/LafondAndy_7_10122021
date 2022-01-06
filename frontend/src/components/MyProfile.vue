@@ -5,7 +5,7 @@
         <Avatar />
         <div class="mainprofil__modifavatar"><i class="fas fa-image"></i><a href="">Changer d'avatar</a></div>
       </div>
-      <form action="" method="get" class="form-example">
+      <form action="" method="" class="form-example">
         <div class="form-example">
           <label for="name">Nom : </label>
           <input

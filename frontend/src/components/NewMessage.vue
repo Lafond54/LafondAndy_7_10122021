@@ -2,8 +2,9 @@
   <div class="newmessage">
     <Avatar />
     <div class="newmessage__form">
-      <form class="newmessage_form" method="post">
+      <form  @submit="createArticle" class="newmessage_form" method="post">
         <textarea
+          v-model="text"
           placeholder="Bonjour Username, écrivez votre message ici..."
           name="newmessage__field"
           id="newmessage__field"
@@ -14,12 +15,12 @@
           <div class="newmessage__upfile">
             <i class="fas fa-plus-circle"></i>Ajouter Image/GIF
           </div>
-          <input
+          <input           
             type="submit"
             formaction=""
             id="submitpost"
             class="newmessage__post"
-            value="Poster mon message"
+            value="Publier"
           />
         </div>
       </form>
@@ -29,9 +30,39 @@
 
 <script>
 import Avatar from "@/components/Avatar.vue";
+import axios from "axios";
+
 export default {
   name: "NewMessage",
   components: { Avatar },
+
+  data() {
+    return {
+      text: "",
+      userId: localStorage.getItem("userId"),
+    };
+  },
+  methods: {
+    createArticle(event) {
+      event.preventDefault()
+      const formData = new FormData();
+      formData.append("text", this.text);
+
+      axios
+        .post("http://localhost:3000/article", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch(() => {
+          console.log("Une erreur s'est produite lors du post de l'article");
+        });
+    },
+  },
 };
 </script>
 
@@ -52,7 +83,7 @@ export default {
   border-radius: 20px 20px 4px 4px;
   &__field {
     width: 100%;
-    resize : none;
+    resize: none;
   }
   &__form {
     flex-grow: 1;
@@ -65,7 +96,6 @@ export default {
   }
   &__upfile {
     font-size: 0.8rem;
- 
   }
   &__post {
     padding: 0.3rem;
@@ -91,19 +121,18 @@ export default {
 }
 
 .fas.fa-plus-circle {
-    font-size: 1rem;
+  font-size: 1rem;
   color: #6ed8bd;
   margin: 0 0.2rem 0 0.2rem;
   padding-top: 0.2rem;
 }
 textarea {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    padding: 10px;
-    max-width: 100%;
-    line-height: 1.5;
-    border-radius: 5px;
-    border: 1px solid #ccc;   
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  padding: 10px;
+  max-width: 100%;
+  line-height: 1.5;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
-
 </style>

@@ -1,17 +1,19 @@
 <template>
-  <TitleCategory v-bind:titleText="'Publications Récentes'" />
-  <div class="article">
-    <div class="article__head">
-      <Avatar />
-      <div class="article__auteur">Auteur + Date et Heure</div>
-      <div class="article__modif">
-        <i class="fas fa-ellipsis-h"></i> Hover : Modif / Delete
+  <div>
+    <TitleCategory v-bind:titleText="'Publications Récentes'" />
+    <div v-for="article in articles.slice().reverse()" :key="article.id" class="article">
+      <div class="article__head">
+        <Avatar />
+        <div class="article__auteur">Auteur + Date et Heure</div>
+        <div class="article__modif">
+          <i class="fas fa-ellipsis-h"></i> Hover : Modif / Delete
+        </div>
       </div>
+      <div class="article__media">{{ article.text }}</div>
+      <Commentaire />
+      <Commentaire />
+      <new-commentaire />
     </div>
-    <div class="article__media">TEXT<br />PICS</div>
-    <Commentaire />
-    <Commentaire />
-    <new-commentaire />
   </div>
 </template>
 
@@ -20,15 +22,41 @@ import Avatar from "@/components/Avatar.vue";
 import NewCommentaire from "@/components/NewCommentaire.vue";
 import TitleCategory from "@/components/TitleCategory.vue";
 import Commentaire from "./Commentaire.vue";
+// import axios from "axios";
 export default {
   name: "Article",
   components: { Avatar, Commentaire, NewCommentaire, TitleCategory },
+  data() {
+    return {
+      articles: [],
+    };
+  },
+  created() {
+    this.loadArticles();
+  },
+  methods: {
+    async loadArticles() {
+      const res = await fetch("http://localhost:3000/article", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },       
+      });
+      if (res.status === 200) {
+        const data = await res.json();
+        this.articles = data
+      }
+    },
+  },
 };
 </script>
 
 <!-- lang="scss" ?-->
 <style scoped lang="scss">
 .article {
+  
   padding: 2rem 1rem 1.5rem 1rem;
 
   margin: 2rem auto 2rem auto;

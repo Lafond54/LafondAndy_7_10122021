@@ -1,6 +1,59 @@
-const Sauces = require('../models/Sauces')
+const { Message } = require('../database');
 const fs = require('fs');
 const { json } = require('express');
+const { Article, User } = require('../database');
+const jwt = require('jsonwebtoken');
+
+
+
+//POST
+// Créer un post
+exports.createPost = (req, res) => {
+    const text = req.body.text;
+    //recupéré userId
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
+    console.log(decodedToken)
+    if (text == '') {
+        return res.status(400).json({ error: 'Texte manquant' });
+    }
+    User.findOne({ where: { id : userId } })
+        .then(userFound => {
+            if (userFound) {
+                Article.create({
+                    text: req.body.text,
+                    userId: userFound.id
+                })
+
+                    .then(() => res.status(201).json({ message: 'Message créé !' },))
+                    .catch(error => {
+                        console.log(error)
+                        res.status(400).json({ error: 'Création du message échoué' })
+                    });
+            } else {
+                console.log(error)
+                return res.status(404).json({ error: 'Utilisateur non trouvé' })
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({ error: 'Recherche de l\'utilisateur échouée' })
+        });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function sauceNormalizer(sauce, req) {
     return {
@@ -15,10 +68,9 @@ function sauceNormalizer(sauce, req) {
 
 
 exports.arrayIDs = (req, res) => {
+    Article.findAll()   
 
-    Sauces.find()
-
-        .then(sauces => res.status(200).json(sauces.map(sauce => sauceNormalizer(sauce, req))))
+        .then(articles => res.status(200).json(articles))
         .catch(error => res.status(400).json({ error }));
 }
 

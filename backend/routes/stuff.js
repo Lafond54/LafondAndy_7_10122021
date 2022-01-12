@@ -10,30 +10,27 @@ const multer = require('../middleware/multer-config');
 
 
 
-// Renvoie un tableau de toutes les sauces de la base de données.
-router.get('/sauces', auth, StuffCtrl.arrayIDs);
+// Renvoie un tableau de toutes les articles de la base de données.
+router.get('/article', auth, StuffCtrl.arrayIDs);
 
 
-// Renvoie la sauce avec l’_id fourni.
-router.get('/sauces/:id', auth, StuffCtrl.oneID);
+// Renvoie l'article avec l’_id fourni.
+router.get('/article/:id', auth, StuffCtrl.oneID);
 
 
-// Capture et enregistre l'image, analyse la sauce transformée en chaîne de caractères et l'enregistre dans la base de données en définissant correctement
-// son imageUrl.
+//Post un article
 
-router.post('/sauces', auth, multer, StuffCtrl.addSauce);
-
-
-//Modif sauce
-router.put('/sauces/:id', auth, multer, StuffCtrl.modifSauce);
+router.post('/article', auth, multer, StuffCtrl.createPost);
 
 
-// Supprimer sauce
-router.delete('/sauces/:id', auth, multer, StuffCtrl.deleteSauce);
+//Modif article
+router.put('/article/:id', auth, multer, StuffCtrl.modifSauce);
 
 
-// Like
-router.post('/sauces/:id/like', auth, StuffCtrl.likeSauce)
+// Supprimer article
+router.delete('/article/:id', auth, multer, StuffCtrl.deleteSauce);
+
+
 
 
 //

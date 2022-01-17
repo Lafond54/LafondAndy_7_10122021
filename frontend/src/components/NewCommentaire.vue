@@ -2,7 +2,7 @@
   <div class="newcommentaire">
     <Avatar />
     <div class="newcommentaire__form">
-      <form @submit="createComment" class="newcommentaire_form" method="post">
+      <form @submit="createComment"  class="newcommentaire_form" method="post">
         <textarea
           v-model="text"
           placeholder="Votre réponse ici..."
@@ -39,7 +39,7 @@ export default {
     return {      
       text: "",
       userId: localStorage.getItem("userId"),
-      article: [],      
+      articles: [],      
     };    
   },
  

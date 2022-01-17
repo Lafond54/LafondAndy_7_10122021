@@ -67,7 +67,7 @@ export default {
   deleteArticle(id) {
       const postId = id;
       axios
-        .delete("http://localhost:3000/post/" + postId, {
+        .delete("http://localhost:3000/article/" + postId, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("token"),

@@ -83,12 +83,13 @@ exports.addSauce = (req, res) => {
 
 exports.modifPost = (req, res) => {
 
-  
+
 }
 
 
 exports.deletePost = (req, res) => {
-    Article.findOne({      
+    Article.findOne({
+
         where: { id: req.params.articleId }
     })
 
@@ -145,4 +146,52 @@ exports.createComment = (req, res) => {
             res.status(400).json({ error: 'Création du commentaire échoué' })
         });
 
+}
+
+//GET
+// Voir les commentaires
+exports.getAllCommentaires = (req, res) => {
+    Comment.findAll({       
+        where: { postId: req.params.articleId },        
+    })
+    .then(commentaireFound => {
+        if(commentaireFound) {
+            res.status(200).json(commentaireFound);
+            console.log(commentaireFound);
+        } else {
+            res.status(404).json({ error: 'Aucun commentaire publié :(' });
+        }
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).send({ error: 'Recherche du commentaire échoué' });
+    });
+}
+
+//DELETE
+// Supprimer un commentaire
+exports.deleteComment = (req, res) => {
+    console.log('delete commentaire')
+    Comment.findOne({       
+        where: { id: req.params.commentaireId }
+    })
+    .then(commentaireFound => {
+        if(commentaireFound) {
+           Comment.destroy({
+                where: { id: req.params.commentaireId }
+            })
+            .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
+            .catch(error => {
+                console.log(error)
+                res.status(500).json({ error: 'Suppression du commentaire échoué' })
+            });
+
+        } else {
+            return res.status(404).json({ error: 'Aucun commentaire publié :('})
+        }
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({ error: 'Suppression du commentaire échoué' })
+    });
 }

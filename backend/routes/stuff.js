@@ -40,4 +40,9 @@ router.delete('/article/:id', auth, multer, StuffCtrl.deletePost);
 
 router.post('/article/:id/comment', auth, multer, StuffCtrl.createComment);
 
+router.get('/comment', auth, multer, StuffCtrl.getAllCommentaires)
+
+router.delete('/comment/:id', auth, multer, StuffCtrl.deleteComment);
+
+
 module.exports = router;

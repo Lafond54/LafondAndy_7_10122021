@@ -4,13 +4,16 @@
     <div class="commentaire__cadre">
       <div class="commentaire__head">Nom + Date et Heure</div>
       <div class="commentaire__dots">
-        <div class="commentaire__contenu">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatum
-          minus excepturi facere atque! Sint illo ipsum consectetur totam optio
-          minima delectus sequi, sit autem similique fugiat iure necessitatibus
-          sed magnam.
+        <div
+          v-for="comment in comments"
+          :key="comment.id"
+          class="commentaire__contenu"
+        >
+          {{ comment.text }}
         </div>
-        <i class="fas fa-ellipsis-v"></i>
+        <button v-on:click="deleteCommentaire(comment.id)">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -18,9 +21,53 @@
 
 <script>
 import Avatar from "./Avatar.vue";
+import axios from "axios";
 export default {
   components: { Avatar },
   name: "Commentaire",
+
+  data() {
+    return {
+      userId: localStorage.getItem("userId"),
+      comments: [],
+      articles: [],
+    };
+  },
+  created() {
+    this.loadComments();
+  },
+  methods: {
+    async loadComments() {
+      const res = await fetch("http://localhost:3000/comment", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      if (res.status === 200) {
+        const data = await res.json();
+        this.comments = data;
+      }
+    },
+
+    deleteCommentaire(commentId) {
+      axios
+        .delete("http://localhost:3000/comment/" + commentId, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch(() => {
+          this.messError = "Une erreur c'est produite";
+        });
+    },
+  },
 };
 </script>
 
@@ -45,7 +92,7 @@ export default {
   }
   &__contenu {
     text-align: start;
-    
+
     border-radius: 20px;
     padding: 1rem;
     background: #9256dc18;
@@ -59,6 +106,5 @@ export default {
 .fas.fa-ellipsis-v {
   padding: 0.4rem;
   font-size: 0.9rem;
-  
 }
 </style>

@@ -41,6 +41,9 @@ User.init({
 
 
 
+
+
+
 class Article extends Model { }
 Article.init({
     text: { type: DataTypes.STRING, allowNull: false },
@@ -49,25 +52,31 @@ Article.init({
 },
     { sequelize, modelName: 'Article' });
 
-    Article.belongsTo(User)
-    User.hasMany(Article)
+Article.belongsTo(User)
+User.hasMany(Article)
 
-    
 
-    class Comment extends Model { }
+
+
+
+
+class Comment extends Model { }
 Comment.init({
     text: { type: DataTypes.STRING, allowNull: false },
-
-
 },
+
     { sequelize, modelName: 'Comment' });
 
-    Comment.belongsTo(User)
-    User.hasMany(Comment)
+Comment.belongsTo(User)
+User.hasMany(Comment)
 
 
-    Comment.belongsTo(Article)
-    Article.hasMany(Comment)
-    
+Comment.belongsTo(Article)
+Article.hasMany(Comment)
+
+
+
+
+
 
 module.exports = { sequelize, User, Article, Comment };

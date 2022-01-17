@@ -33,6 +33,11 @@ router.delete('/article/:id', auth, multer, StuffCtrl.deleteSauce);
 
 
 
-//
+// Comments
+
+
+//Post un commentaire
+
+router.post('/article/:id/comment', auth, multer, StuffCtrl.createComment);
 
 module.exports = router;

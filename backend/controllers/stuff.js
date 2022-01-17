@@ -1,13 +1,13 @@
 const { Message } = require('../database');
 const fs = require('fs');
 const { json } = require('express');
-const { Article, User } = require('../database');
+const { Article, User, Comment } = require('../database');
 const jwt = require('jsonwebtoken');
 
 
 
-//POST
-// Créer un post
+//Post
+// Créer un Post
 exports.createPost = (req, res) => {
     const text = req.body.text;
     //recupéré userId
@@ -18,7 +18,7 @@ exports.createPost = (req, res) => {
     if (text == '') {
         return res.status(400).json({ error: 'Texte manquant' });
     }
-    User.findOne({ where: { id : userId } })
+    User.findOne({ where: { id: userId } })
         .then(userFound => {
             if (userFound) {
                 Article.create({
@@ -68,7 +68,7 @@ function sauceNormalizer(sauce, req) {
 
 
 exports.arrayIDs = (req, res) => {
-    Article.findAll()   
+    Article.findAll()
 
         .then(articles => res.status(200).json(articles))
         .catch(error => res.status(400).json({ error }));
@@ -170,3 +170,30 @@ exports.likeSauce = (req, res) => {
 }
 
 
+
+//Commentaire
+// Créer un commentaire
+exports.createComment = (req, res) => {
+    const text = req.body.text;
+    //recupéré userId
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
+    console.log(decodedToken)
+    if (text == '') {
+        return res.status(400).json({ error: 'Commentaire manquant' });
+    }
+    
+    Comment.create({
+        text: req.body.text,
+        userId: userId,
+        articleId: req.params.articleId,
+    })
+
+        .then(() => res.status(201).json({ message: 'Commentaire créé !' },))
+        .catch(error => {
+            console.log(error)
+            res.status(400).json({ error: 'Création du commentaire échoué' })
+        });
+
+}

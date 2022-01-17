@@ -12,7 +12,7 @@
         <div class="article__modif">
           <i class="fas fa-ellipsis-h"></i> Hover : Modif /
           <button
-            v-if="userId == article.userId"
+           
             v-on:click="deleteArticle(article.id)"
           >
             Supprimer

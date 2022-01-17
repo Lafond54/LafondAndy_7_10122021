@@ -24,11 +24,11 @@ router.post('/article', auth, multer, StuffCtrl.createPost);
 
 
 //Modif article
-router.put('/article/:id', auth, multer, StuffCtrl.modifSauce);
+router.put('/article/:id', auth, multer, StuffCtrl.modifPost);
 
 
 // Supprimer article
-router.delete('/article/:id', auth, multer, StuffCtrl.deleteSauce);
+router.delete('/article/:id', auth, multer, StuffCtrl.deletePost);
 
 
 

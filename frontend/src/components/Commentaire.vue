@@ -1,19 +1,18 @@
 <template>
-  <div class="commentaire">
+  <div class="commentaire"  v-for="comment in comments"
+          :key="comment.id">
     <Avatar />
     <div class="commentaire__cadre">
       <div class="commentaire__head">Nom + Date et Heure</div>
       <div class="commentaire__dots">
-        <div
-          v-for="comment in comments"
-          :key="comment.id"
+        <div         
           class="commentaire__contenu"
         >
           {{ comment.text }}
+          <button v-on:click="deleteCommentaire(comment.id)">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
         </div>
-        <button v-on:click="deleteCommentaire(comment.id)">
-          <i class="fas fa-ellipsis-v"></i>
-        </button>
       </div>
     </div>
   </div>
@@ -22,9 +21,11 @@
 <script>
 import Avatar from "./Avatar.vue";
 import axios from "axios";
+// import * as Events from "../eventBus"
 export default {
   components: { Avatar },
   name: "Commentaire",
+  props: { articleId: Number },
 
   data() {
     return {
@@ -38,14 +39,17 @@ export default {
   },
   methods: {
     async loadComments() {
-      const res = await fetch("http://localhost:3000/comment", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const res = await fetch(
+        `http://localhost:3000/article/${this.articleId}/comment`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       if (res.status === 200) {
         const data = await res.json();
         this.comments = data;
@@ -61,7 +65,8 @@ export default {
           },
         })
         .then(() => {
-          window.location.reload();
+          // document.dispatchEvent(Events.COMMENT_DELETED, { detail : commentId })
+          this.comments = this.comments.filter( comment => comment.id !== commentId)
         })
         .catch(() => {
           this.messError = "Une erreur c'est produite";

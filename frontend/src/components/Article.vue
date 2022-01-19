@@ -20,9 +20,9 @@
         </div>
       </div>
       <div class="article__media">{{ article.text }}</div>
-      <Commentaire v-bind:articleId="article.id" />
+      <Commentaire  :articleId="article.id"/>
 
-      <new-commentaire />
+      <new-commentaire :articleId="article.id" />
     </div>
   </div>
 </template>

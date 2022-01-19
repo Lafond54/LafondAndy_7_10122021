@@ -51,7 +51,8 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Routes + //Helmet protéger votre application de certaines des vulnérabilités bien connues du Web en configurant de manière appropriée des en-têtes HTTP
 app.use('/', helmet(), stuffRoutes);
-app.use('/auth', helmet(), userRoutes);
+app.use('/user', helmet(), userRoutes);
+
 
 
 

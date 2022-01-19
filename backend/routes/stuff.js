@@ -38,11 +38,13 @@ router.delete('/article/:id', auth, multer, StuffCtrl.deletePost);
 
 //Post un commentaire
 
-router.post('/article/:id/comment', auth, multer, StuffCtrl.createComment);
+router.post('/article/:articleId/comment', auth, multer, StuffCtrl.createComment);
 
-router.get('/comment', auth, multer, StuffCtrl.getAllCommentaires)
+router.get('/article/:articleId/comment', auth, StuffCtrl.getAllCommentaires);
 
-router.delete('/comment/:id', auth, multer, StuffCtrl.deleteComment);
+router.get('/comment', auth, StuffCtrl.getAllCommentaires)
+
+router.delete('/comment/:id', auth, StuffCtrl.deleteComment);
 
 
 module.exports = router;

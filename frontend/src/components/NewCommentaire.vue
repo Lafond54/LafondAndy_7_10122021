@@ -2,7 +2,7 @@
   <div class="newcommentaire">
     <Avatar />
     <div class="newcommentaire__form">
-      <form @submit="createComment"  class="newcommentaire_form" method="post">
+      <form @submit="createComment" class="newcommentaire_form" method="post">
         <textarea
           v-model="text"
           placeholder="Votre réponse ici..."
@@ -36,28 +36,34 @@ export default {
   components: { Avatar },
   props: { articleId: Number },
   data() {
-    return {      
+    return {
       text: "",
-      userId: localStorage.getItem("userId"),
-      articles: [],      
-    };    
+      userId: localStorage.getItem("token"),
+      articles: [],
+      comments: []
+    };
   },
- 
+
   methods: {
     createComment(event) {
       event.preventDefault();
       const formData = new FormData();
       formData.append("text", this.text);
-
+      console.log(this.articleId);
       axios
-        .post(`http://localhost:3000/article/${this.articleId}/comment`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
+        .post(
+          `http://localhost:3000/article/${this.articleId}/comment`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
         .then(() => {
-          // window.location.reload();
+           this.$router.go(0)   // à modifier avec: ?  this.comments = this.comments.map( comment => comment.id)
+          
         })
         .catch(() => {
           console.log("Une erreur s'est produite lors du post du commentaire");

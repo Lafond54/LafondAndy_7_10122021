@@ -137,7 +137,7 @@ exports.createComment = (req, res) => {
     Comment.create({
         text: req.body.text,
         userId: userId,
-        articleId: req.params.articleId,
+        ArticleId: req.params.articleId,
     })
 
         .then(() => res.status(201).json({ message: 'Commentaire créé !' },))
@@ -152,14 +152,14 @@ exports.createComment = (req, res) => {
 // Voir les commentaires
 exports.getAllCommentaires = (req, res) => {
     Comment.findAll({       
-        where: { postId: req.params.articleId },        
+        where: { ArticleId: req.params.articleId },        
     })
     .then(commentaireFound => {
         if(commentaireFound) {
             res.status(200).json(commentaireFound);
             console.log(commentaireFound);
         } else {
-            res.status(404).json({ error: 'Aucun commentaire publié :(' });
+            res.status(404).json({ error: 'Aucun commentaire publié' });
         }
     })
     .catch(error => {
@@ -173,13 +173,11 @@ exports.getAllCommentaires = (req, res) => {
 exports.deleteComment = (req, res) => {
     console.log('delete commentaire')
     Comment.findOne({       
-        where: { id: req.params.commentaireId }
+        where: { id: req.params.id }
     })
     .then(commentaireFound => {
         if(commentaireFound) {
-           Comment.destroy({
-                where: { id: req.params.commentaireId }
-            })
+           commentaireFound.destroy()
             .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
             .catch(error => {
                 console.log(error)
@@ -187,7 +185,7 @@ exports.deleteComment = (req, res) => {
             });
 
         } else {
-            return res.status(404).json({ error: 'Aucun commentaire publié :('})
+            return res.status(404).json({ error: 'Aucun commentaire publié'})
         }
     })
     .catch(error => {

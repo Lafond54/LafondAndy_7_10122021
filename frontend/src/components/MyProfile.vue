@@ -3,7 +3,9 @@
     <div class="mainprofil__cadre">
       <div class="mainprofil__flexavatar">
         <Avatar />
-        <div class="mainprofil__modifavatar"><i class="fas fa-image"></i><a href="">Changer d'avatar</a></div>
+        <div class="mainprofil__modifavatar">
+          <i class="fas fa-image"></i><a href="">Changer d'avatar</a>
+        </div>
       </div>
       <form action="" method="" class="form-example">
         <div class="form-example">
@@ -58,10 +60,41 @@
 </template>
 <script>
 import Avatar from "@/components/Avatar.vue";
+import axios from "axios";
+import jwt from "jsonwebtoken";
 
 export default {
   name: "MyProfile",
   components: { Avatar },
+
+  data() {
+    return {
+      //Voir user
+      user: "",
+      users: [],
+      userId: localStorage.getItem("token"),
+    };
+  },
+
+  mounted() { 
+    console.log(this.userId)
+    const token = this.userId
+    const openedToken = jwt.decode(token)
+    console.log(openedToken)   
+    axios
+      .get(`http://localhost:3000/user/${ openedToken.userId }`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        this.user = response.data;
+        console.log(response.data);
+      })
+      .catch(() => {
+        this.messError = "Une erreur s'est produite";
+      });
+  },
 };
 </script>
 
@@ -74,15 +107,15 @@ export default {
   display: flex;
 
   justify-content: center;
-&__flexavatar{
+  &__flexavatar {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-&__modifavatar {
+  }
+  &__modifavatar {
     font-size: 0.9rem;
     padding-top: 0.5rem;
-}
+  }
 
   &__cadre {
     padding: 2rem 1rem 0rem 1rem;
@@ -138,7 +171,7 @@ export default {
 
 .form-example {
   margin: 1rem;
-   text-align: right;
+  text-align: right;
 }
 
 .avatar {
@@ -160,7 +193,7 @@ a {
     content: "";
     display: flex;
     justify-content: end;
-    
+
     height: 2px;
     background: #9356dc;
     transform: scale(0);

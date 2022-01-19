@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     async createAccount() {
-      const res = await fetch("http://localhost:3000/auth/signup", {
+      const res = await fetch("http://localhost:3000/user/signup", {
         method: "POST",
        headers: {
                 'Accept': 'application/json',

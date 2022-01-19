@@ -56,3 +56,27 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
+
+
+// Voir mon profil
+exports.getUserProfile = (req, res) => {
+  //recupéré userId
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  const userId = decodedToken.userId
+  
+  User.findOne({     
+      where: { user: userId }
+  })
+  .then(user => {
+      if(user) {
+          res.status(200).json(user);
+      } else {
+          res.status(404).json({ error: 'Utilisateur non trouvé' })
+      }
+  })
+  .catch(error => {
+      console.log(error)
+      res.status(404).json({ error: 'Utilisateur non trouvé' })
+  });
+}

@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     async loginAccount() {      
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("http://localhost:3000/user/login", {
         method: "POST",
         headers: {
           Accept: "application/json",

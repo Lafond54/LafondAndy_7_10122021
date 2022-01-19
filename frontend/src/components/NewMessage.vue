@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       text: "",
-      userId: localStorage.getItem("userId"),
+      userId: localStorage.getItem("token"),
     };
   },
   methods: {

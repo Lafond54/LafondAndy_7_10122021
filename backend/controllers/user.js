@@ -61,16 +61,17 @@ exports.login = (req, res, next) => {
 // Voir mon profil
 exports.getUserProfile = (req, res) => {
   //recupéré userId
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-  const userId = decodedToken.userId
+  // const token = req.headers.authorization.split(' ')[1];
+  // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  // // const userId = decodedToken.userId
   
   User.findOne({     
-      where: { user: userId }
+      where: { id: req.params.id }
   })
   .then(user => {
       if(user) {
-          res.status(200).json(user);
+          res.status(200).json(user); // Exclure le password dans la réponse ?
+          //  Pas de verif de l'id depuis le back, du coup tout le monde peut voir la bdd avec n'importe quelle req.params.Id?
       } else {
           res.status(404).json({ error: 'Utilisateur non trouvé' })
       }

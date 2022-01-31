@@ -10,11 +10,11 @@
     </div>
     <ul class="navbar__liste">
       <li class="navbar__liste__filactu">
-        <i class="fas fa-poll-h"></i><a href="">Fil d'actualité</a>
+        <i class="fas fa-poll-h"></i><a v-bind:href="'/'">Fil d'actualité</a>
       </li>
 
       <li class="navbar__liste__mesposts">
-        <i class="fas fa-address-card"></i><a href="">Mes posts</a>
+        <i class="fas fa-address-card"></i><a v-bind:href="'/user/:id/articles'">Mes posts</a>
       </li>
 
       <li class="navbar__liste__monprofil">

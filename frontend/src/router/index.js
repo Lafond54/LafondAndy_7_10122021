@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import UpdateUser from '../views/UpdateUser.vue'
+import MyArticles from '../views/MyArticles.vue'
 
 
 const routes = [
@@ -32,6 +33,14 @@ const routes = [
     component: UpdateUser,
 
   },
+  {
+    path: '/user/:id/articles',
+    name: 'allPostsOneUser',
+    component: MyArticles,
+
+  },
+  // Article d'un seul Auteur
+
   //POST => Création d'un article. GET => Renvoie le tableau de tous les articles.
   // {
   //   path: '/article',

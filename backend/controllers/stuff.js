@@ -59,10 +59,23 @@ exports.arrayIDs = (req, res) => {
 
 
 exports.oneID = (req, res) => {
-    Sauces.findOne({ _id: req.params.id })
-        .then(sauce => res.status(200).json(sauceNormalizer(sauce, req)))
+    Article.findOne({ id: req.params.id })
+        .then(article => res.status(200).json(article))
         .catch(error => res.status(404).json({ error }));
 }
+
+// Articles appartenant à un seul auteur.
+exports.allPostsOneUser = (req, res) => {
+    // const token = req.headers.authorization.split(' ')[1];
+    // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    // const userId = decodedToken.userId;
+
+    Article.findall({ userId: req.params.id })
+        .then(article => res.status(200).json(article))
+        .catch(error => res.status(404).json({ error }));
+}
+
+
 
 exports.addSauce = (req, res) => {
     const arraySauce = JSON.parse(req.body.sauce)
@@ -89,29 +102,27 @@ exports.modifPost = (req, res) => {
 
 exports.deletePost = (req, res) => {
     Article.findOne({
-
-        where: { id: req.params.articleId }
+        where: { id: req.params.id }
     })
-
-        .then(article => {
-            if (req.body.userId == article.userId) {
-                article.destroy({
+   
+        .then(articleFound => {
+            if (req.body.userId == articleFound.userId) { // Ca coince ici..Il faut bien cibler le userid connecté à la session..?
+                articleFound.destroy({
                     where: { id: req.params.articleId }
                 })
                     .then(() => res.status(200).json({ message: 'Message supprimé' }))
                     .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
-
-
             }
+
             else {
                 res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' });
             }
         })
+
         .catch(error => {
             console.log(error)
             res.status(500).json({ error: 'Suppression du message échoué' })
         });
-
 };
 
 
@@ -133,7 +144,7 @@ exports.createComment = (req, res) => {
     if (text == '') {
         return res.status(400).json({ error: 'Commentaire manquant' });
     }
-
+    // if SANS ELSE , ca pose pas de souci?
     Comment.create({
         text: req.body.text,
         userId: userId,
@@ -151,45 +162,45 @@ exports.createComment = (req, res) => {
 //GET
 // Voir les commentaires
 exports.getAllCommentaires = (req, res) => {
-    Comment.findAll({       
-        where: { ArticleId: req.params.articleId },        
+    Comment.findAll({
+        where: { ArticleId: req.params.articleId },
     })
-    .then(commentaireFound => {
-        if(commentaireFound) {
-            res.status(200).json(commentaireFound);
-            console.log(commentaireFound);
-        } else {
-            res.status(404).json({ error: 'Aucun commentaire publié' });
-        }
-    })
-    .catch(error => {
-        console.log(error)
-        res.status(500).send({ error: 'Recherche du commentaire échoué' });
-    });
+        .then(commentaireFound => {
+            if (commentaireFound) {
+                res.status(200).json(commentaireFound);
+                console.log(commentaireFound);
+            } else {
+                res.status(404).json({ error: 'Aucun commentaire publié' });
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).send({ error: 'Recherche du commentaire échoué' });
+        });
 }
 
 //DELETE
 // Supprimer un commentaire
 exports.deleteComment = (req, res) => {
     console.log('delete commentaire')
-    Comment.findOne({       
+    Comment.findOne({
         where: { id: req.params.id }
     })
-    .then(commentaireFound => {
-        if(commentaireFound) {
-           commentaireFound.destroy()
-            .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
-            .catch(error => {
-                console.log(error)
-                res.status(500).json({ error: 'Suppression du commentaire échoué' })
-            });
+        .then(commentaireFound => {
+            if (commentaireFound) {
+                commentaireFound.destroy()
+                    .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
+                    .catch(error => {
+                        console.log(error)
+                        res.status(500).json({ error: 'Suppression du commentaire échoué' })
+                    });
 
-        } else {
-            return res.status(404).json({ error: 'Aucun commentaire publié'})
-        }
-    })
-    .catch(error => {
-        console.log(error)
-        res.status(500).json({ error: 'Suppression du commentaire échoué' })
-    });
+            } else {
+                return res.status(404).json({ error: 'Aucun commentaire publié' })
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({ error: 'Suppression du commentaire échoué' })
+        });
 }

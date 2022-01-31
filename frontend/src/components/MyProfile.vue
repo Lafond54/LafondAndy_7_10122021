@@ -9,7 +9,7 @@
       </div>
       <form action="" method="" class="form-example">
         <div class="form-example">
-          <label for="name">Nom : </label>
+          <label for="name">Nom : {{ user.lastName }} </label>
           <input
             type="text"
             name="lastname"
@@ -19,17 +19,17 @@
           />
         </div>
         <div class="form-example">
-          <label for="name">Prénom : </label>
+          <label for="name">Prénom : {{ user.firstName }} </label>
           <input
             type="text"
             name="name"
             id="name"
             required
-            placeholder="Afficher le 'user.name'"
+            placeholder="Afficher le 'user.firstname'"
           />
         </div>
         <div class="form-example">
-          <label for="name">Adresse mail : </label>
+          <label for="name">Adresse mail : {{ user.email }} </label>
           <input
             type="text"
             name="name"
@@ -77,7 +77,8 @@ export default {
   },
 
   mounted() { 
-    console.log(this.userId)
+    
+    console.log(this.userId)  
     const token = this.userId
     const openedToken = jwt.decode(token)
     console.log(openedToken)   
@@ -88,7 +89,7 @@ export default {
         },
       })
       .then((response) => {
-        this.user = response.data;
+        this.user = response.data; // La réponse du back envoie le mot de passe haché! C'est problematique ?
         console.log(response.data);
       })
       .catch(() => {

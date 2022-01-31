@@ -1,8 +1,10 @@
 <template>
+<div>
   <nav-bar />
   <div class="backgris">
     <new-message />
-    <Article />
+    <Article :articleUId="articles.userId" /> 
+  </div>
   </div>
 </template>
 
@@ -18,6 +20,15 @@ export default {
     NavBar,
     NewMessage,
     Article,
+  },
+   data() {
+    return {
+      text: "",
+      userId: localStorage.getItem("token"),
+      users: [],
+      articles: [],
+      comments: []
+    };
   },
 };
 </script>

@@ -1,5 +1,6 @@
 <template>
   <div class="navbar">
+      
     <div class="navbar__head">
       <img
         class="navbar__logo"
@@ -22,12 +23,15 @@
       </li>
     </ul>
   </div>
+
 </template>
 
 <script>
 export default {
   name: "NavBar",
+  
 };
+
 </script>
 
 <!-- lang="scss" ?-->
@@ -48,7 +52,7 @@ h1 {
     height: 60px;
   }
   &__title {
-    font-style: italic;
+    
     font-size: 2.5rem;
   }
   &__liste {

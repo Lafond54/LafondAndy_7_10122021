@@ -62,6 +62,8 @@ export default {
         const data = await res.json();
         localStorage.setItem("token", data.token);
         this.$router.push({ name: "Home" });
+        
+        //
       }
 
       console.log(this.email, this.password);

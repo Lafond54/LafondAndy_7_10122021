@@ -1,13 +1,10 @@
 <template>
-  <div class="commentaire"  v-for="comment in comments"
-          :key="comment.id">
+  <div class="commentaire" v-for="comment in comments" :key="comment.id">
     <Avatar />
     <div class="commentaire__cadre">
       <div class="commentaire__head">Nom + Date et Heure</div>
       <div class="commentaire__dots">
-        <div         
-          class="commentaire__contenu"
-        >
+        <div class="commentaire__contenu">
           {{ comment.text }}
           <button v-on:click="deleteCommentaire(comment.id)">
             <i class="fas fa-ellipsis-v"></i>
@@ -65,8 +62,14 @@ export default {
           },
         })
         .then(() => {
+          if (confirm("Voulez-vous supprimer votre commentaire?")) {
+            this.comments = this.comments.filter(
+              (comment) => comment.id !== commentId
+            );
+          } else {
+            return console.log("commentaire non supprime");   // Ne permet pas de sortir de la fonction, du coup je ne peux pas faire réapparaitre la boit de dialogue confirm 2 fois de suite
+          }
           // document.dispatchEvent(Events.COMMENT_DELETED, { detail : commentId })
-          this.comments = this.comments.filter( comment => comment.id !== commentId)
         })
         .catch(() => {
           this.messError = "Une erreur c'est produite";

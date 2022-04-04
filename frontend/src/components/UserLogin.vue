@@ -61,9 +61,9 @@ export default {
       if (res.status === 200) {
         const data = await res.json();
         localStorage.setItem("token", data.token);
-        this.$router.push({ name: "Home" });
-        
-        //
+        this.$router.push({ name: "Home" });  //Ne rafraichit pas App
+         
+      
       }
 
       console.log(this.email, this.password);

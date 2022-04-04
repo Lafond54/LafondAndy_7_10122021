@@ -1,5 +1,5 @@
 <template :key="componentKey">
-  <nav v-if="userId === null" id="nav" :key="componentKey">
+  <nav v-if="userId === null" id="nav" :key = " componentKey " >
     <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
     <router-link to="/login"
       ><i class="fas fa-sign-in-alt"></i>S'identifier</router-link

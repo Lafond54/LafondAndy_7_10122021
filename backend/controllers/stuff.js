@@ -196,7 +196,7 @@ exports.deleteComment = (req, res) => {
                     });
 
             } else {
-                return res.status(404).json({ error: 'Aucun commentaire publié' })
+                return res.status(404).json({ error: 'Aucun commentaire supprimé' })
             }
         })
         .catch(error => {

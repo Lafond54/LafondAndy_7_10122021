@@ -3,23 +3,19 @@
     <TitleCategory v-bind:titleText="'Publications Récentes'" />
     <div
       v-for="article in articles.slice().reverse()"
-      :key="article.id"      
+      :key="article.id"
       class="article"
     >
       <div class="article__head">
         <Avatar />
-        <div class="article__auteur">Auteur + Date et Heure</div>
+        <div class="article__auteur">{{ article.userId }} + {{ article.createdAt }}</div>
         <div class="article__modif">
           <i class="fas fa-ellipsis-h"></i> Hover : Modif /
-          <button           
-            v-on:click="deleteArticle(article.id)"
-          >
-            Supprimer
-          </button>
+          <button v-on:click="deleteArticle(article.id)">Supprimer</button>
         </div>
       </div>
       <div class="article__media">{{ article.text }}</div>
-      <Commentaire  :articleId="article.id"/>
+      <Commentaire :articleId="article.id" />
 
       <new-commentaire :articleId="article.id" />
     </div>
@@ -36,21 +32,22 @@ import axios from "axios";
 export default {
   name: "Article",
   components: { Avatar, Commentaire, NewCommentaire, TitleCategory },
-  props: { articleUId: Number },
+  // props: { articleUId: Number },
   data() {
     return {
+      user: "",
       userId: localStorage.getItem("userId"),
       users: [],
       articles: [],
     };
   },
-  
+
   created() {
     this.loadArticles();
-    this.getUsers(); 
+    this.getUsers();
   },
   methods: {
-    async loadArticles() {      
+    async loadArticles() {
       const res = await fetch("http://localhost:3000/article", {
         method: "GET",
         headers: {
@@ -63,29 +60,30 @@ export default {
         const data = await res.json();
         this.articles = data;
         console.log(this.articleUId);
-        
       }
     },
     // Chercher les auteurs d'articles
-     getUsers () { 
+    getUsers() {
       //  const AUId = userId
       //  console.log(AUId)
-    axios    
-      .get(`http://localhost:3000/user/${ this.articleUId }`, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        this.user = response.data; 
-        console.log(response.data);
-      })
-      .catch(() => {
-        this.messError = "Une erreur s'est produite";
-      });
-  },
+      axios
+        .get(`http://localhost:3000/user/${this.articles}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          this.articles = response.data;
+          console.log(response.data);
+        })
+        .catch(() => {
+          this.messError = "Une erreur s'est produite";
+        });
+
+        
+    },
     // supprimer post
-  deleteArticle(id) {
+    deleteArticle(id) {
       const postId = id;
       axios
         .delete("http://localhost:3000/article/" + postId, {

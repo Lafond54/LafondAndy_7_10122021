@@ -193,7 +193,7 @@ a {
   &::after {
     content: "";
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 
     height: 2px;
     background: #9356dc;

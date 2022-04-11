@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <TitleCategory v-bind:titleText="'Publications Récentes'" />
-    <div
-      v-for="article in articles.slice().reverse()"
-      :key="article.id"
-      class="article"
-    >
+   
+    <div    
+      class="article">
       <div class="article__head">
         <Avatar />
-        <div class="article__auteur">{{ article.userId }} + {{ article.createdAt }}</div>
+        <div v-if="user" class="article__auteur">
+          {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}
+        </div>
         <div class="article__modif">
           <i class="fas fa-ellipsis-h"></i> Hover : Modif /
           <button v-on:click="deleteArticle(article.id)">Supprimer</button>
@@ -19,68 +17,48 @@
 
       <new-commentaire :articleId="article.id" />
     </div>
-  </div>
+  
 </template>
 
 <script>
 import Avatar from "@/components/Avatar.vue";
 import NewCommentaire from "@/components/NewCommentaire.vue";
-import TitleCategory from "@/components/TitleCategory.vue";
 import Commentaire from "./Commentaire.vue";
 import axios from "axios";
 
 export default {
   name: "Article",
-  components: { Avatar, Commentaire, NewCommentaire, TitleCategory },
-  // props: { articleUId: Number },
+  components: { Avatar, Commentaire, NewCommentaire},
+  props: { article: Object },
   data() {
     return {
-      user: "",
-      userId: localStorage.getItem("userId"),
-      users: [],
-      articles: [],
+      user: null,
+      userId: localStorage.getItem("userId"),     
     };
   },
 
-  created() {
-    this.loadArticles();
-    this.getUsers();
+  created() {   
+    this.getUser();
   },
   methods: {
-    async loadArticles() {
-      const res = await fetch("http://localhost:3000/article", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
-      if (res.status === 200) {
-        const data = await res.json();
-        this.articles = data;
-        console.log(this.articleUId);
-      }
-    },
+    
     // Chercher les auteurs d'articles
-    getUsers() {
+    getUser() {
       //  const AUId = userId
       //  console.log(AUId)
       axios
-        .get(`http://localhost:3000/user/${this.articles}`, {
+        .get(`http://localhost:3000/user/${this.article.userId}`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then((response) => {
-          this.articles = response.data;
-          console.log(response.data);
+          this.user = response.data;
+          console.log(this.user);
         })
         .catch(() => {
           this.messError = "Une erreur s'est produite";
         });
-
-        
     },
     // supprimer post
     deleteArticle(id) {
@@ -100,6 +78,11 @@ export default {
         });
     },
   },
+  computed : {
+     dateformate : function() {
+      return (new Date(this.article.createdAt)).toLocaleString()
+    }
+  }
 };
 </script>
 

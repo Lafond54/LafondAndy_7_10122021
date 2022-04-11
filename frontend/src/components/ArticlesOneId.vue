@@ -39,6 +39,7 @@ export default {
       userId: localStorage.getItem("userId"),
       users: [],
       articles: [],
+      user: "",
     };
   },
 

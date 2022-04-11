@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "UserLogin",
   data() {
@@ -61,6 +62,7 @@ export default {
       if (res.status === 200) {
         const data = await res.json();
         localStorage.setItem("token", data.token);
+        axios.defaults.headers.common['Authorization'] = data.token // 
         this.$router.push({ name: "Home" });  //Ne rafraichit pas App
          
       

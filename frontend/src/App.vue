@@ -56,7 +56,7 @@ export default {
   padding: 10px;
   border-bottom: 1px solid black;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   background: #425e7a;
 
   a {
@@ -70,7 +70,7 @@ export default {
       &::after {
         content: "";
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         height: 3px;
         background: white;
         transform: scale(0);
@@ -87,7 +87,7 @@ export default {
   padding: 10px;
   border-bottom: 1px solid black;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   background: #425e7a;
   a {
     font-weight: bold;
@@ -100,7 +100,7 @@ export default {
       &::after {
         content: "";
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;        
         height: 3px;
         background: white;
         transform: scale(0);

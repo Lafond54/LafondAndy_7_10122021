@@ -25,7 +25,7 @@ exports.createPost = (req, res) => {
                 Article.create({
                     text: req.body.text,
                     userId: userFound.id,
-                    imgArticle : req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`: req.body.imgArticle,
+                    imgArticle : 'images/'+req.file.filename
                 })
 
                     .then(() => res.status(201).json({ message: 'Message créé !' },))

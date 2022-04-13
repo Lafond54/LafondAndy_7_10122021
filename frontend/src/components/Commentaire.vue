@@ -3,7 +3,7 @@
     <div class="commentaire">
       <Avatar :user="user" />
       <div class="commentaire__cadre">
-        <div class="commentaire__head">Nom + Date et Heure</div>
+        <div class="commentaire__head"> {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}</div>
         <div class="commentaire__dots">
           <div class="commentaire__contenu">
             {{ comment.text }}
@@ -24,14 +24,13 @@ import axios from "axios";
 export default {
   components: { Avatar },
   name: "Commentaire",
-  props: {
-    comment: Object,
-  },
+  props: { comment: Object },
 
   data() {
     return {
       userId: localStorage.getItem("userId"),     
-      user: null, 
+      user: "", 
+      
     };
   },
   created() {
@@ -77,8 +76,15 @@ export default {
           this.messError = "Une erreur c'est produite";
         });
     },
-  },
+    
+  },  
+  computed : {
+     dateformate : function() {
+      return (new Date(this.comment.createdAt)).toLocaleString()
+    }
+  }
 };
+
 </script>
 
 <!-- lang="scss" ?-->

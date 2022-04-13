@@ -1,18 +1,20 @@
 <template>
-  <div class="commentaire" v-for="comment in comments" :key="comment.id">
-    <Avatar />
-    <div class="commentaire__cadre">
-      <div class="commentaire__head">Nom + Date et Heure</div>
-      <div class="commentaire__dots">
-        <div class="commentaire__contenu">
-          {{ comment.text }}
-          <button v-on:click="deleteCommentaire(comment.id)">
-            <i class="fas fa-ellipsis-v"></i>
-          </button>
+  
+    <div class="commentaire">
+      <Avatar :user="user" />
+      <div class="commentaire__cadre">
+        <div class="commentaire__head">Nom + Date et Heure</div>
+        <div class="commentaire__dots">
+          <div class="commentaire__contenu">
+            {{ comment.text }}
+            <button v-on:click="deleteCommentaire(comment.id)">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  
 </template>
 
 <script>
@@ -22,35 +24,35 @@ import axios from "axios";
 export default {
   components: { Avatar },
   name: "Commentaire",
-  props: { articleId: Number },
+  props: {
+    comment: Object,
+  },
 
   data() {
     return {
-      userId: localStorage.getItem("userId"),
-      comments: [],
-      articles: [],
+      userId: localStorage.getItem("userId"),     
+      user: null, 
     };
   },
   created() {
-    this.loadComments();
+    this.getUserComments();
   },
   methods: {
-    async loadComments() {
-      const res = await fetch(
-        `http://localhost:3000/article/${this.articleId}/comment`,
-        {
-          method: "GET",
+    // Chercher les auteurs de commentaires
+    getUserComments() {
+           axios
+        .get(`http://localhost:3000/user/${this.comment.userId}`, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-        }
-      );
-      if (res.status === 200) {
-        const data = await res.json();
-        this.comments = data;
-      }
+        })
+        .then((response) => {
+          this.user = response.data;
+          console.log(this.user);
+        })
+        .catch(() => {
+          this.messError = "Une erreur s'est produite";
+        });
     },
 
     deleteCommentaire(commentId) {
@@ -67,7 +69,7 @@ export default {
               (comment) => comment.id !== commentId
             );
           } else {
-            return console.log("commentaire non supprime");   // Ne permet pas de sortir de la fonction, du coup je ne peux pas faire réapparaitre la boit de dialogue confirm 2 fois de suite
+            return console.log("commentaire non supprime"); // Ne permet pas de sortir de la fonction, du coup je ne peux pas faire réapparaitre la boite de dialogue confirm 2 fois de suite
           }
           // document.dispatchEvent(Events.COMMENT_DELETED, { detail : commentId })
         })

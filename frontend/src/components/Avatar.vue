@@ -1,10 +1,14 @@
 <template>
-<div class="avatar"></div>
+<div class="avatar">{{ initial }}</div>
 </template>
 
 <script>
 export default {
   name: "Avatar",
+  props: {user: Object},
+  computed : { initial : function () {
+    return this.user && this.user.firstName.charAt(0).toUpperCase() + this.user.lastName.charAt(0).toUpperCase()
+  }  }
 };
 </script>
 

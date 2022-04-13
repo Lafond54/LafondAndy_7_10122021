@@ -63,9 +63,9 @@ export default {
         const data = await res.json();
         localStorage.setItem("token", data.token);
         axios.defaults.headers.common['Authorization'] = data.token // 
+        
         this.$router.push({ name: "Home" });  //Ne rafraichit pas App
-         
-      
+        //  window.location.reload();
       }
 
       console.log(this.email, this.password);

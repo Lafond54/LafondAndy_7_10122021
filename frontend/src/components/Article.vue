@@ -3,7 +3,7 @@
     <div    
       class="article">
       <div class="article__head">
-        <Avatar />
+        <Avatar :user="user" />
         <div v-if="user" class="article__auteur">
           {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}
         </div>
@@ -13,9 +13,9 @@
         </div>
       </div>
       <div class="article__media">{{ article.text }}</div>
-      <Commentaire :articleId="article.id" />
+      <Commentaire v-for="comment in comments" :key="comment.id" :comment="comment"  />
 
-      <new-commentaire :articleId="article.id" />
+      <NewCommentaire :articleId="article.id"  />
     </div>
   
 </template>
@@ -33,14 +33,33 @@ export default {
   data() {
     return {
       user: null,
-      userId: localStorage.getItem("userId"),     
+      userId: localStorage.getItem("userId"),
+      comments: [],     
     };
   },
 
   created() {   
     this.getUser();
+    this.loadComments()
   },
   methods: {
+    async loadComments() {
+      const res = await fetch(
+        `http://localhost:3000/article/${this.article.id}/comment`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      if (res.status === 200) {
+        const data = await res.json();
+        this.comments = data;
+      }
+    },
     
     // Chercher les auteurs d'articles
     getUser() {
@@ -84,6 +103,8 @@ export default {
     }
   }
 };
+
+
 </script>
 
 <!-- lang="scss" ?-->

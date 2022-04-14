@@ -8,7 +8,7 @@ import Jwt from 'jsonwebtoken'
 
 
 import { createStore } from 'vuex'
-
+//VUEX
 // Create a new store instance.
 const store = createStore({
   state () {
@@ -37,7 +37,7 @@ const store = createStore({
   }
 })
 
-
+// export default store;
 
 if (localStorage.getItem("token")) {
     axios.defaults.headers.common['Authorization'] = "bearer " + localStorage.getItem("token")

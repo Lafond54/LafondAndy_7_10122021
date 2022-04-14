@@ -1,23 +1,33 @@
 <template>
-   
-    <div    
-      class="article">
-      <div class="article__head">
-        <Avatar :user="user" />
-        <div v-if="user" class="article__auteur">
-          {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}
-        </div>
-        <div class="article__modif">
-          <i class="fas fa-ellipsis-h"></i> Hover : Modif /
-          <button v-on:click="deleteArticle(article.id)">Supprimer</button>
-        </div>
+  <div class="article">
+    <div class="article__head">
+      <Avatar :user="user" />
+      <div v-if="user" class="article__auteur">
+        {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}
       </div>
-      <div class="article__media">{{ article.text }}</div>
-      <Commentaire v-for="comment in comments" :key="comment.id" :comment="comment"  />
-
-      <NewCommentaire :articleId="article.id"  />
+      <div class="article__modif">
+        <i class="fas fa-ellipsis-h"></i> Hover : Modif /
+        <button v-on:click="deleteArticle(article.id)">Supprimer</button>
+      </div>
     </div>
-  
+    <div class="article__media">
+      {{ article.text }}
+    </div>
+    
+      <img
+        class="article__image"
+        :src="path + article.imgArticle"
+        alt="image de la publication"
+      />
+    
+    <Commentaire
+      v-for="comment in comments"
+      :key="comment.id"
+      :comment="comment"
+    />
+
+    <NewCommentaire :articleId="article.id" />
+  </div>
 </template>
 
 <script>
@@ -28,19 +38,20 @@ import axios from "axios";
 
 export default {
   name: "Article",
-  components: { Avatar, Commentaire, NewCommentaire},
+  components: { Avatar, Commentaire, NewCommentaire },
   props: { article: Object },
   data() {
     return {
       user: null,
       userId: localStorage.getItem("userId"),
-      comments: [],     
+      comments: [],
+      path: "http://localhost:3000/", // <<<< technique a revoir ?????????????????????????????????????
     };
   },
 
-  created() {   
+  created() {
     this.getUser();
-    this.loadComments()
+    this.loadComments();
   },
   methods: {
     async loadComments() {
@@ -60,11 +71,9 @@ export default {
         this.comments = data;
       }
     },
-    
+
     // Chercher les auteurs d'articles
     getUser() {
-      //  const AUId = userId
-      //  console.log(AUId)
       axios
         .get(`http://localhost:3000/user/${this.article.userId}`, {
           headers: {
@@ -79,6 +88,7 @@ export default {
           this.messError = "Une erreur s'est produite";
         });
     },
+
     // supprimer post
     deleteArticle(id) {
       const postId = id;
@@ -97,14 +107,12 @@ export default {
         });
     },
   },
-  computed : {
-     dateformate : function() {
-      return (new Date(this.article.createdAt)).toLocaleString()
-    }
-  }
+  computed: {
+    dateformate: function () {
+      return new Date(this.article.createdAt).toLocaleString();
+    },
+  },
 };
-
-
 </script>
 
 <!-- lang="scss" ?-->
@@ -134,14 +142,20 @@ export default {
     margin: 1rem 0 1rem 0;
     padding: 0.8rem 0 0.8rem 0;
     border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    text-align: left;
+     overflow-wrap: break-word;
+     text-indent: 2em;
   }
-
+  &__image {
+    width: 100%;
+    height: auto;
+   
+    
+  }
   &__action {
     display: flex;
     margin-top: 0.3rem;
     align-items: center;
-
     justify-content: space-between;
   }
   &__upfile {

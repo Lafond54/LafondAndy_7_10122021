@@ -9,6 +9,10 @@ export default {
   computed : { initial : function () {
     return this.user && this.user.firstName.charAt(0).toUpperCase() + this.user.lastName.charAt(0).toUpperCase()
   }  }
+
+  // computed : { initial : function () {
+  //   return this.user && this.user.firstName.charAt(0).toUpperCase() + this.user.lastName.charAt(0).toUpperCase()
+  // }  }
 };
 </script>
 

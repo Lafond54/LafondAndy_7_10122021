@@ -19,29 +19,52 @@ exports.createPost = (req, res) => {
     if (text == '') {
         return res.status(400).json({ error: 'Texte manquant' });
     }
+
     User.findOne({ where: { id: userId } })
         .then(userFound => {
-            if (userFound) {
-                Article.create({
-                    text: req.body.text,
-                    userId: userFound.id,
-                    imgArticle : 'images/'+req.file.filename
-                })
+            if (req.file) {
+                if (userFound) {
+                    Article.create({
+                        text: req.body.text,
+                        userId: userFound.id,
+                        imgArticle: `images/${req.file.filename}`
+                    })
 
-                    .then(() => res.status(201).json({ message: 'Message créé !' },))
-                    .catch(error => {
-                        console.log(error)
-                        res.status(400).json({ error: 'Création du message échoué' })
-                    });
+                        .then(() => res.status(201).json({ message: 'Message créé !' },))
+                        .catch(error => {
+                            console.log(error)
+                            res.status(400).json({ error: 'Création du message échoué' })
+                        });
+                } else {
+                    console.log(error)
+                    return res.status(404).json({ error: 'Utilisateur non trouvé' })
+                }
             } else {
-                console.log(error)
-                return res.status(404).json({ error: 'Utilisateur non trouvé' })
+                if (userFound) {
+                    Article.create({
+                        text: req.body.text,
+                        userId: userFound.id,
+                        imgArticle: null,
+                    })
+
+                        .then(() => res.status(201).json({ message: 'Message créé !' },))
+                        .catch(error => {
+                            console.log(error)
+                            res.status(400).json({ error: 'Création du message échoué' })
+                        });
+                } else {
+                    console.log(error)
+                    return res.status(404).json({ error: 'Utilisateur non trouvé' })
+                }
             }
+
+
         })
         .catch(error => {
             console.log(error)
             res.status(500).json({ error: 'Recherche de l\'utilisateur échouée' })
         });
+
 };
 
 
@@ -149,7 +172,7 @@ exports.deletePost = (req, res) => {
     Article.findOne({
         where: { id: req.params.id }
     })
-   
+
         .then(articleFound => {
             if (req.body.userId == articleFound.userId) { // Ca coince ici..Il faut bien cibler le userid connecté à la session..?
                 articleFound.destroy({
@@ -194,6 +217,7 @@ exports.createComment = (req, res) => {
         text: req.body.text,
         userId: userId,
         ArticleId: req.params.articleId,
+        imgComment: `images/${req.file.filename}`
     })
 
         .then(() => res.status(201).json({ message: 'Commentaire créé !' },))

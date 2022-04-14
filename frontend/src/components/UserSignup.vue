@@ -53,6 +53,7 @@
           />
         </div>
       </form>
+      
       <div class="mainsignup__deja">
         Déjà inscrit ?
         <router-link to="/login"
@@ -64,6 +65,7 @@
 </template>
 
 <script>
+// import axios from "axios";
 export default {
   name: "UserSignup",
   data() {
@@ -90,8 +92,31 @@ export default {
         }),
       });
       console.log(res.status);
-      console.log(this.name, this.lastName, this.email, this.password);
+      console.log(this.fistName, this.lastName, this.email, this.password);
     },
+
+  //   createAccount(event) {
+  //     event.preventDefault()
+  //     const formData = new FormData();
+  //     formData.append("lastName", this.lastName);
+  //     formData.append("firstName", this.firstName);
+  //     formData.append("email", this.email);
+  //     formData.append("password", this.password);
+  //     console.log(this.firstName, this.lastName, this.email, this.password);
+  //     axios
+  //       .post("http://localhost:3000/user/signup", formData, {
+  //         headers: {            
+  //           "Content-Type": "multipart/form-data",            
+  //         },
+  //       })
+  //       .then(() => {
+         
+  //     console.log(this.firstName, this.lastName, this.email, this.password);
+  //       })
+  //       .catch(() => {
+  //         console.log("Une erreur s'est produite lors de l'inscription");
+  //       });
+  //   },
   },
 };
 </script>

@@ -13,7 +13,7 @@
         ></textarea>
         <div class="newcommentaire__action">
           <div class="newcommentaire__upfile">
-            <i class="fas fa-plus-circle"></i>Média
+            <i class="fas fa-plus-circle"></i><input type="file" @change="onFileUpload" name="image" accept="image/*">
           </div>
           <input
             type="submit"
@@ -40,15 +40,26 @@ export default {
       text: "",
       userId: localStorage.getItem("token"),
       articles: [],
-      comments: []
+      comments: [],
+      imgComment : "",
+      image: "",
+
     };
   },
 
   methods: {
+
+     onFileUpload (event) {
+          this.image = event.target.files[0];
+          this.imgComment = URL.createObjectURL(this.image);
+        },
+
     createComment(event) {
       event.preventDefault();
       const formData = new FormData();
       formData.append("text", this.text);
+      formData.append("image", this.image);
+      console.log(this.image)
       console.log(this.articleId);
       axios
         .post(
@@ -84,6 +95,8 @@ export default {
   margin-top: 2rem;
   display: flex;
   align-items: center;
+  border-top: 1px solid black;
+  padding-top: 1rem;
 
   &__field {
     width: 100%;

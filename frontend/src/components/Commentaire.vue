@@ -3,10 +3,17 @@
     <div class="commentaire">
       <Avatar :user="user" />
       <div class="commentaire__cadre">
-        <div class="commentaire__head"> {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}</div>
+        <div class="commentaire__head"> {{ user.firstName }} {{ user.lastName }} a répondu le {{ dateformate }}</div>
         <div class="commentaire__dots">
           <div class="commentaire__contenu">
             {{ comment.text }}
+            <div>
+      <img
+        class="commentaire__image"
+        :src="path + comment.imgComment"
+        alt="image de la publication"
+      />
+    </div>
             <button v-on:click="deleteCommentaire(comment.id)">
               <i class="fas fa-ellipsis-v"></i>
             </button>
@@ -29,7 +36,8 @@ export default {
   data() {
     return {
       userId: localStorage.getItem("userId"),     
-      user: "", 
+      user: "",
+      path: "http://localhost:3000/", 
       
     };
   },
@@ -98,20 +106,31 @@ export default {
 .commentaire {
   display: flex;
   margin-bottom: 0.9rem;
+  
+  
   &__cadre {
     display: flex;
     flex-direction: column;
   }
   &__head {
+    
     text-align: start;
     padding: 0.3rem 0 0.1rem 1rem;
   }
   &__contenu {
-    text-align: start;
 
+    text-align: start;
     border-radius: 20px;
     padding: 1rem;
-    background: #9256dc18;
+    background: #9256dc18;    
+    word-break: break-word;
+    padding-bottom: 1rem;
+    
+  }
+  &__image {
+    margin-top: 1rem;
+    width: 100%;
+  height: auto;
   }
   &__dots {
     display: flex;

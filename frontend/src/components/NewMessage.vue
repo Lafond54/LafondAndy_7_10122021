@@ -13,7 +13,7 @@
         ></textarea>
         <div class="newmessage__action">
           <div class="newmessage__upfile">
-            <i class="fas fa-plus-circle"></i>Ajouter Image/GIF    <input type="file" @change="onFileUpload" name="imgArticle" accept="image/*">
+            <i class="fas fa-plus-circle"></i>IMG/GIF <input type="file" @change="onFileUpload" name="image" accept="image/*">
           </div>
           <input           
             type="submit"
@@ -41,20 +41,22 @@ export default {
       text: "",
       userId: localStorage.getItem("token"),
       imgArticle : "",
+      image: "",
     };
   },
   methods: {
 
     onFileUpload (event) {
-          this.imgArticle = event.target.files[0]
+          this.image = event.target.files[0];
+          this.imgArticle = URL.createObjectURL(this.image);
         },
         
     createArticle(event) {
       event.preventDefault()
       const formData = new FormData();
       formData.append("text", this.text);
-      formData.append("imgArticle", this.imgArticle);
-
+      formData.append("image", this.image);
+      console.log(this.image)
       axios
         .post("http://localhost:3000/article", formData, {
           headers: {

@@ -67,6 +67,10 @@ export default {
         this.$router.push({ name: "Home" });  //Ne rafraichit pas App
         //  window.location.reload();
       }
+      
+       else if (res.status === 400 || res.status === 401) {
+        alert("Un problème est survenu lors de l'authentification.");
+      }
 
       console.log(this.email, this.password);
     },

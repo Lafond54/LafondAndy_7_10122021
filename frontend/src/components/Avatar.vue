@@ -10,9 +10,7 @@ export default {
     return this.user && this.user.firstName.charAt(0).toUpperCase() + this.user.lastName.charAt(0).toUpperCase()
   }  }
 
-  // computed : { initial : function () {
-  //   return this.user && this.user.firstName.charAt(0).toUpperCase() + this.user.lastName.charAt(0).toUpperCase()
-  // }  }
+  
 };
 </script>
 
@@ -23,5 +21,9 @@ export default {
     width: 45px;
     border: solid 1px black;
     border-radius: 22.5px;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

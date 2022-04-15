@@ -1,27 +1,28 @@
 <template>
-  
-    <div class="commentaire">
-      <Avatar :user="user" />
-      <div class="commentaire__cadre">
-        <div class="commentaire__head"> {{ user.firstName }} {{ user.lastName }} a répondu le {{ dateformate }}</div>
-        <div class="commentaire__dots">
-          <div class="commentaire__contenu">
-            {{ comment.text }}
-            <div>
-      <img
-        class="commentaire__image"
-        :src="path + comment.imgComment"
-        alt="image de la publication"
-      />
-    </div>
-            <button v-on:click="deleteCommentaire(comment.id)">
-              <i class="fas fa-ellipsis-v"></i>
-            </button>
+  <div class="commentaire">
+    <Avatar :user="user" />
+    <div class="commentaire__cadre">
+      <div class="commentaire__head">
+        {{ user.firstName }} {{ user.lastName }} a répondu le {{ dateformate }}
+      </div>
+      <div class="commentaire__dots">
+        <div class="commentaire__contenu">
+          {{ comment.text }}
+          <div v-if="comment.imgComment !== null">
+            <img
+              class="commentaire__image"
+              :src="path + comment.imgComment"
+              alt="image de la publication"
+            />
           </div>
+          <div v-else></div>
+          <button v-on:click="deleteCommentaire(comment.id)">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
         </div>
       </div>
     </div>
-  
+  </div>
 </template>
 
 <script>
@@ -35,10 +36,9 @@ export default {
 
   data() {
     return {
-      userId: localStorage.getItem("userId"),     
+      userId: localStorage.getItem("userId"),
       user: "",
-      path: "http://localhost:3000/", 
-      
+      path: "http://localhost:3000/",
     };
   },
   created() {
@@ -47,7 +47,7 @@ export default {
   methods: {
     // Chercher les auteurs de commentaires
     getUserComments() {
-           axios
+      axios
         .get(`http://localhost:3000/user/${this.comment.userId}`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -63,36 +63,34 @@ export default {
     },
 
     deleteCommentaire(commentId) {
-      axios
-        .delete("http://localhost:3000/comment/" + commentId, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then(() => {
-          if (confirm("Voulez-vous supprimer votre commentaire?")) {
+      if (confirm("Voulez-vous supprimer votre commentaire?"))
+        axios
+          .delete("http://localhost:3000/comment/" + commentId, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then(() => {
             this.comments = this.comments.filter(
               (comment) => comment.id !== commentId
             );
-          } else {
-            return console.log("commentaire non supprime"); // Ne permet pas de sortir de la fonction, du coup je ne peux pas faire réapparaitre la boite de dialogue confirm 2 fois de suite
-          }
-          // document.dispatchEvent(Events.COMMENT_DELETED, { detail : commentId })
-        })
-        .catch(() => {
-          this.messError = "Une erreur c'est produite";
-        });
-    },
-    
-  },  
-  computed : {
-     dateformate : function() {
-      return (new Date(this.comment.createdAt)).toLocaleString()
-    }
-  }
-};
 
+            // document.dispatchEvent(Events.COMMENT_DELETED, { detail : commentId })
+          })
+          .then(location.reload())
+
+          .catch(() => {
+            this.messError = "Une erreur c'est produite";
+          });
+    },
+  },
+  computed: {
+    dateformate: function () {
+      return new Date(this.comment.createdAt).toLocaleString();
+    },
+  },
+};
 </script>
 
 <!-- lang="scss" ?-->
@@ -106,31 +104,27 @@ export default {
 .commentaire {
   display: flex;
   margin-bottom: 0.9rem;
-  
-  
+
   &__cadre {
     display: flex;
     flex-direction: column;
   }
   &__head {
-    
     text-align: start;
     padding: 0.3rem 0 0.1rem 1rem;
   }
   &__contenu {
-
     text-align: start;
     border-radius: 20px;
     padding: 1rem;
-    background: #9256dc18;    
+    background: #9256dc18;
     word-break: break-word;
     padding-bottom: 1rem;
-    
   }
   &__image {
     margin-top: 1rem;
     width: 100%;
-  height: auto;
+    height: auto;
   }
   &__dots {
     display: flex;

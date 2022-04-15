@@ -13,13 +13,15 @@
     <div class="article__media">
       {{ article.text }}
     </div>
-    
+    <div v-if="article.imgArticle !== null">
       <img
         class="article__image"
         :src="path + article.imgArticle"
         alt="image de la publication"
       />
-    
+    </div>
+    <div v-else></div>
+
     <Commentaire
       v-for="comment in comments"
       :key="comment.id"
@@ -143,14 +145,12 @@ export default {
     padding: 0.8rem 0 0.8rem 0;
     border-top: 1px solid black;
     text-align: left;
-     overflow-wrap: break-word;
-     text-indent: 2em;
+    overflow-wrap: break-word;
+    text-indent: 2em;
   }
   &__image {
     width: 100%;
     height: auto;
-   
-    
   }
   &__action {
     display: flex;

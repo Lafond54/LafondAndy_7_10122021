@@ -2,7 +2,7 @@
   <div class="newmessage">
     <Avatar />
     <div class="newmessage__form">
-      <form  @submit="createArticle" class="newmessage_form" method="post">
+      <form @submit="createArticle" class="newmessage_form" method="post">
         <textarea
           v-model="text"
           placeholder="Bonjour Username, écrivez votre message ici..."
@@ -13,9 +13,17 @@
         ></textarea>
         <div class="newmessage__action">
           <div class="newmessage__upfile">
-            <i class="fas fa-plus-circle"></i>IMG/GIF <input type="file" @change="onFileUpload" name="image" accept="image/*">
+            <i class="fas fa-plus-circle"></i>IMG/GIF
+            <label for="files" class="btn"></label>
+            <input
+              id="files"
+              type="file"
+              @change="onFileUpload"
+              name="image"
+              accept="image/*"
+            />
           </div>
-          <input           
+          <input
             type="submit"
             formaction=""
             id="submitpost"
@@ -40,23 +48,22 @@ export default {
     return {
       text: "",
       userId: localStorage.getItem("token"),
-      imgArticle : "",
+      imgArticle: "",
       image: "",
     };
   },
   methods: {
+    onFileUpload(event) {
+      this.image = event.target.files[0];
+      this.imgArticle = URL.createObjectURL(this.image); // pour image preview
+    },
 
-    onFileUpload (event) {
-          this.image = event.target.files[0];
-          this.imgArticle = URL.createObjectURL(this.image);
-        },
-        
     createArticle(event) {
-      event.preventDefault()
+      event.preventDefault();
       const formData = new FormData();
       formData.append("text", this.text);
       formData.append("image", this.image);
-      console.log(this.image)
+      console.log(this.image);
       axios
         .post("http://localhost:3000/article", formData, {
           headers: {
@@ -144,4 +151,16 @@ textarea {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+#files {
+  display: flex;  
+  width:242px;
+  height:30px;
+}
+  @media (max-width: 425px) {
+  #files {
+ width:118px;
+}   
+}
+
+
 </style>

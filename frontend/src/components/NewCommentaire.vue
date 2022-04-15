@@ -13,7 +13,9 @@
         ></textarea>
         <div class="newcommentaire__action">
           <div class="newcommentaire__upfile">
-            <i class="fas fa-plus-circle"></i><input type="file" @change="onFileUpload" name="image" accept="image/*">
+            <i class="fas fa-plus-circle"></i>
+            <label for="files" class="btn"></label>
+            <input id="files" type="file" @change="onFileUpload" name="image" accept="image/*">
           </div>
           <input
             type="submit"
@@ -51,7 +53,7 @@ export default {
 
      onFileUpload (event) {
           this.image = event.target.files[0];
-          this.imgComment = URL.createObjectURL(this.image);
+          this.imgComment = URL.createObjectURL(this.image); // Pour image preview
         },
 
     createComment(event) {
@@ -114,6 +116,9 @@ export default {
   &__upfile {
     font-size: 0.8rem;
     padding-right: 1rem;
+      display: flex;  
+  flex-direction: row;  
+  align-items: center;
   }
   &__post {
     padding: 0.3rem;
@@ -150,4 +155,17 @@ textarea {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+#files {
+  display: flex;  
+  flex-direction: row;
+  width:242px;
+  height:30px; 
+  padding-top: 0.3rem;  
+}
+  @media (max-width: 485px) {
+  #files {
+ width:118px;
+}   
+}
+
 </style>

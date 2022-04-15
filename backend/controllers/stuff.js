@@ -14,10 +14,10 @@ exports.createPost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
-    const imgArticle = req.body.imgArticle
+    const file = req.file
     console.log(decodedToken)
-    if (text == '') {
-        return res.status(400).json({ error: 'Texte manquant' });
+    if (text == '' && file == null) {
+        return res.status(400).json({ error: 'Texte et image manquant' });
     }
 
     User.findOne({ where: { id: userId } })
@@ -169,28 +169,45 @@ exports.modifPost = (req, res) => {
 
 
 exports.deletePost = (req, res) => {
-    Article.findOne({
-        where: { id: req.params.id }
-    })
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
 
-        .then(articleFound => {
-            if (req.body.userId == articleFound.userId) { // Ca coince ici..Il faut bien cibler le userid connecté à la session..?
-                articleFound.destroy({
-                    where: { id: req.params.articleId }
+    User.findOne({ where: { id: userId } })
+        .then(userFound => {
+            if (userFound) {
+                Article.findOne({
+                    where: { id: req.params.id }
                 })
-                    .then(() => res.status(200).json({ message: 'Message supprimé' }))
-                    .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
-            }
 
-            else {
-                res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' });
+                    .then(articleFound => {
+                        if (userFound.id == articleFound.userId) { // Ca coince ici..Il faut bien cibler le userid connecté à la session..?
+                            articleFound.destroy({
+                                where: { id: req.params.articleId }
+                            })
+                                .then(() => res.status(200).json({ message: 'Message supprimé' }))
+                                .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
+                        }
+
+                        else {
+                            res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' });
+                        }
+                    })
+
+                    .catch(error => {
+                        console.log(error)
+                        res.status(500).json({ error: 'Suppression du message échoué' })
+                    });
+            } else {
+                console.log(error)
+                return res.status(404).json({ error: 'Utilisateur non trouvé' })
             }
         })
-
         .catch(error => {
             console.log(error)
-            res.status(500).json({ error: 'Suppression du message échoué' })
+            res.status(500).json({ error: 'Recherche de l\'utilisateur échouée' })
         });
+
 };
 
 
@@ -209,22 +226,38 @@ exports.createComment = (req, res) => {
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
     console.log(decodedToken)
-    if (text == '') {
-        return res.status(400).json({ error: 'Commentaire manquant' });
+    if (text == '' && req.file == null) {
+        return res.status(400).json({ error: 'Commentaire et image manquant' });
     }
-    // if SANS ELSE , ca pose pas de souci?
-    Comment.create({
-        text: req.body.text,
-        userId: userId,
-        ArticleId: req.params.articleId,
-        imgComment: `images/${req.file.filename}`
-    })
+    if (req.file) {
+        Comment.create({
+            text: req.body.text,
+            userId: userId,
+            ArticleId: req.params.articleId,
+            imgComment: `images/${req.file.filename}`
+        })
 
-        .then(() => res.status(201).json({ message: 'Commentaire créé !' },))
-        .catch(error => {
-            console.log(error)
-            res.status(400).json({ error: 'Création du commentaire échoué' })
-        });
+            .then(() => res.status(201).json({ message: 'Commentaire créé !' },))
+            .catch(error => {
+                console.log(error)
+                res.status(400).json({ error: 'Création du commentaire échoué' })
+            });
+    }
+    else {
+        Comment.create({
+            text: req.body.text,
+            userId: userId,
+            ArticleId: req.params.articleId,
+            imgComment: null,
+        })
+
+            .then(() => res.status(201).json({ message: 'Commentaire créé !' },))
+            .catch(error => {
+                console.log(error)
+                res.status(400).json({ error: 'Création du commentaire échoué' })
+            });
+    }
+
 
 }
 

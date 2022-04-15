@@ -53,7 +53,7 @@
           />
         </div>
       </form>
-      
+
       <div class="mainsignup__deja">
         Déjà inscrit ?
         <router-link to="/login"
@@ -80,10 +80,10 @@ export default {
     async createAccount() {
       const res = await fetch("http://localhost:3000/user/signup", {
         method: "POST",
-       headers: {
-                'Accept': 'application/json',
-                'Content-Type': "application/json"
-            },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           lastName: this.lastName,
           firstName: this.firstName,
@@ -93,30 +93,37 @@ export default {
       });
       console.log(res.status);
       console.log(this.fistName, this.lastName, this.email, this.password);
+      if (res.status === 201) {
+        alert(
+          "Inscription réussi, vous pouvez dès maintenant vous identifier!"
+        );
+      } else if (res.status === 400) {
+        alert("Un problème est survenu lors de l'inscription. Tous les champs sont obligatoires. Le mot de passe doit comporter Majuscule/minuscule/chiffre (8 lettres minimum).");
+      }
     },
 
-  //   createAccount(event) {
-  //     event.preventDefault()
-  //     const formData = new FormData();
-  //     formData.append("lastName", this.lastName);
-  //     formData.append("firstName", this.firstName);
-  //     formData.append("email", this.email);
-  //     formData.append("password", this.password);
-  //     console.log(this.firstName, this.lastName, this.email, this.password);
-  //     axios
-  //       .post("http://localhost:3000/user/signup", formData, {
-  //         headers: {            
-  //           "Content-Type": "multipart/form-data",            
-  //         },
-  //       })
-  //       .then(() => {
-         
-  //     console.log(this.firstName, this.lastName, this.email, this.password);
-  //       })
-  //       .catch(() => {
-  //         console.log("Une erreur s'est produite lors de l'inscription");
-  //       });
-  //   },
+    //   createAccount(event) {
+    //     event.preventDefault()
+    //     const formData = new FormData();
+    //     formData.append("lastName", this.lastName);
+    //     formData.append("firstName", this.firstName);
+    //     formData.append("email", this.email);
+    //     formData.append("password", this.password);
+    //     console.log(this.firstName, this.lastName, this.email, this.password);
+    //     axios
+    //       .post("http://localhost:3000/user/signup", formData, {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       })
+    //       .then(() => {
+
+    //     console.log(this.firstName, this.lastName, this.email, this.password);
+    //       })
+    //       .catch(() => {
+    //         console.log("Une erreur s'est produite lors de l'inscription");
+    //       });
+    //   },
   },
 };
 </script>

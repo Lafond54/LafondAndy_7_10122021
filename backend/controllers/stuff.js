@@ -172,6 +172,21 @@ exports.deletePost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
+    // exports.deleteSauce = (req, res) => {
+    //     Sauces.findOne({ _id: req.params.id })
+    //         .then(sauce => {
+    //             const filename = sauce.fileName;
+    //             fs.unlink(`images/${filename}`, () => {
+
+    //                 Sauces.deleteOne({ _id: req.params.id })
+    //                     .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+    //                     .catch(error => res.status(500).json({ error }));
+    //             });
+    //         })
+    //         .catch(error => res.status(500).json({ error }));
+    // };
+
+
 
     User.findOne({ where: { id: userId } })
         .then(userFound => {
@@ -181,19 +196,32 @@ exports.deletePost = (req, res) => {
                 })
 
                     .then(articleFound => {
-                        if (userFound.id == articleFound.userId) { // Ca coince ici..Il faut bien cibler le userid connecté à la session..?
-                            articleFound.destroy({
-                                where: { id: req.params.articleId }
-                            })
-                                .then(() => res.status(200).json({ message: 'Message supprimé' }))
-                                .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
-                        }
+                        if (userFound.id == articleFound.userId) {
 
+                            if (articleFound.imgArticle != null) {
+                                const filename = articleFound.imgArticle;
+
+                                fs.unlink(`${filename}`, () => {
+                                    articleFound.destroy({
+                                        where: { id: req.params.articleId }
+                                    })
+                                        .then(() => res.status(200).json({ message: 'Message supprimé' }))
+                                        .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
+                                })
+                            }
+
+                            else {
+                                articleFound.destroy({
+                                    where: { id: req.params.articleId }
+                                })
+                                    .then(() => res.status(200).json({ message: 'Message supprimé' }))
+                                    .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
+                            }
+                        }
                         else {
                             res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' });
                         }
                     })
-
                     .catch(error => {
                         console.log(error)
                         res.status(500).json({ error: 'Suppression du message échoué' })
@@ -290,12 +318,29 @@ exports.deleteComment = (req, res) => {
     })
         .then(commentaireFound => {
             if (commentaireFound) {
-                commentaireFound.destroy()
-                    .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
-                    .catch(error => {
-                        console.log(error)
-                        res.status(500).json({ error: 'Suppression du commentaire échoué' })
-                    });
+
+                if (commentaireFound.imgComment != null) {
+                    const filename = commentaireFound.imgComment;
+
+                    fs.unlink(`${filename}`, () => {
+                        commentaireFound.destroy()
+                            .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
+                            .catch(error => {
+                                console.log(error)
+                                res.status(500).json({ error: 'Suppression du commentaire échoué' })
+                            });
+                    })
+                }
+
+                else {
+
+                    commentaireFound.destroy()
+                        .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
+                        .catch(error => {
+                            console.log(error)
+                            res.status(500).json({ error: 'Suppression du commentaire échoué' })
+                        });
+                }
 
             } else {
                 return res.status(404).json({ error: 'Aucun commentaire supprimé' })

@@ -2,41 +2,40 @@
   <section class="mainprofil">
     <div class="mainprofil__cadre">
       <div class="mainprofil__flexavatar">
-        <Avatar />
+        <Avatar :user="user" />
         <div class="mainprofil__modifavatar">
           <i class="fas fa-image"></i><a href="">Changer d'avatar</a>
         </div>
       </div>
       <form action="" method="" class="form-example">
         <div class="form-example">
-          <label for="name">Nom : {{ user.lastName }} </label>
+          <label for="name">Nom : </label>
           <input
             type="text"
             name="lastname"
             id="name"
             required
-            placeholder="Afficher le 'user.lastname'"
+            v-bind:value="user.lastName"
           />
         </div>
         <div class="form-example">
-          <label for="name">Prénom : {{ user.firstName }} </label>
+          <label for="name">Prénom : </label>
           <input
             type="text"
             name="name"
             id="name"
             required
-            placeholder="Afficher le 'user.firstname'"
+            v-bind:value="user.firstName"
           />
         </div>
         <div class="form-example">
-          <label for="name">Adresse mail : {{ user.email }} </label>
+          <label for="name">Adresse mail : </label>
           <input
             type="text"
             name="name"
             id="name"
             required
-            placeholder="Afficher le 'user.email'"
-            disabled="disabled"
+            v-bind:value="user.email"            
           />
         </div>
         <div class="form-example">

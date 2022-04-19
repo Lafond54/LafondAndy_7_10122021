@@ -111,7 +111,7 @@ export default {
   },
   computed: {
     dateformate: function () {
-      return new Date(this.article.createdAt).toLocaleString();
+      return new Date(this.article.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
     },
   },
 };

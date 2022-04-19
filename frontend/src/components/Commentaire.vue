@@ -4,6 +4,9 @@
     <div class="commentaire__cadre">
       <div class="commentaire__head">
         {{ user.firstName }} {{ user.lastName }} a répondu le {{ dateformate }}
+        <button v-on:click="deleteCommentaire(comment.id)">
+          <i class="fas fa-ellipsis-h"></i>
+        </button>
       </div>
       <div class="commentaire__dots">
         <div class="commentaire__contenu">
@@ -16,9 +19,6 @@
             />
           </div>
           <div v-else></div>
-          <button v-on:click="deleteCommentaire(comment.id)">
-            <i class="fas fa-ellipsis-v"></i>
-          </button>
         </div>
       </div>
     </div>
@@ -87,7 +87,10 @@ export default {
   },
   computed: {
     dateformate: function () {
-      return new Date(this.comment.createdAt).toLocaleString();
+      return new Date(this.comment.createdAt).toLocaleString([], {
+        dateStyle: "short",
+        timeStyle: "short",
+      });
     },
   },
 };
@@ -104,6 +107,7 @@ export default {
 .commentaire {
   display: flex;
   margin-bottom: 0.9rem;
+  margin-left: 4rem;
 
   &__cadre {
     display: flex;
@@ -135,5 +139,10 @@ export default {
 .fas.fa-ellipsis-v {
   padding: 0.4rem;
   font-size: 0.9rem;
+}
+@media (max-width: 485px) {
+  .commentaire {
+    margin-left: 0rem;
+  }
 }
 </style>

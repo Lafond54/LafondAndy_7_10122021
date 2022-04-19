@@ -172,21 +172,6 @@ exports.deletePost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
-    // exports.deleteSauce = (req, res) => {
-    //     Sauces.findOne({ _id: req.params.id })
-    //         .then(sauce => {
-    //             const filename = sauce.fileName;
-    //             fs.unlink(`images/${filename}`, () => {
-
-    //                 Sauces.deleteOne({ _id: req.params.id })
-    //                     .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-    //                     .catch(error => res.status(500).json({ error }));
-    //             });
-    //         })
-    //         .catch(error => res.status(500).json({ error }));
-    // };
-
-
 
     User.findOne({ where: { id: userId } })
         .then(userFound => {
@@ -312,42 +297,61 @@ exports.getAllCommentaires = (req, res) => {
 //DELETE
 // Supprimer un commentaire
 exports.deleteComment = (req, res) => {
-    console.log('delete commentaire')
-    Comment.findOne({
-        where: { id: req.params.id }
-    })
-        .then(commentaireFound => {
-            if (commentaireFound) {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
 
-                if (commentaireFound.imgComment != null) {
-                    const filename = commentaireFound.imgComment;
+    User.findOne({ where: { id: userId } })
+        .then(userFound => {
+            if (userFound) {
+                Comment.findOne({
+                    where: { id: req.params.id }
+                })
+                    .then(commentaireFound => {
 
-                    fs.unlink(`${filename}`, () => {
-                        commentaireFound.destroy()
-                            .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
-                            .catch(error => {
-                                console.log(error)
-                                res.status(500).json({ error: 'Suppression du commentaire échoué' })
-                            });
+                        if (commentaireFound) {
+                            if (userFound.id == commentaireFound.userId) {
+
+                                if (commentaireFound.imgComment != null) {
+                                    const filename = commentaireFound.imgComment;
+
+                                    fs.unlink(`${filename}`, () => {
+                                        commentaireFound.destroy()
+                                            .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
+                                            .catch(error => {
+                                                console.log(error)
+                                                res.status(500).json({ error: 'Suppression du commentaire échoué' })
+                                            });
+                                    })
+                                }
+
+                                else {
+
+                                    commentaireFound.destroy()
+                                        .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
+                                        .catch(error => {
+                                            console.log(error)
+                                            res.status(500).json({ error: 'Suppression du commentaire échoué' })
+                                        });
+                                }
+
+                            } else {
+                                return res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' })
+                            }
+                        }
+                        else {
+                            res.status(404).json({ error: 'Commentaire introuvable' });
+                        }
                     })
-                }
-
-                else {
-
-                    commentaireFound.destroy()
-                        .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
-                        .catch(error => {
-                            console.log(error)
-                            res.status(500).json({ error: 'Suppression du commentaire échoué' })
-                        });
-                }
-
-            } else {
-                return res.status(404).json({ error: 'Aucun commentaire supprimé' })
+                    .catch(error => {
+                        console.log(error)
+                        res.status(500).json({ error: 'Suppression du commentaire échoué' })
+                    });
             }
         })
         .catch(error => {
             console.log(error)
-            res.status(500).json({ error: 'Suppression du commentaire échoué' })
+            res.status(500).json({ error: 'Recherche de l\'utilisateur échouée' })
         });
+
 }

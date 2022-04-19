@@ -94,10 +94,9 @@ export default {
 <!-- lang="scss" ?-->
 <style scoped lang="scss">
 .newcommentaire {
-  margin-top: 2rem;
+  margin-top: 1.2rem;
   display: flex;
-  align-items: center;
-  border-top: 1px solid black;
+  align-items: center;  
   padding-top: 1rem;
 
   &__field {

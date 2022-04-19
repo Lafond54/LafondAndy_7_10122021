@@ -10,17 +10,20 @@
         <button v-on:click="deleteArticle(article.id)">Supprimer</button>
       </div>
     </div>
-    <div class="article__media">
-      {{ article.text }}
+    <div class="article__mediacadre">
+      <div class="article__media">
+        {{ article.text }}
+      </div>
+      <div v-if="article.imgArticle !== null">
+        <img
+          class="article__image"
+          :src="path + article.imgArticle"
+          alt="image de la publication"
+        />
+      </div>
+      <div v-else></div>
     </div>
-    <div v-if="article.imgArticle !== null">
-      <img
-        class="article__image"
-        :src="path + article.imgArticle"
-        alt="image de la publication"
-      />
-    </div>
-    <div v-else></div>
+    
 
     <Commentaire
       v-for="comment in comments"
@@ -111,7 +114,10 @@ export default {
   },
   computed: {
     dateformate: function () {
-      return new Date(this.article.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+      return new Date(this.article.createdAt).toLocaleString([], {
+        dateStyle: "short",
+        timeStyle: "short",
+      });
     },
   },
 };
@@ -139,10 +145,16 @@ export default {
     font-size: 1rem;
     margin-left: auto;
   }
+  &__mediacadre {
+    border-bottom: 1px solid black;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1rem;
+
+  }
   &__media {
     font-size: 1.2rem;
-    margin: 1rem 0 1rem 0;
-    padding: 0.8rem 0 0.8rem 0;
+    margin: 1rem 0 0.5rem 0;
+    padding: 1rem 0 0.8rem 0;
     border-top: 1px solid black;
     text-align: left;
     overflow-wrap: break-word;

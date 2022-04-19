@@ -38,7 +38,7 @@ export default {
     return {
       userId: localStorage.getItem("userId"),
       user: "",
-      path: "http://localhost:3000/",
+      path: "http://localhost:3000/", // < mauvaise pratique ?
     };
   },
   created() {
@@ -64,8 +64,7 @@ export default {
 
     deleteCommentaire(commentId) {
       if (confirm("Voulez-vous supprimer votre commentaire?"))
-        axios
-          .delete("http://localhost:3000/comment/" + commentId, {
+        axios.delete("http://localhost:3000/comment/" + commentId, {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + localStorage.getItem("token"),

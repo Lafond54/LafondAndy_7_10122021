@@ -13,7 +13,7 @@
           <input
             type="text"
             name="lastname"
-            id="name"
+            id="lastname"
             required
             v-bind:value="user.lastName"
           />
@@ -22,8 +22,8 @@
           <label for="name">Prénom : </label>
           <input
             type="text"
-            name="name"
-            id="name"
+            name="firstname"
+            id="firstname"
             required
             v-bind:value="user.firstName"
           />
@@ -31,29 +31,32 @@
         <div class="form-example">
           <label for="name">Adresse mail : </label>
           <input
-            type="text"
-            name="name"
-            id="name"
+            type="email"
+            name="email"
+            id="email"
             required
-            v-bind:value="user.email"            
+            v-bind:value="user.email"
           />
         </div>
         <div class="form-example">
           <label for="email">Mot de passe : </label>
           <input
-            type="email"
-            name="email"
-            id="email"
-            required
+            type="password"
+            name="password"
+            id="password"
+            
             placeholder="*********"
           />
         </div>
 
         <div class="form-example">
           <input class="mainprofil__sub" type="submit" value="Enregistrer" />
-        </div>
-        <button class="mainprofil__del">Désactiver mon compte</button>
+        </div>        
       </form>
+      <button v-on:click="deleteUser()" class="mainprofil__del">Supprimer mon compte</button>
+      <span>Création du compte : {{ dateformate }}</span>
+      <span>{{messReussite}}</span>
+      <span>{{messError}}</span>
     </div>
   </section>
 </template>
@@ -72,17 +75,18 @@ export default {
       user: "",
       users: [],
       userId: localStorage.getItem("token"),
+      messReussite: '',
+      messError: '',
     };
   },
 
-  mounted() { 
-    
-    console.log(this.userId)  
-    const token = this.userId
-    const openedToken = jwt.decode(token)
-    console.log(openedToken)   
+  mounted() {
+    console.log(this.userId);
+    const token = this.userId;
+    const openedToken = jwt.decode(token);
+    console.log(openedToken);
     axios
-      .get(`http://localhost:3000/user/${ openedToken.userId }`, {
+      .get(`http://localhost:3000/user/${openedToken.userId}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -94,6 +98,34 @@ export default {
       .catch(() => {
         this.messError = "Une erreur s'est produite";
       });
+  },
+
+  deleteUser() {
+    const token = this.userId;
+    const openedToken = jwt.decode(token);
+    axios
+      .delete(`http://localhost:3000/user/${openedToken.userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then(() => {
+        (this.messReussite = "Vous avez supprimer votre compte"),
+          localStorage.clear();
+        this.$router.push("/");
+      })
+      .catch(() => {
+        this.messError = "Une erreur c'est produite";
+      });
+      
+  },
+
+
+computed: {
+    dateformate: function () {
+      return new Date(this.user.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+    },
   },
 };
 </script>

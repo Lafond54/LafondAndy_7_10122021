@@ -2,7 +2,7 @@
   <div class="commentaire">
     <Avatar :user="user" />
     <div class="commentaire__cadre">
-      <div class="commentaire__head">
+      <div v-if="user" class="commentaire__head">
         {{ user.firstName }} {{ user.lastName }} a répondu le {{ dateformate }}
         <button v-on:click="deleteCommentaire(comment.id)">
           <i class="fas fa-ellipsis-h"></i>
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       userId: localStorage.getItem("userId"),
-      user: "",
+      user: null,
       path: "http://localhost:3000/", // < mauvaise pratique ?
     };
   },

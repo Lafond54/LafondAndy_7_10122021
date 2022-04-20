@@ -1,6 +1,6 @@
 <template>
   <div class="newmessage">
-    <Avatar />
+    <Avatar :user="user" />
     <div class="newmessage__form">
       <form @submit="createArticle" class="newmessage_form" method="post">
         <textarea
@@ -50,6 +50,7 @@ export default {
       userId: localStorage.getItem("token"),
       imgArticle: "",
       image: "",
+      // user: this.$store.getters.user,
     };
   },
   methods: {
@@ -79,6 +80,11 @@ export default {
         });
     },
   },
+  computed : {
+    user() {
+      return this.$store.getters.user
+    } 
+  }
 };
 </script>
 

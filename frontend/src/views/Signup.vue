@@ -3,7 +3,7 @@
 
 
 <TitleCategory v-bind:titleText="'Inscrivez-vous'" />
-<user-signup />
+<userSignup />
 
   
 </template>

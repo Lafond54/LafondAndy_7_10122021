@@ -7,7 +7,7 @@
           <i class="fas fa-image"></i><a href="">Changer d'avatar</a>
         </div>
       </div>
-      <form action="" method="" class="form-example">
+      <form v-if="user" action="" method="" class="form-example">
         <div class="form-example">
           <label for="name">Nom : </label>
           <input
@@ -65,6 +65,7 @@ import Avatar from "@/components/Avatar.vue";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 
+
 export default {
   name: "MyProfile",
   components: { Avatar },
@@ -72,7 +73,7 @@ export default {
   data() {
     return {
       //Voir user
-      user: "",
+      user: this.$store.getters.user,
       users: [],
       userId: localStorage.getItem("token"),
       messReussite: '',
@@ -123,8 +124,9 @@ export default {
 
 
 computed: {
+  
     dateformate: function () {
-      return new Date(this.user.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+      return this.user && new Date(this.user.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
     },
   },
 };

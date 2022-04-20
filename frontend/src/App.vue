@@ -30,7 +30,8 @@ export default {
       componentKey: 0,
     };
   },
-  methods: {
+ 
+  methods: {   
     disconnect() {
       window.localStorage.clear(); //trop bourrin ? j'arrive pas à delete seulement le token
       // this.componentKey += 1;  //marche pas l'actUalisation du composant (router-link vers /login fou la merde?)

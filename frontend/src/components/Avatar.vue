@@ -35,7 +35,7 @@ export default {
   width: 45px;
   border: solid 1px black;
   border-radius: 22.5px;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   display: flex;
   justify-content: center;
   align-items: center;

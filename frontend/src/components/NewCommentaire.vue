@@ -1,6 +1,6 @@
 <template>
   <div class="newcommentaire">
-    <Avatar />
+    <Avatar :user="user"/>
     <div class="newcommentaire__form">
       <form @submit="createComment" class="newcommentaire_form" method="post">
         <textarea
@@ -44,7 +44,7 @@ export default {
       articles: [],
       comments: [],
       imgComment : "",
-      image: "",
+      image: "",      
 
     };
   },

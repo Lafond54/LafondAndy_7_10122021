@@ -1,11 +1,11 @@
 
 <template>
-
+<div>
 <NavBar />
 <TitleCategory v-bind:titleText="'Modifier mon Profil'" />
 <MyProfile />
+</div>
 
-<user-signup />
 
   
 </template>

@@ -5,7 +5,7 @@
       <form @submit="createArticle" class="newmessage_form" method="post">
         <textarea
           v-model="text"
-          placeholder="Bonjour Username, écrivez votre message ici..."
+          placeholder="Bonjour {{ user.firstName }}, écrivez votre message ici..."
           name="newmessage__field"
           id="newmessage__field"
           class="newmessage__field"

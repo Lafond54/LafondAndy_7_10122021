@@ -33,10 +33,11 @@ const store = createStore({
   actions : {
       async loadUser (context) { 
         const token = localStorage.getItem("token")
+        if (token) {
         const userId = Jwt.decode(token).userId
-        const response = await axios.get(`http://localhost:3000/user/${userId}`)
+        const response = await axios.get(`http://localhost:3000/user/${userId}?full=true`)
         context.commit("user", response.data)
-        console.log(context)
+        console.log(context)}
       }
   }
 })

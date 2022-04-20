@@ -1,5 +1,5 @@
-<template :key="componentKey">
-  <nav v-if="userId === null" id="nav" :key = " componentKey " >
+<template>
+  <nav v-if="user === null" id="nav" >
     <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
     <router-link to="/login"
       ><i class="fas fa-sign-in-alt"></i>S'identifier</router-link
@@ -11,8 +11,8 @@
   </nav>
   <nav v-else id="nav2" >
     <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
-    <a v-bind:href="'/'" v-on:click="disconnect()"
-      ><i class="fas fa-sign-in-alt"></i>Se déconnecter</a
+    <button class="butn" v-bind:href="'/'" v-on:click="disconnect()"
+      ><i class="fas fa-sign-in-alt"></i>Se déconnecter</button
     >
   </nav>
 
@@ -24,12 +24,7 @@
 <script>
 export default {
   components: {},
-  data() {
-    return {
-      userId: localStorage.getItem("token"),
-      componentKey: 0,
-    };
-  },
+  
  
   methods: {   
     disconnect() {
@@ -40,11 +35,16 @@ export default {
       
     
   },
+  computed : {
+    user() {
+      return this.$store.getters.user
+    }
+  }
 };
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -128,5 +128,9 @@ export default {
 .fas.fa-sign-in-alt,
 .fas.fa-user-plus {
   padding-right: 0.4rem;
+}
+
+.butn {
+all: unset;
 }
 </style>

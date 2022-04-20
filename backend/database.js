@@ -56,7 +56,7 @@ Article.init({
     { sequelize, modelName: 'Article' });
 
 Article.belongsTo(User)
-User.hasMany(Article)
+User.hasMany(Article, { onDelete: 'CASCADE'})
 
 
 
@@ -72,11 +72,11 @@ Comment.init({
     { sequelize, modelName: 'Comment' });
 
 Comment.belongsTo(User)
-User.hasMany(Comment)
+User.hasMany(Comment, { onDelete: 'CASCADE'})
 
 
 Comment.belongsTo(Article)
-Article.hasMany(Comment)
+Article.hasMany(Comment, { onDelete: 'CASCADE'})
 
 
 

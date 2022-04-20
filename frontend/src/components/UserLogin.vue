@@ -62,8 +62,8 @@ export default {
       if (res.status === 200) {
         const data = await res.json();
         localStorage.setItem("token", data.token);
-        axios.defaults.headers.common['Authorization'] = data.token // 
-        
+        axios.defaults.headers.common['Authorization'] = "bearer " + data.token // 
+        this.$store.dispatch('loadUser')
         this.$router.push({ name: "Home" });  //Ne rafraichit pas App
         //  window.location.reload();
       }

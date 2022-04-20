@@ -5,6 +5,9 @@
       <div v-if="user" class="article__auteur">
         {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}
       </div>
+      <div v-else class="article__auteursupprime">
+        Utilisateur supprimé :(
+      </div>
       <div class="article__modif">
         <i class="fas fa-ellipsis-h"></i> Hover : Modif /
         <button v-on:click="deleteArticle(article.id)">Supprimer</button>
@@ -17,7 +20,7 @@
       <div v-if="article.imgArticle !== null">
         <img
           class="article__image"
-          :src="path + article.imgArticle"
+          :src="article.imgUrl"
           alt="image de la publication"
         />
       </div>
@@ -50,7 +53,7 @@ export default {
       user: null,
       userId: localStorage.getItem("userId"),
       comments: [],
-      path: "http://localhost:3000/", // <<<< technique a revoir ?????????????????????????????????????
+      // path: "http://localhost:3000/", // <<<< technique a revoir ?????????????????????????????????????
     };
   },
 

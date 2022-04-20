@@ -1,7 +1,8 @@
 <template>
   <div class="avatar">
-    <div class="avatar__sansimage">{{ initial }}</div>
-     <img class="avatar__image" src="http://localhost:3000/images/ooooooo.png" alt="img avatar">
+    <img v-if="user?.imgUrl"  class="avatar__image" :src="user.imgUrl" alt="img avatar">
+    <div v-else class="avatar__sansimage">{{ initial }}</div>
+     
     <!-- <div v-if="this.user.avatar == null" class="avatar__sansimg">
       {{ initial }}                                                              //
     </div>                                                                     < // Rendu conditionnel ne marche pas

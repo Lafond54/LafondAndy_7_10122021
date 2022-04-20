@@ -4,6 +4,16 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 
 
+// Normalizer infos user
+// Pour les images
+function normalizer (user, req) {
+  return { id: user.id, lastName : user.lastName, firstName : user.firstName, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}`}
+
+}
+// Pour my profile
+function normalizerFull (user, req) {
+  return {  ...normalizer (user, req), email : user.email, isadmin: user.isadmin }
+}
 
 
 
@@ -71,7 +81,7 @@ exports.getUserProfile = (req, res) => {
   })
   .then(user => {
       if(user) {
-          res.status(200).json(user); // Exclure le password dans la réponse ?
+          res.status(200).json(req.query.full && req.userId===user.id? normalizerFull(user, req) : normalizer (user, req)); // Exclure le password dans la réponse ?
           //  Pas de verif de l'id depuis le back, du coup tout le monde peut voir la bdd avec n'importe quelle req.params.Id?
       } else {
           res.status(404).json({ error: 'Utilisateur non trouvé' })
@@ -103,5 +113,27 @@ exports.deleteAccount = (req, res, next) => {
   .catch(error => {
       console.log(error)
       res.status(500).json({ error: 'Suppression du profil échoué' })
+  });
+}
+
+// PUT
+// Modification de l'user
+exports.modifyAccount = (req, res, next) => {
+  User.findOne({     
+    where: { id: req.params.id }
+})
+  .then(user => {
+      if(user) {
+          user.put()
+          .then(() => res.status(200).json({ message: 'Compte modifié' }))
+          .catch(() => res.status(500).json({ error: 'Modification du profil échoué' }));
+
+      } else {
+          return res.status(404).json({ error: 'Utilisateur non trouvé' })
+      }
+  })
+  .catch(error => {
+      console.log(error)
+      res.status(500).json({ error: 'Modification du profil échoué' })
   });
 }

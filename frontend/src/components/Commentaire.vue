@@ -2,10 +2,19 @@
   <div class="commentaire">
     <Avatar :user="user" />
     <div class="commentaire__cadre">
-      <div v-if="user" class="commentaire__head">
-        {{ user.firstName }} {{ user.lastName }} a répondu le {{ dateformate }}
-        <button v-on:click="deleteCommentaire(comment.id)">
-          <i class="fas fa-ellipsis-h"></i>
+      <div class="commentaire__head">
+        <div v-if="user" class="commentaire__auteur">
+          {{ user.firstName }} {{ user.lastName }} a répondu le
+          {{ dateformate }} 
+        </div>
+        <div v-else class="commentaire__auteursupprime">
+          Utilisateur supprimé :(
+        </div>
+        <button
+          class="commentaire__button"
+          v-on:click="deleteCommentaire(comment.id)"
+        >
+          <i class="fas fa-trash-alt"></i>
         </button>
       </div>
       <div class="commentaire__dots">
@@ -47,6 +56,7 @@ export default {
   methods: {
     // Chercher les auteurs de commentaires
     getUserComments() {
+      //TODO mettre un if pour verif user 404
       axios
         .get(`http://localhost:3000/user/${this.comment.userId}`, {
           headers: {
@@ -64,7 +74,8 @@ export default {
 
     deleteCommentaire(commentId) {
       if (confirm("Voulez-vous supprimer votre commentaire?"))
-        axios.delete("http://localhost:3000/comment/" + commentId, {
+        axios
+          .delete("http://localhost:3000/comment/" + commentId, {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + localStorage.getItem("token"),
@@ -113,6 +124,8 @@ export default {
     flex-direction: column;
   }
   &__head {
+    display: flex;
+    flex-direction: row;
     text-align: start;
     padding: 0.3rem 0 0.1rem 1rem;
   }
@@ -133,11 +146,17 @@ export default {
     display: flex;
     align-items: center;
   }
+  &__button {
+    font-size: 0.8rem;
+    padding: 0 0.5rem 0 0.5rem;
+    margin-left: 0.5rem;
+  }
 }
 
 .fas.fa-ellipsis-v {
   padding: 0.4rem;
   font-size: 0.9rem;
+  margin: 0 1rem 0 1rem;
 }
 @media (max-width: 485px) {
   .commentaire {

@@ -3,6 +3,7 @@ const fs = require('fs');
 const { json } = require('express');
 const { Article, User, Comment } = require('../database');
 const jwt = require('jsonwebtoken');
+const { request } = require('http');
 
 
 // Article **************************************************
@@ -121,16 +122,26 @@ exports.createPost = (req, res) => {
 exports.arrayIDs = (req, res) => {
     Article.findAll()
 
-        .then(articles => res.status(200).json(articles))
+        .then(articles => res.status(200).json(articles.map(article => normalizer(article, req))))
         .catch(error => res.status(400).json({ error }));
 }
 
 
 exports.oneID = (req, res) => {
     Article.findOne({ id: req.params.id })
-        .then(article => res.status(200).json(article))
+        .then(article => res.status(200).json(normalizer(article, req)))
         .catch(error => res.status(404).json({ error }));
 }
+
+
+// Pour les images
+function normalizer (article, req) {
+    return {...article.toJSON(), imgUrl: `${req.protocol}://${req.get("host")}/${article.imgArticle}`}
+
+}
+
+
+
 
 // Articles appartenant à un seul auteur.
 exports.allPostsOneUser = (req, res) => {
@@ -139,7 +150,7 @@ exports.allPostsOneUser = (req, res) => {
     // const userId = decodedToken.userId;
 
     Article.findall({ userId: req.params.id })
-        .then(article => res.status(200).json(article))
+        .then(articles => res.status(200).json(articles.map(article => normalizer(article, req))))
         .catch(error => res.status(404).json({ error }));
 }
 

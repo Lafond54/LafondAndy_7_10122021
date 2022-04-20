@@ -11,15 +11,15 @@
     </div>
     <ul class="navbar__liste">
       <li class="navbar__liste__filactu">
-        <i class="fas fa-poll-h"></i><a v-bind:href="'/'">Fil d'actualité</a>
+        <i class="fas fa-poll-h"></i><router-link :to="{name:'Home'}">Fil d'actualité</router-link>
       </li>
 
-      <li class="navbar__liste__mesposts">
-        <i class="fas fa-address-card"></i><a v-bind:href="'/user/:id/articles'">Mes posts</a>
+      <li v-if="user" class="navbar__liste__mesposts">
+        <i class="fas fa-address-card"></i><router-link :to="{name: 'allPostsOneUser', params:{id:user.id}}">Mes posts</router-link>
       </li>
 
-      <li class="navbar__liste__monprofil">
-        <i class="fas fa-user"></i><a v-bind:href="'/User/:id'">Mon profil</a>
+      <li v-if="user" class="navbar__liste__monprofil">
+        <i class="fas fa-user"></i><router-link :to="{name: 'User', params:{id:user.id}}">Mon profil</router-link>
       </li>
     </ul>
   </div>
@@ -29,8 +29,13 @@
 <script>
 export default {
   name: "NavBar",
-  
+  computed : {
+    user() {
+      return this.$store.getters.user
+    }
+  }
 };
+
 
 </script>
 

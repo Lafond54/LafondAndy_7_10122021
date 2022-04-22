@@ -28,9 +28,8 @@ export default {
  
   methods: {   
     disconnect() {
-      window.localStorage.clear(); //trop bourrin ? j'arrive pas à delete seulement le token
-      // this.componentKey += 1;  //marche pas l'actUalisation du composant (router-link vers /login fou la merde?)
-      // this.$router.go({ name: "Home" })
+      window.localStorage.clear();      
+      this.$router.go({ name: "Login" }); //todo Renvoi pas à login ?
     }
       
     
@@ -131,6 +130,26 @@ export default {
 }
 
 .butn {
-all: unset;
+  all: unset;
+ font-weight: bold;
+    color: #ffffff;
+    margin: 0 1.5rem 0 1.5rem;
+    text-decoration: none;
+     &.butn {
+      color: #ffffff;
+      &::after {
+        content: "";
+        display: flex;
+        justify-content: flex-end;        
+        height: 3px;
+        background: white;
+        transform: scale(0);
+        transition: transform 0.2s ease-in-out;
+      }
+      &:hover::after {
+        transform: scale(1);
+      }
+    }
+
 }
 </style>

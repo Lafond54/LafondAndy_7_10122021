@@ -10,12 +10,14 @@
         <div v-else class="commentaire__auteursupprime">
           Utilisateur supprimé :(
         </div>
-        <button
+        <!-- v-if="userId == comment.id || user.isadmin == 1"  -->
+        <button 
           class="commentaire__button"
           v-on:click="deleteCommentaire(comment.id)"
         >
           <i class="fas fa-trash-alt"></i>
         </button>
+        <!-- <div v-else></div> -->
       </div>
       <div class="commentaire__dots">
         <div class="commentaire__contenu">
@@ -23,7 +25,7 @@
           <div v-if="comment.imgComment !== null">
             <img
               class="commentaire__image"
-              :src="path + comment.imgComment"
+              :src="comment.imgUrl"
               alt="image de la publication"
             />
           </div>
@@ -47,7 +49,7 @@ export default {
     return {
       userId: localStorage.getItem("userId"),
       user: null,
-      path: "http://localhost:3000/", // < mauvaise pratique ?
+      // path: "http://localhost:3000/", // < mauvaise pratique ? oui
     };
   },
   created() {

@@ -134,12 +134,17 @@ exports.oneID = (req, res) => {
 }
 
 
-// Pour les images
+// Pour les images Article
 function normalizer (article, req) {
     return {...article.toJSON(), imgUrl: `${req.protocol}://${req.get("host")}/${article.imgArticle}`}
 
 }
 
+//todo Pour les images Commentaire
+function normalizerImgComment (comment, req) {
+    return {...comment.toJSON(), imgUrl: `${req.protocol}://${req.get("host")}/${comment.imgComment}`}
+
+}
 
 
 
@@ -156,27 +161,27 @@ exports.allPostsOneUser = (req, res) => {
 
 
 
-exports.addSauce = (req, res) => {
-    const arraySauce = JSON.parse(req.body.sauce)
+// exports.addSauce = (req, res) => {
+//     const arraySauce = JSON.parse(req.body.sauce)
 
 
-    const sauce = new Sauces({
-        ...arraySauce,
-        fileName: req.file.filename,
-        usersLiked: [],
-        usersDisliked: []
-    });
+//     const sauce = new Sauces({
+//         ...arraySauce,
+//         fileName: req.file.filename,
+//         usersLiked: [],
+//         usersDisliked: []
+//     });
 
-    sauce.save()
-        .then(() => res.status(201).json({ message: "Sauce ajouté avec son image !" }))
-        .catch(error => res.status(400).json({ error }));
-}
-
-
-exports.modifPost = (req, res) => {
+//     sauce.save()
+//         .then(() => res.status(201).json({ message: "Sauce ajouté avec son image !" }))
+//         .catch(error => res.status(400).json({ error }));
+// }
 
 
-}
+// exports.modifPost = (req, res) => {
+
+
+// }
 
 
 exports.deletePost = (req, res) => {
@@ -291,18 +296,24 @@ exports.getAllCommentaires = (req, res) => {
     Comment.findAll({
         where: { ArticleId: req.params.articleId },
     })
-        .then(commentaireFound => {
-            if (commentaireFound) {
-                res.status(200).json(commentaireFound);
-                console.log(commentaireFound);
-            } else {
-                res.status(404).json({ error: 'Aucun commentaire publié' });
-            }
-        })
-        .catch(error => {
-            console.log(error)
-            res.status(500).send({ error: 'Recherche du commentaire échoué' });
-        });
+
+        //todo  Mon normalizer fonctionne ???
+    .then(comments => res.status(200).json(comments.map(comment => normalizerImgComment(comment, req))))
+    .catch(error => res.status(400).json({ error }));
+
+
+        // .then(commentaireFound => {
+        //     if (commentaireFound) {
+        //         res.status(200).json(commentaireFound);
+        //         console.log(commentaireFound);
+        //     } else {
+        //         res.status(404).json({ error: 'Aucun commentaire publié' });
+        //     }
+        // })
+        // .catch(error => {
+        //     console.log(error)
+        //     res.status(500).send({ error: 'Recherche du commentaire échoué' });
+        // });
 }
 
 //DELETE

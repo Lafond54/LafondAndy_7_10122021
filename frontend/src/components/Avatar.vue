@@ -1,8 +1,10 @@
 <template>
   <div class="avatar">
     <img v-if="user?.imgUrl"  class="avatar__image" :src="user.imgUrl" alt="img avatar">
-    <div v-else class="avatar__sansimage">{{ initial }}</div>
+    <div v-else class="avatar__sansimage"></div>     <!-- <-- dans cette balise-< {{ initial }} -->
+
      
+
     <!-- <div v-if="this.user.avatar == null" class="avatar__sansimg">
       {{ initial }}                                                              //
     </div>                                                                     < // Rendu conditionnel ne marche pas
@@ -19,6 +21,7 @@ export default {
   
   computed: {
     initial: function () {
+      
       return (
         this.user &&
         this.user.firstName.charAt(0).toUpperCase() +

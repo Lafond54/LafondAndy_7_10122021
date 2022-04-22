@@ -25,8 +25,8 @@ router.get('/user/:id/articles', auth, multer, StuffCtrl.allPostsOneUser)
 router.post('/article', auth, multer, StuffCtrl.createPost);
 
 
-//Modif article
-router.put('/article/:id', auth, multer, StuffCtrl.modifPost);
+// //Modif article
+// router.put('/article/:id', auth, multer, StuffCtrl.modifPost);
 
 
 // Supprimer article

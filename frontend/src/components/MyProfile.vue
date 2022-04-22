@@ -89,7 +89,6 @@ export default {
 
   data() {
     return {
-      //Voir user
       user: null,
       users: [],
       userId: localStorage.getItem("token"),
@@ -104,19 +103,21 @@ export default {
   },
 
   created() {
-    this.loadUser()
+    this.loadUser();
   },
 
-  watch : {connectedUser() {
-    this.loadUser()
-  }},
+  watch: {
+    connectedUser() {
+      this.loadUser();
+    },
+  },
 
   methods: {
     loadUser() {
-      this.user = {...this.connectedUser};      
+      this.user = { ...this.connectedUser };
     },
 
-    onFileUpload(event) {
+    onAvatarUpload(event) {
       this.image = event.target.files[0];
       this.imgArticle = URL.createObjectURL(this.image); // pour image preview
     },
@@ -125,16 +126,19 @@ export default {
       event.preventDefault();
       const token = this.userId;
       const openedToken = jwt.decode(token);
+      console.log(openedToken)
+      console.log(this.user.isadmin)
       const formData = new FormData();
       formData.append("lastname", this.lastname);
       formData.append("firstname", this.firstname);
       formData.append("email", this.email);
       formData.append("password", this.password);
       formData.append("image", this.image);
+      formData.append("isadmin", this.user.isadmin);
       console.log(this.image);
 
       axios
-        .put(`http://localhost:3000/user/${openedToken.userId}`, formData, {
+        .patch(`http://localhost:3000/user/${openedToken.userId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + localStorage.getItem("token"),

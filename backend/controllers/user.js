@@ -6,13 +6,13 @@ const bcrypt = require('bcrypt');
 
 // Normalizer infos user
 // Pour les images d'utilisateur
-function normalizer (user, req) {
-  return { id: user.id, lastName : user.lastName, firstName : user.firstName, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}`}
+function normalizer(user, req) {
+  return { id: user.id, lastName: user.lastName, firstName: user.firstName, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
 
 }
 // Pour my profile
-function normalizerFull (user, req) {
-  return {  ...normalizer (user, req), email : user.email, isadmin: user.isadmin }
+function normalizerFull(user, req) {
+  return { ...normalizer(user, req), email: user.email, isadmin: user.isadmin }
 }
 
 
@@ -27,7 +27,7 @@ exports.signup = (req, res, next) => {
         firstName: req.body.firstName,
         email: req.body.email,
         password: hash
-       
+
 
       })
 
@@ -75,65 +75,77 @@ exports.getUserProfile = (req, res) => {
   // const token = req.headers.authorization.split(' ')[1];
   // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
   // // const userId = decodedToken.userId
-  
-  User.findOne({     
-      where: { id: req.params.id }
+
+  User.findOne({
+    where: { id: req.params.id }
   })
-  .then(user => {
-      if(user) {
-          res.status(200).json(req.query.full && req.userId===user.id? normalizerFull(user, req) : normalizer (user, req)); 
-          
+    .then(user => {
+      if (user) {
+        res.status(200).json(req.query.full && req.userId === user.id ? normalizerFull(user, req) : normalizer(user, req));
+
       } else {
-          res.status(404).json({ error: 'Utilisateur non trouvé' })
+        res.status(404).json({ error: 'Utilisateur non trouvé' })
       }
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.log(error)
       res.status(404).json({ error: 'Utilisateur non trouvé' })
-  });
+    });
 }
 
 
 // DELETE
 // Suppression de l'user
 exports.deleteAccount = (req, res, next) => {
-  User.findOne({     
+  User.findOne({
     where: { id: req.params.id }
-})
-  .then(user => {
-      if(user) {
-          user.destroy()
+  })
+    .then(user => {
+      if (user) {
+        user.destroy()
           .then(() => res.status(200).json({ message: 'Compte supprimé' }))
           .catch(() => res.status(500).json({ error: 'Suppression du profil échoué' }));
 
       } else {
-          return res.status(404).json({ error: 'Utilisateur non trouvé' })
+        return res.status(404).json({ error: 'Utilisateur non trouvé' })
       }
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.log(error)
       res.status(500).json({ error: 'Suppression du profil échoué' })
-  });
+    });
 }
 
 // PUT
 // Modification de l'user
 exports.modifyAccount = (req, res, next) => {
-  User.findOne({     
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  const userId = decodedToken.userId;
+  User.findOne({
     where: { id: req.params.id }
-})
-  .then(user => {
-      if(user) {
-          user.put()
+  })
+    .then(user => {
+      if (user) {
+        user.patch({
+          id : userId, // ??
+          lastName: req.lastname,
+          firstName: req.firstname,
+          email: req.email,
+          password: req.password,
+          isadmin : true, // ??
+          avatar: `images/${req.file.filename}`
+
+        })
           .then(() => res.status(200).json({ message: 'Compte modifié' }))
           .catch(() => res.status(500).json({ error: 'Modification du profil échoué' }));
 
       } else {
-          return res.status(404).json({ error: 'Utilisateur non trouvé' })
+        return res.status(404).json({ error: 'Utilisateur non trouvé' })
       }
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.log(error)
       res.status(500).json({ error: 'Modification du profil échoué' })
-  });
+    });
 }

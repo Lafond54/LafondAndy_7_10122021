@@ -43,6 +43,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(195, 81, 191, 0.283);
   &__sansimage {
 
   }

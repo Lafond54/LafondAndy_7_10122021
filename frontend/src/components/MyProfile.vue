@@ -27,7 +27,7 @@
             type="text"
             name="lastname"
             id="lastname"
-            required
+            
             :placeholder="user.lastName"
             v-model="lastname"
           />
@@ -38,7 +38,7 @@
             type="text"
             name="firstname"
             id="firstname"
-            required
+            
             :placeholder="user.firstName"
             v-model="firstname"
           />
@@ -49,7 +49,7 @@
             type="email"
             name="email"
             id="email"
-            required
+            
             :placeholder="user.email"
             v-model="email"
           />
@@ -126,15 +126,25 @@ export default {
       event.preventDefault();
       const token = this.userId;
       const openedToken = jwt.decode(token);
-      console.log(openedToken)
-      console.log(this.user.isadmin)
+      console.log(openedToken);
+      console.log(this.user.isadmin);
       const formData = new FormData();
-      formData.append("lastname", this.lastname);
-      formData.append("firstname", this.firstname);
-      formData.append("email", this.email);
-      formData.append("password", this.password);
-      formData.append("image", this.image);
-      formData.append("isadmin", this.user.isadmin);
+      if (this.lastname) {
+        formData.append("lastname", this.lastname);
+      }
+      if (this.firstname) {
+        formData.append("firstname", this.firstname);
+      }
+      if (this.email) {
+        formData.append("email", this.email);
+      }
+      if (this.password) {
+        formData.append("password", this.password);
+      }
+      if (this.image) {
+        formData.append("image", this.image);
+      }
+      // formData.append("isadmin", this.user.isadmin);
       console.log(this.image);
 
       axios

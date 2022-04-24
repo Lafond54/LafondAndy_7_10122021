@@ -127,16 +127,26 @@ exports.modifyAccount = (req, res, next) => {
   })
     .then(user => {
       if (user) {
-        user.patch({
-          id : userId, // ??
-          lastName: req.lastname,
-          firstName: req.firstname,
-          email: req.email,
-          password: req.password,
-          isadmin : true, // ??
-          avatar: `images/${req.file.filename}`
-
+        if (req.body.lastname)
+          user.set({
+            lastName: req.body.lastname,
+          })
+        if (req.body.firstname) user.set({
+          firstName: req.body.firstname
         })
+        if (req.body.email) user.set({
+          email: req.body.email,
+        })
+        if (req.body.password) user.set({
+          password: req.body.password,
+        })
+        // isadmin : true, // ??
+        if (req.file) user.set({
+          avatar: `images/${req.file.filename}`
+        })
+
+
+        user.save()
           .then(() => res.status(200).json({ message: 'Compte modifié' }))
           .catch(() => res.status(500).json({ error: 'Modification du profil échoué' }));
 

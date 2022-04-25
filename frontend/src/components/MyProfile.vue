@@ -144,9 +144,10 @@ export default {
       if (this.image) {
         formData.append("image", this.image);
       }
-      // formData.append("isadmin", this.user.isadmin);
+      
       console.log(this.image);
 
+      // const res = 
       axios
         .patch(`http://localhost:3000/user/${openedToken.userId}`, formData, {
           headers: {
@@ -155,6 +156,9 @@ export default {
           },
         })
         .then(() => {
+      //     if (res.status === 200) {
+      //   alert("Profil bien modifié")  /todo Alerte marche pas
+      // }
           this.$router.go(0);
         })
         .catch(() => {

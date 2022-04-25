@@ -29,7 +29,8 @@ export default {
   methods: {   
     disconnect() {
       window.localStorage.clear();      
-      this.$router.go({ name: "Login" }); //todo Renvoi pas à login ?
+      this.$router.go({ name: "Home" }); //todo Renvoi pas à login ?
+      // window.location.reload(); 
     }
       
     

@@ -126,7 +126,7 @@ exports.modifyAccount = (req, res, next) => {
     where: { id: req.params.id }
   })
     .then(user => {
-      if (user) {
+      if (user && (req.body.lastname !== null && req.body.firstname !== null && req.body.email !== null && req.body.password !== null && req.file !== null)) { //condition form vide ne marche pas
         if (req.body.lastname)
           user.set({
             lastName: req.body.lastname,

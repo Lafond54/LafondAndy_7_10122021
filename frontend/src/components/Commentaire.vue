@@ -5,18 +5,18 @@
       <div class="commentaire__head">
         <div v-if="user" class="commentaire__auteur">
           {{ user.firstName }} {{ user.lastName }} a répondu le
-          {{ dateformate }} 
+          {{ dateformate }} {{ statutAdmin }}
         </div>
         <div v-else class="commentaire__auteursupprime">
           Utilisateur supprimé :(
         </div>
-        <!-- v-if="userId == comment.id || user.isadmin == 1"  -->
+        <!-- v-if="userId == comment.id || user.isadmin == true"  -->
         <button 
           class="commentaire__button"
           v-on:click="deleteCommentaire(comment.id)"
         >
           <i class="fas fa-trash-alt"></i>
-        </button>
+        </button>        
         <!-- <div v-else></div> -->
       </div>
       <div class="commentaire__dots">
@@ -104,6 +104,10 @@ export default {
         timeStyle: "short",
       });
     },
+        statutAdmin: function () {
+return this.user.isadmin === true ? "admin" : "noadmin"
+
+    }
   },
 };
 </script>
@@ -150,15 +154,14 @@ export default {
   }
   &__button {
     font-size: 0.8rem;
-    padding: 0 0.5rem 0 0.5rem;
+    padding: 0.5 1rem 0.5 1rem;
     margin-left: 0.5rem;
   }
 }
 
-.fas.fa-ellipsis-v {
-  padding: 0.4rem;
-  font-size: 0.9rem;
-  margin: 0 1rem 0 1rem;
+.fas.fa-trash-alt {
+ 
+ 
 }
 @media (max-width: 485px) {
   .commentaire {

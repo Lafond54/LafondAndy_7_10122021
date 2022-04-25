@@ -1,5 +1,5 @@
 const { User } = require('../database');
-
+const fs = require('fs');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 
@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 // Normalizer infos user
 // Pour les images d'utilisateur
 function normalizer(user, req) {
-  return { id: user.id, lastName: user.lastName, firstName: user.firstName, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
+  return { id: user.id, lastName: user.lastName, firstName: user.firstName, isadmin: user.isadmin, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
 
 }
 // Pour my profile
@@ -137,13 +137,47 @@ exports.modifyAccount = (req, res, next) => {
         if (req.body.email) user.set({
           email: req.body.email,
         })
-        if (req.body.password) user.set({
+        if (req.body.password)
+        user.set({
           password: req.body.password,
         })
-        // isadmin : true, // ??
+
+        //todo Essai hash du mdp :
+        // {
+        //   bcrypt.hash(req.body.password, 10)
+        //   .then(hash => {
+        //     user.set({
+        //       password: hash,
+        //     })
+
+        //       .then(() => res.status(201).json({ message: 'MDP modifié !' }))
+        //       .catch(error => res.status(400).json({ error }));
+        //   })
+        //   .catch(error => {
+        //     res.status(500).json({ error })
+        //     console.error(error)
+        //   });
+        // }
+
         if (req.file) user.set({
           avatar: `images/${req.file.filename}`
         })
+
+        //todo essai FS image avatar :
+        // if (req.file) {
+        //   const filename = user.avatar;
+
+        //   fs.unlink(`${filename}`, () => {
+        //     user.set({
+        //       avatar: `images/${req.file.filename}`
+        //     })
+        //       .then(() => res.status(200).json({ message: 'Avatar modifié' }))
+        //       .catch(() => res.status(500).json({ error: 'Changement avatar échoué' }));
+        //   })
+
+        // } else {
+        //   return res.status(404).json({ error: 'Image avat non trouvée' })
+        // }
 
 
         user.save()

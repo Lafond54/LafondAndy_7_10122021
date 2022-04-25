@@ -10,5 +10,5 @@ router.post('/signup', password, userCtrl.signup)
 router.post('/login', userCtrl.login);
 router.get('/:id', auth, userCtrl.getUserProfile);
 router.delete('/:id', auth, userCtrl.deleteAccount);
-router.patch('/:id', auth, password, multer, userCtrl.modifyAccount);
+router.patch('/:id', auth, multer, userCtrl.modifyAccount);
 module.exports = router;

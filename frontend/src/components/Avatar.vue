@@ -1,6 +1,6 @@
 <template>
   <div class="avatar">
-    <img v-if="user?.imgUrl"  class="avatar__image" :src="user.imgUrl" alt="img avatar">
+    <img  v-if="user?.imgUrl"  class="avatar__image" :src="user.imgUrl" alt="img avatar">
     <div v-else class="avatar__sansimage"></div>     <!-- <-- dans cette balise-< {{ initial }} -->
 
      

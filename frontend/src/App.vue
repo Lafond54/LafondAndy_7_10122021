@@ -1,6 +1,6 @@
 <template>
   <nav v-if="user === null" id="nav" >
-    <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
+    <router-link to="/login"><i class="fas fa-home"></i>Accueil</router-link> |
     <router-link to="/login"
       ><i class="fas fa-sign-in-alt"></i>S'identifier</router-link
     >
@@ -15,8 +15,8 @@
       ><i class="fas fa-sign-in-alt"></i>Se déconnecter</button
     >
   </nav>
-
-  <router-view />
+  <!--todo : home lorsqu'on est pas login :  <div v-if="user === null" class="welcome">salut login toi ! </div> -->
+  <router-view  />
 </template>
 
 

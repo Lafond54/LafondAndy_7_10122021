@@ -279,10 +279,16 @@ export default {
 }
 
 .avatar {
-  height: 90px;
-  width: 90px;
+  height: 120px;
+  width: 120px;
   border: solid 1px black;
-  border-radius: 45px;
+  border-radius: 60px;
+  &__image {
+        object-fit: cover;
+  border-radius: 60px;
+  height: 120px;
+  width: 120px;
+  }
 }
 
 .fas.fa-image {

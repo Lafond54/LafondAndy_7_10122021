@@ -33,13 +33,13 @@ import jwt from "jsonwebtoken";
 export default {
   name: "Article",
   components: { Avatar, Commentaire, NewCommentaire, TitleCategory },
-  props: { articleUId: Number },
+  props: { article: Object },
   data() {
     return {
       userId: localStorage.getItem("userId"),
-      users: [],
+      
       articles: [],
-      user: "",
+      
     };
   },
 
@@ -48,9 +48,26 @@ export default {
     this.getUsers(); // Mounted ici?
   },
   methods: {
+    // async loadArticles() {
+    //   const res = await fetch("http://localhost:3000/article", {
+    //     method: "GET",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + localStorage.getItem("token"),
+    //     },
+    //   });
+    //   if (res.status === 200) {
+    //     const data = await res.json();
+    //     this.articles = data;
+    //     console.log(this.articles);
+    //   }
+    // },
     async loadArticles() {
-      const token = this.userId;  // SOUCI IIIIIIIIIICCCCCCCCCCCCIIIIIIIIII ? Pqoi ?
-      const openedToken = jwt.decode(token); //
+      const token = this.userId;
+      console.log(token);  // SOUCI IIIIIIIIIICCCCCCCCCCCCIIIIIIIIII ? Pqoi ?
+      const openedToken = jwt.decode(token);
+      console.log(openedToken); //
       const res = await fetch(
         `http://localhost:3000/user/${openedToken.userId}/articles`,
         {

@@ -1,11 +1,13 @@
 <template>
   <div class="newmessage">
+    
     <Avatar :user="user" />
     <div class="newmessage__form">
+      <span class="newmessage__hello">Bonjour, exprimez-vous : </span>
       <form @submit="createArticle" class="newmessage_form" method="post">
         <textarea
           v-model="text"
-          placeholder="Bonjour {{ user.firstName }}, écrivez votre message ici..."
+          placeholder="Votre message ici..."
           name="newmessage__field"
           id="newmessage__field"
           class="newmessage__field"
@@ -106,6 +108,11 @@ export default {
   &__field {
     width: 100%;
     resize: none;
+  }
+  &__hello {
+    display:block;
+    margin-bottom: 1rem;
+    
   }
   &__form {
     flex-grow: 1;

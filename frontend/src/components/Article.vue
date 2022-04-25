@@ -3,15 +3,16 @@
     <div class="article__head">
       <Avatar :user="user" />
       <div v-if="user" class="article__auteur">
-        {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }}
+        {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }} {{ statutAdmin }}
       </div>
       <div v-else class="article__auteursupprime">
         Utilisateur supprimé :(
       </div>
-      <div class="article__modif">
-        <i class="fas fa-ellipsis-h"></i> Hover : Modif /
-        <button v-on:click="deleteArticle(article.id)">Supprimer</button>
+  <!-- v-if="user == article.userId || user.isadmin == '1'" -->
+      <div  class="article__modif">     
+        <button v-on:click="deleteArticle(article.id)"><i class="fas fa-trash-alt"></i></button>        
       </div>
+      <!-- <div v-else></div> -->
     </div>
     <div class="article__mediacadre">
       <div class="article__media">
@@ -122,6 +123,10 @@ export default {
         timeStyle: "short",
       });
     },
+    statutAdmin: function () {
+return this.user.isadmin === true ? "admin" : "noadmin"
+
+    }
   },
 };
 </script>

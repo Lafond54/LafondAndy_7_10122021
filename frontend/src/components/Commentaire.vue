@@ -1,22 +1,22 @@
 <template>
   <div class="commentaire">
-    <Avatar :user="user" />
+    <Avatar :user="userComment" />
     <div class="commentaire__cadre">
       <div class="commentaire__head">
-        <div v-if="user" class="commentaire__auteur">
-          {{ user.firstName }} {{ user.lastName }} a répondu le
-          {{ dateformate }} {{ statutAdmin }}
+        <div v-if="userComment" class="commentaire__auteur">
+          {{ userComment.firstName }} {{ userComment.lastName }} a répondu le
+          {{ dateformate }}
         </div>
         <div v-else class="commentaire__auteursupprime">
           Utilisateur supprimé :(
         </div>
-        <!-- v-if="userId == comment.id || user.isadmin == true"  -->
+        <!-- v-if="userComment.id == comment.id"|| v-if="isAdmin() == true"  -->
         <button 
           class="commentaire__button"
           v-on:click="deleteCommentaire(comment.id)"
         >
           <i class="fas fa-trash-alt"></i>
-        </button>        
+        </button>
         <!-- <div v-else></div> -->
       </div>
       <div class="commentaire__dots">
@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       userId: localStorage.getItem("userId"),
-      user: null,
+      userComment: null,
       // path: "http://localhost:3000/", // < mauvaise pratique ? oui
     };
   },
@@ -66,7 +66,7 @@ export default {
           },
         })
         .then((response) => {
-          this.user = response.data;
+          this.userComment = response.data;
           console.log(this.user);
         })
         .catch(() => {
@@ -104,10 +104,22 @@ export default {
         timeStyle: "short",
       });
     },
-        statutAdmin: function () {
-return this.user.isadmin === true ? "admin" : "noadmin"
 
-    }
+
+    // statutAdmin: function () {
+    //   return this.user.isadmin === true ? "admin" : "noadmin";
+    // },
+
+  //    isAdmin() {
+  //   this.$store.user?.isadmin;
+  // }
+
+  user() {
+      return this.$store.getters.user
+    },
+     isAdmin() {
+    return this.$store.user?.isadmin;
+  }
   },
 };
 </script>
@@ -159,10 +171,7 @@ return this.user.isadmin === true ? "admin" : "noadmin"
   }
 }
 
-.fas.fa-trash-alt {
- 
- 
-}
+
 @media (max-width: 485px) {
   .commentaire {
     margin-left: 0rem;

@@ -1,6 +1,7 @@
 <template>
   <div>
     <TitleCategory v-bind:titleText="'Mes posts'" />
+    
     <div
       v-for="article in articles.slice().reverse()"
       :key="article.id"
@@ -27,7 +28,7 @@ import Avatar from "@/components/Avatar.vue";
 import NewCommentaire from "@/components/NewCommentaire.vue";
 import TitleCategory from "@/components/TitleCategory.vue";
 import Commentaire from "./Commentaire.vue";
-import axios from "axios";
+// import axios from "axios";
 import jwt from "jsonwebtoken";
 
 export default {
@@ -36,16 +37,14 @@ export default {
   props: { article: Object },
   data() {
     return {
-      userId: localStorage.getItem("userId"),
-      
+      userId: localStorage.getItem("token"),
       articles: [],
-      
     };
   },
 
   created() {
     this.loadArticles();
-    this.getUsers(); // Mounted ici?
+    // this.getUsers(); // Mounted ici?
   },
   methods: {
     // async loadArticles() {
@@ -65,7 +64,7 @@ export default {
     // },
     async loadArticles() {
       const token = this.userId;
-      console.log(token);  // SOUCI IIIIIIIIIICCCCCCCCCCCCIIIIIIIIII ? Pqoi ?
+      console.log(token); 
       const openedToken = jwt.decode(token);
       console.log(openedToken); //
       const res = await fetch(
@@ -82,44 +81,44 @@ export default {
       if (res.status === 200) {
         const data = await res.json();
         this.articles = data;
-        console.log(this.articleUId);
+        // console.log(this.articleUId);
       }
     },
     // Chercher les auteurs d'articles
-    getUsers(userId) {
-      const AUId = userId;
-      console.log(AUId);
-      axios
-        .get(`http://localhost:3000/user/${AUId}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-          this.user = response.data;
-          console.log(response.data);
-        })
-        .catch(() => {
-          this.messError = "Une erreur s'est produite";
-        });
-    },
+    // getUsers(userId) {
+    //   const AUId = userId;
+    //   console.log(AUId);
+    //   axios
+    //     .get(`http://localhost:3000/user/${AUId}`, {
+    //       headers: {
+    //         Authorization: "Bearer " + localStorage.getItem("token"),
+    //       },
+    //     })
+    //     .then((response) => {
+    //       this.user = response.data;
+    //       console.log(response.data);
+    //     })
+    //     .catch(() => {
+    //       this.messError = "Une erreur s'est produite";
+    //     });
+    // },
     // supprimer post
-    deleteArticle(id) {
-      const postId = id;
-      axios
-        .delete("http://localhost:3000/article/" + postId, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then(() => {
-          window.location.reload();
-        })
-        .catch(() => {
-          this.messError = "Une erreur s'est produite";
-        });
-    },
+    // deleteArticle(id) {
+    //   const postId = id;
+    //   axios
+    //     .delete("http://localhost:3000/article/" + postId, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: "Bearer " + localStorage.getItem("token"),
+    //       },
+    //     })
+    //     .then(() => {
+    //       window.location.reload();
+    //     })
+    //     .catch(() => {
+    //       this.messError = "Une erreur s'est produite";
+    //     });
+    // },
   },
 };
 </script>

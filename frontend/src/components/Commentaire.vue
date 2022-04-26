@@ -11,7 +11,7 @@
           Utilisateur supprimé :(
         </div>
         <!-- v-if="userComment.id == comment.id"|| v-if="isAdmin() == true"  -->
-        <button 
+        <button
           class="commentaire__button"
           v-on:click="deleteCommentaire(comment.id)"
         >
@@ -56,6 +56,7 @@ export default {
     this.getUserComments();
   },
   methods: {
+    
     // Chercher les auteurs de commentaires
     getUserComments() {
       //TODO mettre un if pour verif user 404
@@ -105,21 +106,20 @@ export default {
       });
     },
 
-
     // statutAdmin: function () {
     //   return this.user.isadmin === true ? "admin" : "noadmin";
     // },
 
-  //    isAdmin() {
-  //   this.$store.user?.isadmin;
-  // }
+    //    isAdmin() {
+    //   this.$store.user?.isadmin;
+    // }
 
-  user() {
-      return this.$store.getters.user
+    user() {
+      return this.$store.getters.user;
     },
-     isAdmin() {
-    return this.$store.user?.isadmin;
-  }
+    isAdmin() {
+      return this.$store.user?.isadmin;
+    },
   },
 };
 </script>
@@ -170,7 +170,6 @@ export default {
     margin-left: 0.5rem;
   }
 }
-
 
 @media (max-width: 485px) {
   .commentaire {

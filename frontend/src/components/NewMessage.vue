@@ -3,7 +3,8 @@
     
     <Avatar :user="user" />
     <div class="newmessage__form">
-      <span class="newmessage__hello">Bonjour, exprimez-vous : </span>
+      <div class="newmessage__hello">
+      <span >Bonjour </span><span>{{ user.firstName}}</span><span >, exprimez-vous : </span></div>
       <form @submit="createArticle" class="newmessage_form" method="post">
         <textarea
           v-model="text"
@@ -48,6 +49,7 @@ export default {
 
   data() {
     return {
+      
       text: "",
       userId: localStorage.getItem("token"),
       imgArticle: "",

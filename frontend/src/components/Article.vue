@@ -101,6 +101,7 @@ export default {
     // supprimer post
     deleteArticle(id) {
       const postId = id;
+      if (confirm("Voulez-vous supprimer votre Post?"))
       axios
         .delete("http://localhost:3000/article/" + postId, {
           headers: {

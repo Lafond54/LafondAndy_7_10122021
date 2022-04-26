@@ -157,6 +157,7 @@ exports.allPostsOneUser = (req, res) => {
     Article.findall({ userId: req.params.id })
         .then(articles => res.status(200).json(articles.map(article => normalizer(article, req))))
         .catch(error => res.status(404).json({ error }));
+        
 }
 
 

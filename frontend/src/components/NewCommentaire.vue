@@ -74,8 +74,8 @@ export default {
             },
           }
         )
-        .then(() => {
-           this.$router.go(0)   // à modifier avec: ?  this.comments = this.comments.map( comment => comment.id)
+        .then((comment) => {
+           this.$emit("newComment", comment.data )   
           
         })
         .catch(() => {

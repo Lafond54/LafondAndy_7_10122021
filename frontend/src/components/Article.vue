@@ -29,13 +29,14 @@
     </div>
     
 
-    <Commentaire
-      v-for="comment in comments"
+    <Commentaire 
+      v-for="comment in comments"    
       :key="comment.id"
       :comment="comment"
+      @delete="() => commentDeleted(comment)"
     />
 
-    <NewCommentaire :articleId="article.id" />
+    <NewCommentaire :articleId="article.id" @newComment = "commentAdded"/>
   </div>
 </template>
 
@@ -116,6 +117,12 @@ export default {
           this.messError = "Une erreur s'est produite";
         });
     },
+    commentDeleted(comment) {
+      this.comments = this.comments.filter(c => c !== comment)
+    },
+    commentAdded(comment) {
+      this.comments = [...this.comments, comment]
+    }
   },
   computed: {
     dateformate: function () {

@@ -104,4 +104,17 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach(async (to) => {
+  if (
+    // make sure the user is authenticated
+    !localStorage.getItem("token") &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'Login'
+  ) {
+    // redirect the user to the login page
+    return { name: 'Login' }
+  }
+})
+
+
 export default router

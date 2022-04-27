@@ -10,14 +10,14 @@
         <div v-else class="commentaire__auteursupprime">
           Utilisateur supprimé :(
         </div>
-        <!-- v-if="userComment.id == comment.id"|| v-if="isAdmin() == true"  -->
-        <button
+        <!-- v-if="userComment.id == comment.id" || v-if="isAdmin == true"  -->
+        <button  v-if="isAdmin"
           class="commentaire__button"
           v-on:click="deleteCommentaire(comment.id)"
         >
           <i class="fas fa-trash-alt"></i>
         </button>
-        <!-- <div v-else></div> -->
+        
       </div>
       <div class="commentaire__dots">
         <div class="commentaire__contenu">
@@ -49,6 +49,7 @@ export default {
     return {
       userId: localStorage.getItem("userId"),
       userComment: null,
+      
       // path: "http://localhost:3000/", // < mauvaise pratique ? oui
     };
   },
@@ -56,7 +57,6 @@ export default {
     this.getUserComments();
   },
   methods: {
-    
     // Chercher les auteurs de commentaires
     getUserComments() {
       //TODO mettre un if pour verif user 404
@@ -67,12 +67,9 @@ export default {
           },
         })
         .then((response) => {
-          this.userComment = response.data;
-          console.log(this.user);
+          this.userComment = response.data;         
         })
-        .catch(() => {
-          this.messError = "Une erreur s'est produite";
-        });
+        
     },
 
     deleteCommentaire(commentId) {
@@ -85,17 +82,13 @@ export default {
             },
           })
           .then(() => {
-            this.comments = this.comments.filter(
-              (comment) => comment.id !== commentId
-            );
+            this.$emit("delete")
 
             // document.dispatchEvent(Events.COMMENT_DELETED, { detail : commentId })
           })
-          .then(location.reload())
+          
 
-          .catch(() => {
-            this.messError = "Une erreur c'est produite";
-          });
+         
     },
   },
   computed: {
@@ -118,8 +111,13 @@ export default {
       return this.$store.getters.user;
     },
     isAdmin() {
-      return this.$store.user?.isadmin;
+      return this.$store.getters.user?.isadmin;
     },
+    // function() {
+    //   return {
+    //     isAdmin: this.$store.user?.isadmin,
+    //   };
+    // },
   },
 };
 </script>

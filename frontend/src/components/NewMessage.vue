@@ -4,7 +4,7 @@
     <Avatar :user="user" />
     <div class="newmessage__form">
       <div class="newmessage__hello">
-      <span >Bonjour </span><span>{{ user.firstName}}</span><span >, exprimez-vous : </span></div>
+      <span >Bonjour </span><span></span><span >, exprimez-vous : </span></div>
       <form @submit="createArticle" class="newmessage_form" method="post">
         <textarea
           v-model="text"

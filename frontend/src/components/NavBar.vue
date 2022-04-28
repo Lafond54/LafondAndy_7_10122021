@@ -13,12 +13,7 @@
     <ul class="navbar__liste">
       <li class="navbar__liste__filactu">
         <i class="fas fa-poll-h"></i><router-link :to="{name:'Home'}">Fil d'actualité</router-link>
-      </li>
-
-      <li v-if="user" class="navbar__liste__mesposts">
-        <i class="fas fa-address-card"></i><router-link :to="{name: 'allPostsOneUser', params:{id:user.id}}">Mes posts</router-link>
-      </li>
-
+      </li>    
       <li v-if="user" class="navbar__liste__monprofil">
         <i class="fas fa-user"></i><router-link :to="{name: 'User', params:{id:user.id}}">Mon profil</router-link>
       </li>

@@ -149,16 +149,16 @@ function normalizerImgComment (comment, req) {
 
 
 // Articles appartenant à un seul auteur.
-exports.allPostsOneUser = (req, res) => {
-    // const token = req.headers.authorization.split(' ')[1];
-    // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    // const userId = decodedToken.userId;
+// exports.allPostsOneUser = (req, res) => {
+//     // const token = req.headers.authorization.split(' ')[1];
+//     // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+//     // const userId = decodedToken.userId;
 
-    Article.findall({ userId: req.params.id })
-        .then(articles => res.status(200).json(articles.map(article => normalizer(article, req))))
-        .catch(error => res.status(404).json({ error }));
+//     Article.findall({ userId: req.params.id })
+//         .then(articles => res.status(200).json(articles.map(article => normalizer(article, req))))
+//         .catch(error => res.status(404).json({ error }));
         
-}
+// }
 
 
 

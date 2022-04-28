@@ -18,7 +18,7 @@ router.get('/article', auth, StuffCtrl.arrayIDs);
 router.get('/article/:id', auth, StuffCtrl.oneID);
 
 // Renvoie les articles d'un seul auteur.
-router.get('/user/:id/articles', auth, multer, StuffCtrl.allPostsOneUser)
+// router.get('/user/:id/articles', auth, multer, StuffCtrl.allPostsOneUser)
 
 //Post un article
 

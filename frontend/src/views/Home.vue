@@ -1,12 +1,16 @@
 <template>
-<div>
-  <nav-bar />
-  <div class="backgris">
-    <NewMessage @newArticle="(article) => articleAdded(article)"/>
-    <TitleCategory v-bind:titleText="'Publications Récentes'" />
-    <Article v-for="article in articles"
-      :key="article.id" :article="article" @delete="() => articleDeleted(article)"/> 
-  </div>
+  <div>
+    <nav-bar />
+    <div class="backgris">
+      <NewMessage @newArticle="(article) => articleAdded(article)" />
+      <TitleCategory v-bind:titleText="'Publications Récentes'" />
+      <Article
+        v-for="article in articles"
+        :key="article.id"
+        :article="article"
+        @delete="() => articleDeleted(article)"
+      />
+    </div>
   </div>
 </template>
 
@@ -25,20 +29,20 @@ export default {
     Article,
     TitleCategory,
   },
-  
-   data() {
+
+  data() {
     return {
       text: "",
-      userId: localStorage.getItem("token"),     
-      articles: [],     
+      userId: localStorage.getItem("token"),
+      articles: [],
     };
   },
 
   created() {
-    this.loadArticles();   
+    this.loadArticles();
   },
 
-  methods : {
+  methods: {
     async loadArticles() {
       const res = await fetch("http://localhost:3000/article", {
         method: "GET",
@@ -54,17 +58,13 @@ export default {
         console.log(this.articles);
       }
     },
-     articleAdded(article) {
-    console.log(article)
-    this.articles = [article, ...this.articles]
-
+    articleAdded(article) {
+      console.log(article);
+      this.articles = [article, ...this.articles];
+    },
+    articleDeleted(article) {
+      this.articles = this.articles.filter((a) => a !== article);
+    },
   },
-  articleDeleted(article) {    
-      this.articles = this.articles.filter(a => a !== article)    
-  }
-  },
-
- 
-
 };
 </script>

@@ -16,7 +16,10 @@ passwordSchema
 
 //Verification de la qualité du password par rapport au schéma
 module.exports = (req, res, next) => {
-    if (passwordSchema.validate(req.body.password)) {
+    console.log("message mdp" +  req.body.password)
+    // if (req.body.password && passwordSchema.validate(req.body.password)) {
+    // if (passwordSchema.validate(req.body.password)) {
+        if (!req.body.password || passwordSchema.validate(req.body.password)) {
         next();
     } else {
         return res.status(400).json({ error : "MDP pas assez fort" + passwordSchema.validate('req.body.password', { list: true }) })

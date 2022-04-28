@@ -31,7 +31,7 @@ exports.createPost = (req, res) => {
                         imgArticle: `images/${req.file.filename}`
                     })
 
-                        .then(() => res.status(201).json({ message: 'Message créé !' },))
+                        .then((article) => res.status(201).json(normalizer(article, req)))
                         .catch(error => {
                             console.log(error)
                             res.status(400).json({ error: 'Création du message échoué' })

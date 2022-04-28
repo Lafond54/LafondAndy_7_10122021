@@ -118,78 +118,76 @@ exports.deleteAccount = (req, res, next) => {
 
 // PUT
 // Modification de l'user
-exports.modifyAccount = (req, res, next) => {
+exports.modifyAccount = async (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+  const decodedToken = jwt.verify(token,  process.env.RTOKEN);
   const userId = decodedToken.userId;
-  User.findOne({
-    where: { id: req.params.id }
-  })
-    .then(user => {
-      if (user && (req.body.lastname !== null && req.body.firstname !== null && req.body.email !== null && req.body.password !== null && req.file !== null)) { //condition form vide ne marche pas
-        if (req.body.lastname)
-          user.set({
-            lastName: req.body.lastname,
-          })
-        if (req.body.firstname) user.set({
-          firstName: req.body.firstname
-        })
-        if (req.body.email) user.set({
-          email: req.body.email,
-        })
-        if (req.body.password)
-        user.set({
-          password: req.body.password,
-        })
-
-        //todo Essai hash du mdp :
-        // {
-        //   bcrypt.hash(req.body.password, 10)
-        //   .then(hash => {
-        //     user.set({
-        //       password: hash,
-        //     })
-
-        //       .then(() => res.status(201).json({ message: 'MDP modifié !' }))
-        //       .catch(error => res.status(400).json({ error }));
-        //   })
-        //   .catch(error => {
-        //     res.status(500).json({ error })
-        //     console.error(error)
-        //   });
-        // }
-
-        if (req.file) user.set({
-          avatar: `images/${req.file.filename}`
-        })
-
-        //todo essai FS image avatar :
-        // if (req.file) {
-        //   const filename = user.avatar;
-
-        //   fs.unlink(`${filename}`, () => {
-        //     user.set({
-        //       avatar: `images/${req.file.filename}`
-        //     })
-        //       .then(() => res.status(200).json({ message: 'Avatar modifié' }))
-        //       .catch(() => res.status(500).json({ error: 'Changement avatar échoué' }));
-        //   })
-
-        // } else {
-        //   return res.status(404).json({ error: 'Image avat non trouvée' })
-        // }
-
-
-        user.save()
-          .then(() => res.status(200).json({ message: 'Compte modifié' }))
-          .catch(() => res.status(500).json({ error: 'Modification du profil échoué' }));
-
-      } else {
-        return res.status(404).json({ error: 'Utilisateur non trouvé' })
-      }
+  const user = await User.findOne({ where: { id: req.params.id } })
+  try {
+    if (!user) { return res.status(404).json({ message: "utilisateur non trouvé" }) }
+    if (user.id !== userId) { return res.status(403).json({ message: "Vous n'avez pas le droit de modifier cet utilisateur" }) }
+    if (req.body.lastname)
+      user.set({
+        lastName: req.body.lastname,
+      })
+    if (req.body.firstname) user.set({
+      firstName: req.body.firstname
     })
-    .catch(error => {
-      console.log(error)
-      res.status(500).json({ error: 'Modification du profil échoué' })
-    });
+    if (req.body.email) user.set({
+      email: req.body.email,
+    })
+    if (req.body.password)
+      user.set({
+        password: await bcrypt.hash(req.body.password, 10),
+      })
+
+    // todo Essai hash du mdp :
+    // {
+    //   bcrypt.hash(req.body.password, 10)
+    //   .then(hash => {
+    //     user.set({
+    //       password: hash,
+    //     })
+
+    //       .then(() => res.status(201).json({ message: 'MDP modifié !' }))
+    //       .catch(error => res.status(400).json({ error }));
+    //   })
+    //   .catch(error => {
+    //     res.status(500).json({ error })
+    //     console.error(error)
+    //   });
+    // }
+
+    if (req.file) {
+      if (user.avatar) fs.unlinkSync(user.avatar)
+      user.set({
+        avatar: `images/${req.file.filename}`
+      })
+    }
+    //todo essai FS image avatar :
+    // if (req.file) {
+    //   const filename = user.avatar;
+
+    //   fs.unlink(`${filename}`, () => {
+    //     user.set({
+    //       avatar: `images/${req.file.filename}`
+    //     })
+    //       .then(() => res.status(200).json({ message: 'Avatar modifié' }))
+    //       .catch(() => res.status(500).json({ error: 'Changement avatar échoué' }));
+    //   })
+
+    // } else {
+    //   return res.status(404).json({ error: 'Image avat non trouvée' })
+    // }
+
+
+    res.status(200).json(normalizerFull( await user.save(), req))
+
+
+
+  }
+  catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Modification du profil échoué' })
+  }
 }

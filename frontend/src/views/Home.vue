@@ -2,10 +2,10 @@
 <div>
   <nav-bar />
   <div class="backgris">
-    <new-message />
+    <NewMessage @newArticle="(article) => articleAdded(article)"/>
     <TitleCategory v-bind:titleText="'Publications Récentes'" />
-    <Article v-for="article in articles.slice().reverse()"
-      :key="article.id" :article="article" /> 
+    <Article v-for="article in articles"
+      :key="article.id" :article="article" @delete="() => articleDeleted(article)"/> 
   </div>
   </div>
 </template>
@@ -54,6 +54,17 @@ export default {
         console.log(this.articles);
       }
     },
+     articleAdded(article) {
+    console.log(article)
+    this.articles = [article, ...this.articles]
+
+  },
+  articleDeleted(article) {    
+      this.articles = this.articles.filter(a => a !== article)    
   }
+  },
+
+ 
+
 };
 </script>

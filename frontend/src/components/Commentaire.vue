@@ -11,7 +11,7 @@
           Utilisateur supprimé :(
         </div>
         <!-- v-if="userComment.id == comment.id" || v-if="isAdmin == true"  -->
-        <button  v-if="isAdmin"
+        <button  v-if="user.id == comment.userId || isAdmin"
           class="commentaire__button"
           v-on:click="deleteCommentaire(comment.id)"
         >
@@ -26,7 +26,8 @@
             <img
               class="commentaire__image"
               :src="comment.imgUrl"
-              alt="image de la publication"
+              alt="image du commentaire"
+              title="image du commentaire"
             />
           </div>
           <div v-else></div>
@@ -59,7 +60,7 @@ export default {
   methods: {
     // Chercher les auteurs de commentaires
     getUserComments() {
-      //TODO mettre un if pour verif user 404
+      if (this.comment.userId) {
       axios
         .get(`http://localhost:3000/user/${this.comment.userId}`, {
           headers: {
@@ -69,7 +70,7 @@ export default {
         .then((response) => {
           this.userComment = response.data;         
         })
-        
+      }
     },
 
     deleteCommentaire(commentId) {
@@ -98,26 +99,15 @@ export default {
         timeStyle: "short",
       });
     },
-
-    // statutAdmin: function () {
-    //   return this.user.isadmin === true ? "admin" : "noadmin";
-    // },
-
-    //    isAdmin() {
-    //   this.$store.user?.isadmin;
-    // }
-
+    
+    
     user() {
       return this.$store.getters.user;
     },
     isAdmin() {
       return this.$store.getters.user?.isadmin;
     },
-    // function() {
-    //   return {
-    //     isAdmin: this.$store.user?.isadmin,
-    //   };
-    // },
+  
   },
 };
 </script>

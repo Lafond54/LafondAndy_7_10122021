@@ -1,7 +1,7 @@
 <template>
   <div class="avatar">
-    <img  v-if="user?.imgUrl"  class="avatar__image" :src="user.imgUrl" alt="img avatar">
-    <div v-else class="avatar__sansimage"></div>     <!-- <-- dans cette balise-< {{ initial }} -->
+    <img  v-if="user?.imgUrl"  class="avatar__image" :src="user.imgUrl" alt="img avatar" title="image de l'avatar">
+    <div v-else class="avatar__sansimage">{{ initial }}</div>     <!-- <-- dans cette balise-< {{ initial }} -->
 
      
 
@@ -23,7 +23,7 @@ export default {
     initial: function () {
       
       return (
-        this.user &&
+        this.user && 
         this.user.firstName.charAt(0).toUpperCase() +
           this.user.lastName.charAt(0).toUpperCase()
       );
@@ -44,9 +44,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: rgba(195, 81, 191, 0.283);
-  &__sansimage {
-
-  }
+  
   &__image {
      object-fit: cover;
   border-radius: 22.5px;

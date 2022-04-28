@@ -109,7 +109,7 @@ router.beforeEach(async (to) => {
     // make sure the user is authenticated
     !localStorage.getItem("token") &&
     // ❗️ Avoid an infinite redirect
-    to.name !== 'Login'
+    to.name !== 'Login' && to.name !== 'Signup'
   ) {
     // redirect the user to the login page
     return { name: 'Login' }

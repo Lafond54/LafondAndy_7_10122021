@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require("helmet");
 const path = require('path');
 const sqlite3 = require('sqlite3')
-
+require('dotenv').config()
 
 
 const { sequelize } = require('./database');
@@ -13,7 +13,7 @@ sequelize.sync().then(() => console.log('db is ready'));
 //Creer une application express
 const app = express();
 //
-require('dotenv').config()
+
 // 
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');

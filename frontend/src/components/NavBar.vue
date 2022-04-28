@@ -6,6 +6,7 @@
         class="navbar__logo"
         src="../assets/icon.png"
         alt="logo Groupomania"
+        title="logo Groupomania"
       />
       <h1 class="navbar__title">Groupomania</h1>
     </div>

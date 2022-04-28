@@ -13,7 +13,7 @@ exports.createPost = (req, res) => {
     const text = req.body.text;
     //recupéré userId
     const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const decodedToken = jwt.verify(token,  process.env.RTOKEN);
     const userId = decodedToken.userId;
     const file = req.file
     console.log(decodedToken)
@@ -48,7 +48,7 @@ exports.createPost = (req, res) => {
                         imgArticle: null,
                     })
 
-                        .then(() => res.status(201).json({ message: 'Message créé !' },))
+                        .then((article) => res.status(201).json(normalizer(article, req)))
                         .catch(error => {
                             console.log(error)
                             res.status(400).json({ error: 'Création du message échoué' })
@@ -120,7 +120,7 @@ exports.createPost = (req, res) => {
 
 
 exports.arrayIDs = (req, res) => {
-    Article.findAll()
+    Article.findAll({order: [["createdAt", 'DESC']]})
 
         .then(articles => res.status(200).json(articles.map(article => normalizer(article, req))))
         .catch(error => res.status(400).json({ error }));
@@ -185,58 +185,76 @@ exports.allPostsOneUser = (req, res) => {
 // }
 
 
-exports.deletePost = (req, res) => {
+exports.deletePost = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const decodedToken = jwt.verify(token, process.env.RTOKEN);
     const userId = decodedToken.userId;
+    try{
+        const userFound = await User.findOne({ where: { id: userId } })
+        if (!userFound) return res.status(404).json({ error: 'Recherche de l\'utilisateur échouée' })
 
-    User.findOne({ where: { id: userId } })
-        .then(userFound => {
-            if (userFound) {
-                Article.findOne({
-                    where: { id: req.params.id }
-                })
+        const articleFound = await Article.findOne({where: { id: req.params.id }})
+        if (!articleFound) return res.status(404).json({ error: 'Article introuvable' })
 
-                    .then(articleFound => {
-                        if (userFound.id == articleFound.userId) {
+        if (userFound.id !== articleFound.userId && !userFound.isadmin) {
+        console.log(userFound, commentaireFound)
+        return res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' }) 
+        }
+        
+        await articleFound.destroy()
+        return res.status(200).json({ message: 'Article supprimé' })
 
-                            if (articleFound.imgArticle != null) {
-                                const filename = articleFound.imgArticle;
+    } catch(error) {
+        console.error(error)
+        res.status(500).json({ error: 'Une erreur s\'est produite' })
+    }
+    // User.findOne({ where: { id: userId } })
+    //     .then(userFound => {
+    //         if (userFound) {
+    //             Article.findOne({
+    //                 where: { id: req.params.id }
+    //             })
 
-                                fs.unlink(`${filename}`, () => {
-                                    articleFound.destroy({
-                                        where: { id: req.params.articleId }
-                                    })
-                                        .then(() => res.status(200).json({ message: 'Message supprimé' }))
-                                        .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
-                                })
-                            }
+    //                 .then(articleFound => {
+    //                     if (userFound.id == articleFound.userId ) {
 
-                            else {
-                                articleFound.destroy({
-                                    where: { id: req.params.articleId }
-                                })
-                                    .then(() => res.status(200).json({ message: 'Message supprimé' }))
-                                    .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
-                            }
-                        }
-                        else {
-                            res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' });
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        res.status(500).json({ error: 'Suppression du message échoué' })
-                    });
-            } else {
-                console.log(error)
-                return res.status(404).json({ error: 'Utilisateur non trouvé' })
-            }
-        })
-        .catch(error => {
-            console.log(error)
-            res.status(500).json({ error: 'Recherche de l\'utilisateur échouée' })
-        });
+    //                         if (articleFound.imgArticle != null) {
+    //                             const filename = articleFound.imgArticle;
+
+    //                             fs.unlink(`${filename}`, () => {
+    //                                 articleFound.destroy({
+    //                                     where: { id: req.params.articleId }
+    //                                 })
+    //                                     .then(() => res.status(200).json({ message: 'Message supprimé' }))
+    //                                     .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
+    //                             })
+    //                         }
+
+    //                         else {
+    //                             articleFound.destroy({
+    //                                 where: { id: req.params.articleId }
+    //                             })
+    //                                 .then(() => res.status(200).json({ message: 'Message supprimé' }))
+    //                                 .catch(() => res.status(500).json({ error: 'Suppression du message échoué' }));
+    //                         }
+    //                     }
+    //                     else {
+    //                         res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' });
+    //                     }
+    //                 })
+    //                 .catch(error => {
+    //                     console.log(error)
+    //                     res.status(500).json({ error: 'Suppression du message échoué' })
+    //                 });
+    //         } else {
+    //             console.log(error)
+    //             return res.status(404).json({ error: 'Utilisateur non trouvé' })
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //         res.status(500).json({ error: 'Recherche de l\'utilisateur échouée' })
+    //     });
 
 };
 
@@ -253,7 +271,7 @@ exports.createComment = (req, res) => {
     const text = req.body.text;
     //recupéré userId
     const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const decodedToken = jwt.verify(token,  process.env.RTOKEN);
     const userId = decodedToken.userId;
     console.log(decodedToken)
     if (text == '' && req.file == null) {
@@ -307,7 +325,7 @@ exports.getAllCommentaires = (req, res) => {
 // Supprimer un commentaire
 exports.deleteComment = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const decodedToken = jwt.verify(token,  process.env.RTOKEN);
     const userId = decodedToken.userId;
     try {
        const userFound = await User.findOne({ where: { id: userId } })
@@ -321,9 +339,7 @@ exports.deleteComment = async (req, res) => {
            console.log(userFound, commentaireFound)
            return res.status(403).json({ error: 'Vous n\'avez pas le droit de supprimer ce message' }) 
         }
-       if (commentaireFound.imgComment) { 
-           fs.unlinkSync(commentaireFound.imgComment)
-        }
+      
         await commentaireFound.destroy()
         return res.status(200).json({ message: 'Commentaire supprimé' })
     }

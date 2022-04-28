@@ -15,7 +15,7 @@
           <div class="newcommentaire__upfile">
             <i class="fas fa-plus-circle"></i>
             <label for="files" class="btn"></label>
-            <input id="files" type="file" @change="onFileUpload" name="image" accept="image/*">
+            <input id="files" type="file" ref="image" @change="onFileUpload" name="image" accept="image/*">
           </div>
           <input
             type="submit"
@@ -58,6 +58,7 @@ export default {
 
     createComment(event) {
       event.preventDefault();
+      if (!this.text && !this.image) return;
       const formData = new FormData();
       formData.append("text", this.text);
       formData.append("image", this.image);
@@ -76,10 +77,14 @@ export default {
         )
         .then((comment) => {
            this.$emit("newComment", comment.data )   
+           this.text = ""
+           this.$refs.image.value = ""
+           this.image = ""
+
           
         })
-        .catch(() => {
-          console.log("Une erreur s'est produite lors du post du commentaire");
+        .catch((error) => {
+          console.error("Une erreur s'est produite lors du post du commentaire", error);
         });
     },
   },

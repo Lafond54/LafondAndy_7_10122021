@@ -1,16 +1,16 @@
 <template>
   <div class="article">
     <div class="article__head">
-      <Avatar :user="user" />
-      <div v-if="user" class="article__auteur">
-        {{ user.firstName }} {{ user.lastName }} a posté le {{ dateformate }} {{ statutAdmin }}
+      <Avatar :user="userArticle" />
+      <div v-if="userArticle" class="article__auteur">
+        {{ userArticle.firstName }} {{ userArticle.lastName }} a posté le {{ dateformate }} 
       </div>
       <div v-else class="article__auteursupprime">
         Utilisateur supprimé :(
       </div>
   <!-- v-if="user == article.userId || user.isadmin == '1'" -->
       <div  class="article__modif">     
-        <button v-on:click="deleteArticle(article.id)"><i class="fas fa-trash-alt"></i></button>        
+        <button v-if="isAdmin || user?.id === article.userId " v-on:click="deleteArticle(article.id)"><i class="fas fa-trash-alt"></i></button>        
       </div>
       <!-- <div v-else></div> -->
     </div>
@@ -23,6 +23,7 @@
           class="article__image"
           :src="article.imgUrl"
           alt="image de la publication"
+          title="image de la publication"
         />
       </div>
       <div v-else></div>
@@ -36,7 +37,7 @@
       @delete="() => commentDeleted(comment)"
     />
 
-    <NewCommentaire :articleId="article.id" @newComment = "commentAdded"/>
+    <NewCommentaire :articleId="article.id" @newComment="(comment) => commentAdded(comment)"/>
   </div>
 </template>
 
@@ -51,10 +52,10 @@ export default {
   components: { Avatar, Commentaire, NewCommentaire },
   props: { article: Object },
   data() {
-    return {
-      user: null,
+    return {      
       userId: localStorage.getItem("userId"),
       comments: [],
+      userArticle: null,
       // path: "http://localhost:3000/", // <<<< technique a revoir ?????????????????????????????????????
     };
   },
@@ -84,6 +85,7 @@ export default {
 
     // Chercher les auteurs d'articles
     getUser() {
+      if(this.article.userId) {
       axios
         .get(`http://localhost:3000/user/${this.article.userId}`, {
           headers: {
@@ -91,12 +93,13 @@ export default {
           },
         })
         .then((response) => {
-          this.user = response.data;
-          console.log(this.user);
+          this.userArticle = response.data;
+          
         })
         .catch(() => {
           this.messError = "Une erreur s'est produite";
         });
+      }
     },
 
     // supprimer post
@@ -111,7 +114,7 @@ export default {
           },
         })
         .then(() => {
-          window.location.reload();
+          this.$emit("delete")   
         })
         .catch(() => {
           this.messError = "Une erreur s'est produite";
@@ -131,10 +134,12 @@ export default {
         timeStyle: "short",
       });
     },
-    statutAdmin: function () {
-return this.user.isadmin === true ? "admin" : "noadmin"
-
-    }
+    user() {
+      return this.$store.getters.user;
+    },
+    isAdmin() {
+      return this.$store.getters.user?.isadmin;
+    },
   },
 };
 </script>

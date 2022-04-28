@@ -69,12 +69,13 @@
           <input class="mainprofil__sub" type="submit" value="Enregistrer" />
         </div>
       </form>
+      <span>{{ messReussite }}</span>
+      <span>{{ messError }}</span>
       <button v-on:click="deleteUser()" class="mainprofil__del">
         Supprimer mon compte
       </button>
       <span>Création du compte : {{ dateformate }}</span>
-      <span>{{ messReussite }}</span>
-      <span>{{ messError }}</span>
+      
     </div>
   </section>
 </template>
@@ -114,7 +115,7 @@ export default {
 
   methods: {
     loadUser() {
-      this.user = { ...this.connectedUser };
+      this.user = this.connectedUser && { ...this.connectedUser };
     },
 
     onAvatarUpload(event) {
@@ -155,13 +156,16 @@ export default {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
-        .then(() => {
+        .then((response) => {
+            this.messReussite = '✓ Profile modifié'
       //     if (res.status === 200) {
       //   alert("Profil bien modifié")  /todo Alerte marche pas
       // }
-          this.$router.go(0);
+          this.$store.commit("user", response.data)
         })
         .catch(() => {
+          this.messError = 'La modification du profil a échoué'
+          
           console.log(
             "Une erreur s'est produite lors de la modification du profil"
           );
@@ -282,18 +286,18 @@ export default {
   text-align: right;
 }
 
-.avatar {
+ :deep(.avatar) {
   height: 120px;
   width: 120px;
   border: solid 1px black;
-  border-radius: 60px;
-  &__image {
+  border-radius: 60px;  
+}
+:deep(.avatar__image) {
         object-fit: cover;
   border-radius: 60px;
   height: 120px;
   width: 120px;
   }
-}
 
 .fas.fa-image {
   color: #6ed8bd;

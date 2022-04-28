@@ -1,10 +1,10 @@
 <template>
   <div class="newmessage">
-    
     <Avatar :user="user" />
     <div class="newmessage__form">
       <div class="newmessage__hello">
-      <span >Bonjour </span><span></span><span >, exprimez-vous : </span></div>
+        <span>Bonjour, exprimez-vous : </span>
+      </div>
       <form @submit="createArticle" class="newmessage_form" method="post">
         <textarea
           v-model="text"
@@ -21,6 +21,7 @@
             <input
               id="files"
               type="file"
+              ref="image"
               @change="onFileUpload"
               name="image"
               accept="image/*"
@@ -49,7 +50,6 @@ export default {
 
   data() {
     return {
-      
       text: "",
       userId: localStorage.getItem("token"),
       imgArticle: "",
@@ -65,10 +65,10 @@ export default {
 
     createArticle(event) {
       event.preventDefault();
+      if (!this.text && !this.image) return;
       const formData = new FormData();
       formData.append("text", this.text);
-      formData.append("image", this.image);
-      console.log(this.image);
+      formData.append("image", this.image);      
       axios
         .post("http://localhost:3000/article", formData, {
           headers: {
@@ -76,19 +76,21 @@ export default {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
-        .then(() => {
-          window.location.reload();
+        .then((response) => {
+          this.$emit("newArticle", response.data )
+          this.text = "";
+          this.$refs.image.value ="";
         })
-        .catch(() => {
-          console.log("Une erreur s'est produite lors du post de l'article");
+        .catch((error) => {          
+          console.error("Une erreur s'est produite lors du post de l'article", error);
         });
     },
   },
-  computed : {
+  computed: {
     user() {
-      return this.$store.getters.user
-    } 
-  }
+      return this.$store.getters.user;
+    },
+  },
 };
 </script>
 
@@ -112,9 +114,8 @@ export default {
     resize: none;
   }
   &__hello {
-    display:block;
+    display: block;
     margin-bottom: 1rem;
-    
   }
   &__form {
     flex-grow: 1;
@@ -167,15 +168,13 @@ textarea {
   border: 1px solid #ccc;
 }
 #files {
-  display: flex;  
-  width:242px;
-  height:30px;
+  display: flex;
+  width: 242px;
+  height: 30px;
 }
-  @media (max-width: 425px) {
+@media (max-width: 425px) {
   #files {
- width:118px;
-}   
+    width: 118px;
+  }
 }
-
-
 </style>

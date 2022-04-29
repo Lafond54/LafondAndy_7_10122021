@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 // Normalizer infos user
 // Pour les images d'utilisateur
 function normalizer(user, req) {
-  return { id: user.id, lastName: user.lastName, firstName: user.firstName, isadmin: user.isadmin, createdAt : user.createdAt, updatedAt : user.updatedAt, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
+  return { id: user.id, lastName: user.lastName, firstName: user.firstName, isadmin: user.isadmin, createdAt: user.createdAt, updatedAt: user.updatedAt, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
 
 }
 // Pour my profile
@@ -120,7 +120,7 @@ exports.deleteAccount = (req, res, next) => {
 // Modification de l'user
 exports.modifyAccount = async (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token,  process.env.RTOKEN);
+  const decodedToken = jwt.verify(token, process.env.RTOKEN);
   const userId = decodedToken.userId;
   const user = await User.findOne({ where: { id: req.params.id } })
   try {
@@ -141,47 +141,15 @@ exports.modifyAccount = async (req, res, next) => {
         password: await bcrypt.hash(req.body.password, 10),
       })
 
-    // todo Essai hash du mdp :
-    // {
-    //   bcrypt.hash(req.body.password, 10)
-    //   .then(hash => {
-    //     user.set({
-    //       password: hash,
-    //     })
-
-    //       .then(() => res.status(201).json({ message: 'MDP modifié !' }))
-    //       .catch(error => res.status(400).json({ error }));
-    //   })
-    //   .catch(error => {
-    //     res.status(500).json({ error })
-    //     console.error(error)
-    //   });
-    // }
-
     if (req.file) {
       if (user.avatar) fs.unlinkSync(user.avatar)
       user.set({
         avatar: `images/${req.file.filename}`
       })
     }
-    //todo essai FS image avatar :
-    // if (req.file) {
-    //   const filename = user.avatar;
-
-    //   fs.unlink(`${filename}`, () => {
-    //     user.set({
-    //       avatar: `images/${req.file.filename}`
-    //     })
-    //       .then(() => res.status(200).json({ message: 'Avatar modifié' }))
-    //       .catch(() => res.status(500).json({ error: 'Changement avatar échoué' }));
-    //   })
-
-    // } else {
-    //   return res.status(404).json({ error: 'Image avat non trouvée' })
-    // }
 
 
-    res.status(200).json(normalizerFull( await user.save(), req))
+    res.status(200).json(normalizerFull(await user.save(), req))
 
 
 

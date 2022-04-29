@@ -1,27 +1,3 @@
-
-// const { Sequelize, Model, DataTypes } = require('sequelize');
-// const path = require('path')
-
-
-// const sequelize = new Sequelize('sqlite:main.db');
-
-
-
-
-// class User extends Model { }
-// User.init({
-//     lastName: { type: DataTypes.STRING, allowNull:false }, 
-//     firstName:  { type: DataTypes.STRING, allowNull:false },
-//     email:  { type: DataTypes.STRING, unique:true, allowNull:false },
-//     password:  { type: DataTypes.STRING, allowNull:false },
-//     isadmin:  { type: DataTypes.BOOLEAN, defaultValue: false }
-// },
-//     { sequelize, modelName: 'user' });
-
-
-// module.exports = { sequelize, User };
-
-
 const fs = require('fs');
 
 const { Sequelize, Model, DataTypes } = require('sequelize');
@@ -75,9 +51,6 @@ Article.afterDestroy((article) => {
 
 
 
-
-
-
 class Comment extends Model { }
 Comment.init({
     text: { type: DataTypes.STRING, allowNull: false },
@@ -104,9 +77,6 @@ Comment.afterDestroy((comment) => {
         }
     }
 })
-
-
-
 
 
 

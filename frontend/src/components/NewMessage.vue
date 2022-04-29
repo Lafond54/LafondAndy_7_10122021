@@ -54,9 +54,9 @@ export default {
       userId: localStorage.getItem("token"),
       imgArticle: "",
       image: "",
-      // user: this.$store.getters.user,
     };
   },
+
   methods: {
     onFileUpload(event) {
       this.image = event.target.files[0];
@@ -68,7 +68,7 @@ export default {
       if (!this.text && !this.image) return;
       const formData = new FormData();
       formData.append("text", this.text);
-      formData.append("image", this.image);      
+      formData.append("image", this.image);
       axios
         .post("http://localhost:3000/article", formData, {
           headers: {
@@ -77,15 +77,19 @@ export default {
           },
         })
         .then((response) => {
-          this.$emit("newArticle", response.data )
+          this.$emit("newArticle", response.data);
           this.text = "";
-          this.$refs.image.value ="";
+          this.$refs.image.value = "";
         })
-        .catch((error) => {          
-          console.error("Une erreur s'est produite lors du post de l'article", error);
+        .catch((error) => {
+          console.error(
+            "Une erreur s'est produite lors du post de l'article",
+            error
+          );
         });
     },
   },
+
   computed: {
     user() {
       return this.$store.getters.user;
@@ -94,7 +98,7 @@ export default {
 };
 </script>
 
-<!-- lang="scss" ?-->
+
 <style scoped lang="scss">
 .newmessage {
   padding: 2rem 1rem 1.5rem 1rem;

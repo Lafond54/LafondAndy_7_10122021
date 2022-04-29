@@ -3,7 +3,7 @@
     <div class="mainprofil__cadre">
       <div class="mainprofil__flexavatar">
         <Avatar :user="user" />
-         <span>Changer D'avatar :</span>
+        <span>Changer D'avatar :</span>
         <div class="mainprofil__modifavatar">
           <i class="fas fa-image"></i>
           <input
@@ -15,7 +15,7 @@
           />
         </div>
       </div>
-     
+
       <form
         @submit="modifyProfil"
         v-if="user"
@@ -27,9 +27,9 @@
           <label for="lastname">Nom : </label>
           <input
             type="text"
+            pattern="[A-Za-z]*"
             name="lastname"
             id="lastname"
-            
             :placeholder="user.lastName"
             v-model="lastname"
           />
@@ -38,9 +38,9 @@
           <label for="firstname">Prénom : </label>
           <input
             type="text"
+            pattern="[A-Za-z]*"
             name="firstname"
             id="firstname"
-            
             :placeholder="user.firstName"
             v-model="firstname"
           />
@@ -51,7 +51,6 @@
             type="email"
             name="email"
             id="email"
-            
             :placeholder="user.email"
             v-model="email"
           />
@@ -66,18 +65,21 @@
             v-model="password"
           />
         </div>
-<div class="warningpassword">* : Le mot de passe doit comporter <br>Majuscule/minuscule/chiffre<br> (8 Caractères minimum).</div>
+        <div class="warningpassword">
+          * : Le mot de passe doit comporter
+          <br />Majuscule/minuscule/chiffre<br />
+          (8 Caractères minimum).
+        </div>
         <div class="form-example">
           <input class="mainprofil__sub" type="submit" value="Enregistrer" />
         </div>
-      </form>      
+      </form>
       <button v-on:click="deleteUser()" class="mainprofil__del">
         Supprimer mon compte
       </button>
       <div class="mainprofil__date"></div>
       <span>Création du compte : {{ dateCreationFormate }}</span>
       <span>Modification du compte : {{ dateModificationFormate }}</span>
-      
     </div>
   </section>
 </template>
@@ -147,10 +149,10 @@ export default {
       if (this.image) {
         formData.append("image", this.image);
       }
-      
+
       console.log(this.image);
 
-      // const res = 
+      // Modifier Profil
       axios
         .patch(`http://localhost:3000/user/${openedToken.userId}`, formData, {
           headers: {
@@ -159,17 +161,14 @@ export default {
           },
         })
         .then((response) => {
-            this.messReussite = '✓ Profile modifié'
-            alert ("✓ Profile modifié")
-      //     if (res.status === 200) {
-      //   alert("Profil bien modifié")  /todo Alerte marche pas
-      // }
-          this.$store.commit("user", response.data)
+          this.messReussite = "✓ Profile modifié";
+          alert("✓ Profile modifié");
+          this.$store.commit("user", response.data);
         })
         .catch(() => {
-          alert ("Echec de la modification du profil.")
-          this.messError = 'La modification du profil a échoué'
-          
+          alert("Echec de la modification du profil.");
+          this.messError = "La modification du profil a échoué";
+
           console.log(
             "Une erreur s'est produite lors de la modification du profil"
           );
@@ -201,6 +200,7 @@ export default {
     connectedUser() {
       return this.$store.getters.user;
     },
+
     dateCreationFormate() {
       return (
         this.user &&
@@ -210,6 +210,7 @@ export default {
         })
       );
     },
+
     dateModificationFormate() {
       return (
         this.user &&
@@ -302,19 +303,19 @@ export default {
   text-align: right;
 }
 
- :deep(.avatar) {
+:deep(.avatar) {
   height: 140px;
   width: 140px;
   border: solid 1px black;
-  border-radius: 70px;  
+  border-radius: 70px;
   margin-bottom: 1rem;
 }
 :deep(.avatar__image) {
-        object-fit: cover;
+  object-fit: cover;
   border-radius: 70px;
   height: 140px;
   width: 140px;
-  }
+}
 
 .fas.fa-image {
   color: #6ed8bd;
@@ -342,8 +343,5 @@ a {
   display: flex;
   font-size: 0.9rem;
   justify-content: center;
-
 }
-
-
 </style>

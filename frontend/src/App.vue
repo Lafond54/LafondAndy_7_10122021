@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="user === null" id="nav" >
+  <nav v-if="user === null" id="nav">
     <router-link to="/login"><i class="fas fa-home"></i>Accueil</router-link> |
     <router-link to="/login"
       ><i class="fas fa-sign-in-alt"></i>S'identifier</router-link
@@ -9,14 +9,14 @@
       ><i class="fas fa-user-plus"></i>S'inscrire</router-link
     >
   </nav>
-  <nav v-else id="nav2" >
+  <nav v-else id="nav2">
     <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
-    <button class="butn" v-bind:href="'/'" v-on:click="disconnect()"
-      ><i class="fas fa-sign-in-alt"></i>Se déconnecter</button
-    >
+    <button class="butn" v-bind:href="'/'" v-on:click="disconnect()">
+      <i class="fas fa-sign-in-alt"></i>Se déconnecter
+    </button>
   </nav>
-  <!--todo : home lorsqu'on est pas login :  <div v-if="user === null" class="welcome">salut login toi ! </div> -->
-  <router-view  />
+
+  <router-view />
 </template>
 
 
@@ -24,22 +24,18 @@
 <script>
 export default {
   components: {},
-  
- 
-  methods: {   
+
+  methods: {
     disconnect() {
-      window.localStorage.clear();      
-      // this.$router.go({ name: "Home" }); //todo Renvoi pas à login ?
-      window.location.reload(); 
-    }
-      
-    
+      window.localStorage.clear();
+      window.location.reload();
+    },
   },
-  computed : {
+  computed: {
     user() {
-      return this.$store.getters.user
-    }
-  }
+      return this.$store.getters.user;
+    },
+  },
 };
 </script>
 
@@ -101,7 +97,7 @@ export default {
       &::after {
         content: "";
         display: flex;
-        justify-content: flex-end;        
+        justify-content: flex-end;
         height: 3px;
         background: white;
         transform: scale(0);
@@ -132,25 +128,24 @@ export default {
 
 .butn {
   all: unset;
- font-weight: bold;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0 1.5rem 0 1.5rem;
+  text-decoration: none;
+  &.butn {
     color: #ffffff;
-    margin: 0 1.5rem 0 1.5rem;
-    text-decoration: none;
-     &.butn {
-      color: #ffffff;
-      &::after {
-        content: "";
-        display: flex;
-        justify-content: flex-end;        
-        height: 3px;
-        background: white;
-        transform: scale(0);
-        transition: transform 0.2s ease-in-out;
-      }
-      &:hover::after {
-        transform: scale(1);
-      }
+    &::after {
+      content: "";
+      display: flex;
+      justify-content: flex-end;
+      height: 3px;
+      background: white;
+      transform: scale(0);
+      transition: transform 0.2s ease-in-out;
     }
-
+    &:hover::after {
+      transform: scale(1);
+    }
+  }
 }
 </style>

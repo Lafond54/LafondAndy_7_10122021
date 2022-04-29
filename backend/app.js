@@ -15,7 +15,8 @@ const app = express();
 //
 
 // 
-const stuffRoutes = require('./routes/stuff');
+const ArticleRoutes = require('./routes/article');
+const CommentaireRoutes = require('./routes/commentaire');
 const userRoutes = require('./routes/user');
 const dbname = 'main.db'
 
@@ -50,8 +51,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Routes + //Helmet protéger votre application de certaines des vulnérabilités bien connues du Web en configurant de manière appropriée des en-têtes HTTP
-app.use('/', helmet(), stuffRoutes);
+app.use('/', helmet(), ArticleRoutes);
+app.use('/', helmet(), CommentaireRoutes);
 app.use('/user', helmet(), userRoutes);
+
 
 
 

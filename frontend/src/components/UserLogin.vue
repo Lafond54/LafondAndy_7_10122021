@@ -6,14 +6,14 @@
         src="../assets/icon-left-font.png"
         alt="logo Groupomania"
       />
-      <form  action="" method="" class="form-example">
+      <form action="" method="" class="form-example">
         <div class="form-example">
           <label for="name">Adresse mail : </label>
           <input type="text" v-model="email" name="email" id="email" required />
         </div>
         <div class="form-example">
           <label for="email">Mot de passe : </label>
-          <input 
+          <input
             type="password"
             v-model="password"
             name="password"
@@ -22,8 +22,12 @@
           />
         </div>
         <div class="form-example">
-          <!-- remettre en submit au lieu de button -->
-          <input @click="loginAccount" class="mainlogin__sub" type="button" value="M'identifier" />
+          <input
+            @click="loginAccount"
+            class="mainlogin__sub"
+            type="button"
+            value="M'identifier"
+          />
         </div>
         <div class="mainlogin__deja">
           Pas encore inscrit?
@@ -46,8 +50,9 @@ export default {
       password: "",
     };
   },
+
   methods: {
-    async loginAccount() {      
+    async loginAccount() {
       const res = await fetch("http://localhost:3000/user/login", {
         method: "POST",
         headers: {
@@ -62,13 +67,10 @@ export default {
       if (res.status === 200) {
         const data = await res.json();
         localStorage.setItem("token", data.token);
-        axios.defaults.headers.common['Authorization'] = "bearer " + data.token // 
-        this.$store.dispatch('loadUser')
-        this.$router.push({ name: "Home" });  //Ne rafraichit pas App
-        //  window.location.reload();
-      }
-      
-       else if (res.status === 400 || res.status === 401) {
+        axios.defaults.headers.common["Authorization"] = "bearer " + data.token;
+        this.$store.dispatch("loadUser");
+        this.$router.push({ name: "Home" });
+      } else if (res.status === 400 || res.status === 401) {
         alert("Un problème est survenu lors de l'authentification.");
       }
 
@@ -135,6 +137,4 @@ export default {
 .fas.fa-user-plus {
   padding-left: 0.5rem;
 }
-
-
 </style>

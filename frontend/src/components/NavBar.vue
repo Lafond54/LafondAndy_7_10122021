@@ -1,6 +1,5 @@
 <template>
   <div class="navbar">
-      
     <div class="navbar__head">
       <img
         class="navbar__logo"
@@ -12,30 +11,31 @@
     </div>
     <ul class="navbar__liste">
       <li class="navbar__liste__filactu">
-        <i class="fas fa-poll-h"></i><router-link :to="{name:'Home'}">Fil d'actualité</router-link>
-      </li>    
+        <i class="fas fa-poll-h"></i
+        ><router-link :to="{ name: 'Home' }">Fil d'actualité</router-link>
+      </li>
       <li v-if="user" class="navbar__liste__monprofil">
-        <i class="fas fa-user"></i><router-link :to="{name: 'User', params:{id:user.id}}">Mon profil</router-link>
+        <i class="fas fa-user"></i
+        ><router-link :to="{ name: 'User', params: { id: user.id } }"
+          >Mon profil</router-link
+        >
       </li>
     </ul>
   </div>
-
 </template>
 
 <script>
 export default {
   name: "NavBar",
-  computed : {
+  computed: {
     user() {
-      return this.$store.getters.user
-    }
-  }
+      return this.$store.getters.user;
+    },
+  },
 };
-
-
 </script>
 
-<!-- lang="scss" ?-->
+
 <style scoped lang="scss">
 h1 {
   font-size: 3rem;
@@ -53,7 +53,6 @@ h1 {
     height: 60px;
   }
   &__title {
-    
     font-size: 2.5rem;
   }
   &__liste {
@@ -93,7 +92,7 @@ a {
     content: "";
     display: flex;
     justify-content: flex-end;
-    
+
     height: 2px;
     background: #9356dc;
     transform: scale(0);

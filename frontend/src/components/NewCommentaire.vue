@@ -1,6 +1,6 @@
 <template>
   <div class="newcommentaire">
-    <Avatar :user="user"/>
+    <Avatar :user="user" />
     <div class="newcommentaire__form">
       <form @submit="createComment" class="newcommentaire_form" method="post">
         <textarea
@@ -15,7 +15,14 @@
           <div class="newcommentaire__upfile">
             <i class="fas fa-plus-circle"></i>
             <label for="files" class="btn"></label>
-            <input id="files" type="file" ref="image" @change="onFileUpload" name="image" accept="image/*">
+            <input
+              id="files"
+              type="file"
+              ref="image"
+              @change="onFileUpload"
+              name="image"
+              accept="image/*"
+            />
           </div>
           <input
             type="submit"
@@ -37,24 +44,23 @@ export default {
   name: "newcommentaire",
   components: { Avatar },
   props: { articleId: Number },
+
   data() {
     return {
       text: "",
       userId: localStorage.getItem("token"),
       articles: [],
       comments: [],
-      imgComment : "",
-      image: "",      
-
+      imgComment: "",
+      image: "",
     };
   },
 
   methods: {
-
-     onFileUpload (event) {
-          this.image = event.target.files[0];
-          this.imgComment = URL.createObjectURL(this.image); // Pour image preview
-        },
+    onFileUpload(event) {
+      this.image = event.target.files[0];
+      this.imgComment = URL.createObjectURL(this.image); // Pour image preview
+    },
 
     createComment(event) {
       event.preventDefault();
@@ -62,7 +68,7 @@ export default {
       const formData = new FormData();
       formData.append("text", this.text);
       formData.append("image", this.image);
-      console.log(this.image)
+      console.log(this.image);
       console.log(this.articleId);
       axios
         .post(
@@ -76,23 +82,25 @@ export default {
           }
         )
         .then((comment) => {
-           this.$emit("newComment", comment.data )   
-           this.text = ""
-           this.$refs.image.value = ""
-           this.image = ""
-
-          
+          this.$emit("newComment", comment.data);
+          this.text = "";
+          this.$refs.image.value = "";
+          this.image = "";
         })
         .catch((error) => {
-          console.error("Une erreur s'est produite lors du post du commentaire", error);
+          console.error(
+            "Une erreur s'est produite lors du post du commentaire",
+            error
+          );
         });
     },
   },
-  computed : {
+
+  computed: {
     user() {
-      return this.$store.getters.user
-    } 
-  }
+      return this.$store.getters.user;
+    },
+  },
 };
 </script>
 
@@ -101,7 +109,7 @@ export default {
 .newcommentaire {
   margin-top: 1.2rem;
   display: flex;
-  align-items: center;  
+  align-items: center;
   padding-top: 1rem;
 
   &__field {
@@ -120,9 +128,9 @@ export default {
   &__upfile {
     font-size: 0.8rem;
     padding-right: 1rem;
-      display: flex;  
-  flex-direction: row;  
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
   &__post {
     padding: 0.3rem;
@@ -160,16 +168,15 @@ textarea {
   border: 1px solid #ccc;
 }
 #files {
-  display: flex;  
+  display: flex;
   flex-direction: row;
-  width:242px;
-  height:30px; 
-  padding-top: 0.3rem;  
+  width: 242px;
+  height: 30px;
+  padding-top: 0.3rem;
 }
-  @media (max-width: 485px) {
+@media (max-width: 485px) {
   #files {
- width:118px;
-}   
+    width: 118px;
+  }
 }
-
 </style>

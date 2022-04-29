@@ -1,16 +1,13 @@
 <template>
   <div class="avatar">
-    <img  v-if="user?.imgUrl"  class="avatar__image" :src="user.imgUrl" alt="img avatar" title="image de l'avatar">
-    <div v-else class="avatar__sansimage">{{ initial }}</div>     <!-- <-- dans cette balise-< {{ initial }} -->
-
-     
-
-    <!-- <div v-if="this.user.avatar == null" class="avatar__sansimg">
-      {{ initial }}                                                              //
-    </div>                                                                     < // Rendu conditionnel ne marche pas
-    <div v-else-if="this.user.avatar !== null" class="avatar__avecimg">          //
-      img avec source
-    </div> -->
+    <img
+      v-if="user?.imgUrl"
+      class="avatar__image"
+      :src="user.imgUrl"
+      alt="img avatar"
+      title="image de l'avatar"
+    />
+    <div v-else class="avatar__sansimage">{{ initial }}</div>
   </div>
 </template>
 
@@ -18,12 +15,11 @@
 export default {
   name: "Avatar",
   props: { user: Object },
-  
+
   computed: {
     initial: function () {
-      
       return (
-        this.user && 
+        this.user &&
         this.user.firstName.charAt(0).toUpperCase() +
           this.user.lastName.charAt(0).toUpperCase()
       );
@@ -44,12 +40,12 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: rgba(195, 81, 191, 0.283);
-  
+
   &__image {
-     object-fit: cover;
-  border-radius: 22.5px;
-  height: 43px;
-  width: 43px;
+    object-fit: cover;
+    border-radius: 22.5px;
+    height: 43px;
+    width: 43px;
   }
 }
 </style>

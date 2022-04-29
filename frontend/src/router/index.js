@@ -11,30 +11,27 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-
-
   },
+
   {
     path: '/login',
     name: 'Login',
     component: Login,
-
   },
+
   {
     path: '/signup',
     name: 'Signup',
     component: Signup,
-
   },
-  // GET PUT DELETE => sur un User.
+
   {
     path: '/user/:id',
     name: 'User',
     component: UpdateUser,
-
   },
-  
-  
+
+
 
 
 
@@ -56,6 +53,8 @@ const router = createRouter({
   routes
 })
 
+
+// Permet d'aller sur la page login lorsqu'on est pas connecté
 router.beforeEach(async (to) => {
   if (
     // make sure the user is authenticated

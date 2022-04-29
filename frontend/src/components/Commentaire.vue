@@ -10,14 +10,13 @@
         <div v-else class="commentaire__auteursupprime">
           Utilisateur supprimé :(
         </div>
-        <!-- v-if="userComment.id == comment.id" || v-if="isAdmin == true"  -->
-        <button  v-if="user.id == comment.userId || isAdmin"
+        <button
+          v-if="user.id == comment.userId || isAdmin"
           class="commentaire__button"
           v-on:click="deleteCommentaire(comment.id)"
         >
           <i class="fas fa-trash-alt"></i>
         </button>
-        
       </div>
       <div class="commentaire__dots">
         <div class="commentaire__contenu">
@@ -50,10 +49,9 @@ export default {
     return {
       userId: localStorage.getItem("userId"),
       userComment: null,
-      
-      // path: "http://localhost:3000/", // < mauvaise pratique ? oui
     };
   },
+
   created() {
     this.getUserComments();
   },
@@ -61,15 +59,15 @@ export default {
     // Chercher les auteurs de commentaires
     getUserComments() {
       if (this.comment.userId) {
-      axios
-        .get(`http://localhost:3000/user/${this.comment.userId}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-          this.userComment = response.data;         
-        })
+        axios
+          .get(`http://localhost:3000/user/${this.comment.userId}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((response) => {
+            this.userComment = response.data;
+          });
       }
     },
 
@@ -83,15 +81,11 @@ export default {
             },
           })
           .then(() => {
-            this.$emit("delete")
-
-            // document.dispatchEvent(Events.COMMENT_DELETED, { detail : commentId })
-          })
-          
-
-         
+            this.$emit("delete");
+          });
     },
   },
+
   computed: {
     dateformate: function () {
       return new Date(this.comment.createdAt).toLocaleString([], {
@@ -99,15 +93,14 @@ export default {
         timeStyle: "short",
       });
     },
-    
-    
+
     user() {
       return this.$store.getters.user;
     },
+
     isAdmin() {
       return this.$store.getters.user?.isadmin;
     },
-  
   },
 };
 </script>

@@ -8,7 +8,6 @@
       />
       <form action="" method="" class="form-example">
         <div class="form-example">
-          <!-- lastName avec N en maj ne fonctionne pas -->
           <label for="lastname">Nom : </label>
           <input
             type="text"
@@ -41,11 +40,14 @@
             name="password"
             required
           />
-          <div class="warningpassword">* : Le mot de passe doit comporter <br>Majuscule/minuscule/chiffre<br> (8 Caractères minimum).</div>
+          <div class="warningpassword">
+            * : Le mot de passe doit comporter
+            <br />Majuscule/minuscule/chiffre<br />
+            (8 Caractères minimum).
+          </div>
         </div>
 
         <div class="form-example">
-          <!-- remettre en submit au lieu de button -->
           <input
             @click="createAccount"
             class="mainsignup__sub"
@@ -66,7 +68,6 @@
 </template>
 
 <script>
-// import axios from "axios";
 export default {
   name: "UserSignup",
   data() {
@@ -99,37 +100,16 @@ export default {
           "Inscription réussi, vous pouvez dès maintenant vous identifier!"
         );
       } else if (res.status === 400) {
-        alert("Un problème est survenu lors de l'inscription. Tous les champs sont obligatoires. Le mot de passe doit comporter Majuscule/minuscule/chiffre (8 Caractères minimum). Le mail ne doit pas être déjà utilisé sur notre site");
+        alert(
+          "Un problème est survenu lors de l'inscription. Tous les champs sont obligatoires. Le mot de passe doit comporter Majuscule/minuscule/chiffre (8 Caractères minimum). Le mail ne doit pas être déjà utilisé sur notre site"
+        );
       }
     },
-
-    //   createAccount(event) {
-    //     event.preventDefault()
-    //     const formData = new FormData();
-    //     formData.append("lastName", this.lastName);
-    //     formData.append("firstName", this.firstName);
-    //     formData.append("email", this.email);
-    //     formData.append("password", this.password);
-    //     console.log(this.firstName, this.lastName, this.email, this.password);
-    //     axios
-    //       .post("http://localhost:3000/user/signup", formData, {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       })
-    //       .then(() => {
-
-    //     console.log(this.firstName, this.lastName, this.email, this.password);
-    //       })
-    //       .catch(() => {
-    //         console.log("Une erreur s'est produite lors de l'inscription");
-    //       });
-    //   },
   },
 };
 </script>
 
-<!-- lang="scss" ?-->
+
 <style scoped lang="scss">
 .mainsignup {
   background: rgb(245, 245, 245);
@@ -188,6 +168,5 @@ export default {
   display: flex;
   font-size: 0.9rem;
   justify-content: center;
-
 }
 </style>

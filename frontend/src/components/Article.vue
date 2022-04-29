@@ -3,16 +3,18 @@
     <div class="article__head">
       <Avatar :user="userArticle" />
       <div v-if="userArticle" class="article__auteur">
-        {{ userArticle.firstName }} {{ userArticle.lastName }} a posté le {{ dateformate }} 
+        {{ userArticle.firstName }} {{ userArticle.lastName }} a posté le
+        {{ dateformate }}
       </div>
-      <div v-else class="article__auteursupprime">
-        Utilisateur supprimé :(
+      <div v-else class="article__auteursupprime">Utilisateur supprimé :(</div>
+      <div class="article__modif">
+        <button
+          v-if="isAdmin || user?.id === article.userId"
+          v-on:click="deleteArticle(article.id)"
+        >
+          <i class="fas fa-trash-alt"></i>
+        </button>
       </div>
-  <!-- v-if="user == article.userId || user.isadmin == '1'" -->
-      <div  class="article__modif">     
-        <button v-if="isAdmin || user?.id === article.userId " v-on:click="deleteArticle(article.id)"><i class="fas fa-trash-alt"></i></button>        
-      </div>
-      <!-- <div v-else></div> -->
     </div>
     <div class="article__mediacadre">
       <div class="article__media">
@@ -28,16 +30,18 @@
       </div>
       <div v-else></div>
     </div>
-    
 
-    <Commentaire 
-      v-for="comment in comments"    
+    <Commentaire
+      v-for="comment in comments"
       :key="comment.id"
       :comment="comment"
       @delete="() => commentDeleted(comment)"
     />
 
-    <NewCommentaire :articleId="article.id" @newComment="(comment) => commentAdded(comment)"/>
+    <NewCommentaire
+      :articleId="article.id"
+      @newComment="(comment) => commentAdded(comment)"
+    />
   </div>
 </template>
 
@@ -52,11 +56,10 @@ export default {
   components: { Avatar, Commentaire, NewCommentaire },
   props: { article: Object },
   data() {
-    return {      
+    return {
       userId: localStorage.getItem("userId"),
       comments: [],
       userArticle: null,
-      // path: "http://localhost:3000/", // <<<< technique a revoir ?????????????????????????????????????
     };
   },
 
@@ -85,20 +88,19 @@ export default {
 
     // Chercher les auteurs d'articles
     getUser() {
-      if(this.article.userId) {
-      axios
-        .get(`http://localhost:3000/user/${this.article.userId}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-          this.userArticle = response.data;
-          
-        })
-        .catch(() => {
-          this.messError = "Une erreur s'est produite";
-        });
+      if (this.article.userId) {
+        axios
+          .get(`http://localhost:3000/user/${this.article.userId}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((response) => {
+            this.userArticle = response.data;
+          })
+          .catch(() => {
+            this.messError = "Une erreur s'est produite";
+          });
       }
     },
 
@@ -106,26 +108,26 @@ export default {
     deleteArticle(id) {
       const postId = id;
       if (confirm("Voulez-vous supprimer votre Post?"))
-      axios
-        .delete("http://localhost:3000/article/" + postId, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then(() => {
-          this.$emit("delete")   
-        })
-        .catch(() => {
-          this.messError = "Une erreur s'est produite";
-        });
+        axios
+          .delete("http://localhost:3000/article/" + postId, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then(() => {
+            this.$emit("delete");
+          })
+          .catch(() => {
+            this.messError = "Une erreur s'est produite";
+          });
     },
     commentDeleted(comment) {
-      this.comments = this.comments.filter(c => c !== comment)
+      this.comments = this.comments.filter((c) => c !== comment);
     },
     commentAdded(comment) {
-      this.comments = [...this.comments, comment]
-    }
+      this.comments = [...this.comments, comment];
+    },
   },
   computed: {
     dateformate: function () {
@@ -170,7 +172,6 @@ export default {
     border-bottom: 1px solid black;
     padding-bottom: 1.5rem;
     margin-bottom: 1rem;
-
   }
   &__media {
     font-size: 1.2rem;

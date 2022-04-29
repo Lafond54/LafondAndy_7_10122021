@@ -12,7 +12,7 @@ import Jwt from 'jsonwebtoken'
 
 
 
-//VUEX
+//VUEX STORE
 // Create a new store instance.
 const store = createStore({
   state () {
@@ -49,8 +49,8 @@ if (localStorage.getItem("token")) {
 
 }
 
-// const pinia = createPinia()
+
 store.dispatch("loadUser")
-// Vue.use(VueAxios, axios)
+
 createApp(App).use(router).use(store).mount('#app')
 

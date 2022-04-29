@@ -16,7 +16,7 @@ function normalizerFull(user, req) {
 }
 
 
-
+// Inscription de l'utilisateur
 exports.signup = (req, res, next) => {
   if (!(req.body.firstName && req.body.lastName && req.body.email && req.body.password))
     return res.status(400).json({ message: 'Un des champs est vide' })
@@ -41,7 +41,7 @@ exports.signup = (req, res, next) => {
 };
 
 
-
+// Identification de l'utilisateur
 exports.login = (req, res, next) => {
   User.findOne({ where: { email: req.body.email } })
     .then(user => {
@@ -69,12 +69,9 @@ exports.login = (req, res, next) => {
 };
 
 
-// Voir mon profil
+// Voir mon profil utilisateur
 exports.getUserProfile = (req, res) => {
-  //recupéré userId
-  // const token = req.headers.authorization.split(' ')[1];
-  // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-  // // const userId = decodedToken.userId
+
 
   User.findOne({
     where: { id: req.params.id }
@@ -126,6 +123,7 @@ exports.modifyAccount = async (req, res, next) => {
   try {
     if (!user) { return res.status(404).json({ message: "utilisateur non trouvé" }) }
     if (user.id !== userId) { return res.status(403).json({ message: "Vous n'avez pas le droit de modifier cet utilisateur" }) }
+    
     if (req.body.lastname)
       user.set({
         lastName: req.body.lastname,

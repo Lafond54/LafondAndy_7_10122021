@@ -135,4 +135,6 @@ export default {
 .fas.fa-user-plus {
   padding-left: 0.5rem;
 }
+
+
 </style>

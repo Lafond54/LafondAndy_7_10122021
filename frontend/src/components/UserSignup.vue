@@ -33,7 +33,7 @@
           <input type="text" v-model="email" id="email" name="email" required />
         </div>
         <div class="form-example">
-          <label for="password">Mot de passe : </label>
+          <label for="password">Mot de passe* : </label>
           <input
             type="password"
             v-model="password"
@@ -41,6 +41,7 @@
             name="password"
             required
           />
+          <div class="warningpassword">* : Le mot de passe doit comporter <br>Majuscule/minuscule/chiffre<br> (8 Caractères minimum).</div>
         </div>
 
         <div class="form-example">
@@ -98,7 +99,7 @@ export default {
           "Inscription réussi, vous pouvez dès maintenant vous identifier!"
         );
       } else if (res.status === 400) {
-        alert("Un problème est survenu lors de l'inscription. Tous les champs sont obligatoires. Le mot de passe doit comporter Majuscule/minuscule/chiffre (8 lettres minimum).");
+        alert("Un problème est survenu lors de l'inscription. Tous les champs sont obligatoires. Le mot de passe doit comporter Majuscule/minuscule/chiffre (8 Caractères minimum). Le mail ne doit pas être déjà utilisé sur notre site");
       }
     },
 
@@ -182,5 +183,11 @@ export default {
 }
 .fas.fa-sign-in-alt {
   padding-left: 0.5rem;
+}
+.warningpassword {
+  display: flex;
+  font-size: 0.9rem;
+  justify-content: center;
+
 }
 </style>

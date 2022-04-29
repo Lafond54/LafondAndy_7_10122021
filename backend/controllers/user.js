@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 // Normalizer infos user
 // Pour les images d'utilisateur
 function normalizer(user, req) {
-  return { id: user.id, lastName: user.lastName, firstName: user.firstName, isadmin: user.isadmin, createdAt : user.createdAt, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
+  return { id: user.id, lastName: user.lastName, firstName: user.firstName, isadmin: user.isadmin, createdAt : user.createdAt, updatedAt : user.updatedAt, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
 
 }
 // Pour my profile

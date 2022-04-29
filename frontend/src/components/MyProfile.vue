@@ -3,6 +3,7 @@
     <div class="mainprofil__cadre">
       <div class="mainprofil__flexavatar">
         <Avatar :user="user" />
+         <span>Changer D'avatar :</span>
         <div class="mainprofil__modifavatar">
           <i class="fas fa-image"></i>
           <input
@@ -14,6 +15,7 @@
           />
         </div>
       </div>
+     
       <form
         @submit="modifyProfil"
         v-if="user"
@@ -55,7 +57,7 @@
           />
         </div>
         <div class="form-example">
-          <label for="password">Mot de passe : </label>
+          <label for="password">Mot de passe* : </label>
           <input
             type="password"
             name="password"
@@ -64,17 +66,17 @@
             v-model="password"
           />
         </div>
-
+<div class="warningpassword">* : Le mot de passe doit comporter <br>Majuscule/minuscule/chiffre<br> (8 Caractères minimum).</div>
         <div class="form-example">
           <input class="mainprofil__sub" type="submit" value="Enregistrer" />
         </div>
-      </form>
-      <span>{{ messReussite }}</span>
-      <span>{{ messError }}</span>
+      </form>      
       <button v-on:click="deleteUser()" class="mainprofil__del">
         Supprimer mon compte
       </button>
-      <span>Création du compte : {{ dateformate }}</span>
+      <div class="mainprofil__date"></div>
+      <span>Création du compte : {{ dateCreationFormate }}</span>
+      <span>Modification du compte : {{ dateModificationFormate }}</span>
       
     </div>
   </section>
@@ -158,12 +160,14 @@ export default {
         })
         .then((response) => {
             this.messReussite = '✓ Profile modifié'
+            alert ("✓ Profile modifié")
       //     if (res.status === 200) {
       //   alert("Profil bien modifié")  /todo Alerte marche pas
       // }
           this.$store.commit("user", response.data)
         })
         .catch(() => {
+          alert ("Echec de la modification du profil.")
           this.messError = 'La modification du profil a échoué'
           
           console.log(
@@ -197,10 +201,19 @@ export default {
     connectedUser() {
       return this.$store.getters.user;
     },
-    dateformate() {
+    dateCreationFormate() {
       return (
         this.user &&
         new Date(this.user.createdAt).toLocaleString([], {
+          dateStyle: "short",
+          timeStyle: "short",
+        })
+      );
+    },
+    dateModificationFormate() {
+      return (
+        this.user &&
+        new Date(this.user.updatedAt).toLocaleString([], {
           dateStyle: "short",
           timeStyle: "short",
         })
@@ -215,7 +228,7 @@ export default {
 .mainprofil {
   background: rgb(245, 245, 245);
   margin-top: 2rem;
-  max-height: 660px;
+  max-height: 1000px;
   display: flex;
 
   justify-content: center;
@@ -279,24 +292,28 @@ export default {
       transition: 0.5s;
     }
   }
+  &__date {
+    margin: 1rem 0 1rem 0;
+  }
 }
 
 .form-example {
-  margin: 1rem;
+  margin: 2rem 1rem 1rem 1rem;
   text-align: right;
 }
 
  :deep(.avatar) {
-  height: 120px;
-  width: 120px;
+  height: 140px;
+  width: 140px;
   border: solid 1px black;
-  border-radius: 60px;  
+  border-radius: 70px;  
+  margin-bottom: 1rem;
 }
 :deep(.avatar__image) {
         object-fit: cover;
-  border-radius: 60px;
-  height: 120px;
-  width: 120px;
+  border-radius: 70px;
+  height: 140px;
+  width: 140px;
   }
 
 .fas.fa-image {
@@ -321,4 +338,12 @@ a {
     transform: scale(1);
   }
 }
+.warningpassword {
+  display: flex;
+  font-size: 0.9rem;
+  justify-content: center;
+
+}
+
+
 </style>

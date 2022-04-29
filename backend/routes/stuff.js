@@ -8,25 +8,16 @@ const multer = require('../middleware/multer-config');
 
 //********************** ROUTES ********************************* *
 
-
+//           ********** Articles **********
 
 // Renvoie un tableau de toutes les articles de la base de données.
 router.get('/article', auth, StuffCtrl.arrayIDs);
-
-
 // Renvoie l'article avec l’_id fourni.
 router.get('/article/:id', auth, StuffCtrl.oneID);
 
-// Renvoie les articles d'un seul auteur.
-// router.get('/user/:id/articles', auth, multer, StuffCtrl.allPostsOneUser)
 
 //Post un article
-
 router.post('/article', auth, multer, StuffCtrl.createPost);
-
-
-// //Modif article
-// router.put('/article/:id', auth, multer, StuffCtrl.modifPost);
 
 
 // Supprimer article
@@ -35,18 +26,17 @@ router.delete('/article/:id', auth, multer, StuffCtrl.deletePost);
 
 
 
-// Comments
-
+//           ********* Comments **********
 
 //Post un commentaire
-
 router.post('/article/:articleId/comment', auth, multer, StuffCtrl.createComment);
 
+// Recuperer tous les commentaires
 router.get('/article/:articleId/comment', auth, StuffCtrl.getAllCommentaires);
 
-// router.get('/comment', auth, StuffCtrl.getAllCommentaires)
-
+// Supprimer un commentaire
 router.delete('/comment/:id', auth, StuffCtrl.deleteComment);
+
 
 
 module.exports = router;

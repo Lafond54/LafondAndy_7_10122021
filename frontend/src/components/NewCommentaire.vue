@@ -24,7 +24,7 @@
               accept="image/*"
             />
           </div>
-          <input
+          <input title="Poster ce commentaire"
             type="submit"
             formaction=""
             id="submitpost"

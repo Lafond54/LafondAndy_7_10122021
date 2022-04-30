@@ -110,7 +110,7 @@ export default {
   created() {
     this.loadUser();
   },
-
+  //  Surveille l'user connecté 
   watch: {
     connectedUser() {
       this.loadUser();
@@ -163,6 +163,7 @@ export default {
         .then((response) => {
           this.messReussite = "✓ Profile modifié";
           alert("✓ Profile modifié");
+          // Commit = modifier le state du Store
           this.$store.commit("user", response.data);
         })
         .catch(() => {

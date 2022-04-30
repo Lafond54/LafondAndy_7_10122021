@@ -55,9 +55,10 @@ export default {
       if (res.status === 200) {
         const data = await res.json();
         this.articles = data;
-        console.log(this.articles);
+        
       }
     },
+    
     articleAdded(article) {
       console.log(article);
       this.articles = [article, ...this.articles];

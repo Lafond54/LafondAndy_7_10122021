@@ -93,8 +93,7 @@ export default {
           password: this.password,
         }),
       });
-      console.log(res.status);
-      console.log(this.fistName, this.lastName, this.email, this.password);
+     
       if (res.status === 201) {
         alert(
           "Inscription réussi, vous pouvez dès maintenant vous identifier!"

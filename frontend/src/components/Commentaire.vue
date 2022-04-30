@@ -10,9 +10,9 @@
         <div v-else class="commentaire__auteursupprime">
           Utilisateur supprimé :(
         </div>
-        <button
-          v-if="user.id == comment.userId || isAdmin"
-          class="commentaire__button"
+        <!-- Verif statut Admin et user proprietaire du commentaire -->
+        <button class="commentaire__delcommentaire" title="Suprimer ce commentaire"
+          v-if="user.id == comment.userId || isAdmin"          
           v-on:click="deleteCommentaire(comment.id)"
         >
           <i class="fas fa-trash-alt"></i>
@@ -47,16 +47,16 @@ export default {
 
   data() {
     return {
-      userId: localStorage.getItem("userId"),
+      // userId: localStorage.getItem("userId"),
       userComment: null,
     };
   },
-
+  // 
   created() {
     this.getUserComments();
   },
   methods: {
-    // Chercher les auteurs de commentaires
+    // Chercher l'auteur du commentaire
     getUserComments() {
       if (this.comment.userId) {
         axios
@@ -70,7 +70,7 @@ export default {
           });
       }
     },
-
+    // Supprimer le commentaire
     deleteCommentaire(commentId) {
       if (confirm("Voulez-vous supprimer votre commentaire?"))
         axios
@@ -81,6 +81,7 @@ export default {
             },
           })
           .then(() => {
+            // 
             this.$emit("delete");
           });
     },
@@ -105,7 +106,11 @@ export default {
 };
 </script>
 
-<!-- lang="scss" ?-->
+
+
+
+
+
 <style scoped lang="scss">
 .avatar {
   display: flex;
@@ -127,7 +132,9 @@ export default {
     flex-direction: row;
     text-align: start;
     padding: 0.3rem 0 0.1rem 1rem;
+    align-items: center;
   }
+  
   &__contenu {
     text-align: start;
     border-radius: 20px;
@@ -144,11 +151,17 @@ export default {
   &__dots {
     display: flex;
     align-items: center;
-  }
-  &__button {
-    font-size: 0.8rem;
-    padding: 0.5 1rem 0.5 1rem;
-    margin-left: 0.5rem;
+  }  
+   &__delcommentaire {
+     margin-left: 0.4rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.7rem;
+    border-radius: 5px;
+    border: none;
+    transition-duration: 0.4s;
+    &:hover {
+    background: #d86e6ea3;
+    }
+
   }
 }
 

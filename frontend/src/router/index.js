@@ -54,7 +54,7 @@ const router = createRouter({
 })
 
 
-// Permet d'aller sur la page login lorsqu'on est pas connecté
+// Permet d'aller d'office sur la page login lorsqu'on est pas connecté
 router.beforeEach(async (to) => {
   if (
     // make sure the user is authenticated

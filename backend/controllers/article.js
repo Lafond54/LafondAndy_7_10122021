@@ -9,7 +9,7 @@ const { request } = require('http');
 
 // Article **************************************************
 //Post
-// Créer un Post
+// Créer un Article
 exports.createPost = (req, res) => {
     const text = req.body.text;
     //recupéré userId
@@ -70,7 +70,7 @@ exports.createPost = (req, res) => {
 };
 
 
-
+//Recuperer l'ensemble des articles (dans l'ordre descendant)
 exports.arrayIDs = (req, res) => {
     Article.findAll({ order: [["createdAt", 'DESC']] })
 
@@ -78,7 +78,7 @@ exports.arrayIDs = (req, res) => {
         .catch(error => res.status(400).json({ error }));
 }
 
-
+//Récuperer un seul article d'un id donné
 exports.oneID = (req, res) => {
     Article.findOne({ id: req.params.id })
         .then(article => res.status(200).json(normalizer(article, req)))
@@ -95,7 +95,7 @@ function normalizer(article, req) {
 
 
 
-
+// Supprimer un article 
 exports.deletePost = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.RTOKEN);

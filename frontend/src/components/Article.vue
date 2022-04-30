@@ -1,6 +1,7 @@
 <template>
   <div class="article">
     <div class="article__head">
+      <!-- Binding des données User pour utilisation de la props Avatar -->
       <Avatar :user="userArticle" />
       <div v-if="userArticle" class="article__auteur">
         {{ userArticle.firstName }} {{ userArticle.lastName }} a posté le
@@ -8,7 +9,8 @@
       </div>
       <div v-else class="article__auteursupprime">Utilisateur supprimé :(</div>
       <div class="article__modif">
-        <button
+        <!-- Verif statut Admin et user proprietaire de l'article -->
+        <button class="article__delarticle" title="Supprimer cet article"
           v-if="isAdmin || user?.id === article.userId"
           v-on:click="deleteArticle(article.id)"
         >
@@ -20,6 +22,7 @@
       <div class="article__media">
         {{ article.text }}
       </div>
+      <!-- Si présence d'image, integrer la div socle de l'image -->
       <div v-if="article.imgArticle !== null">
         <img
           class="article__image"
@@ -30,7 +33,7 @@
       </div>
       <div v-else></div>
     </div>
-
+    
     <Commentaire
       v-for="comment in comments"
       :key="comment.id"
@@ -67,7 +70,9 @@ export default {
     this.getUser();
     this.loadComments();
   },
+
   methods: {
+    //Chargement des commentaires lié à l'article
     async loadComments() {
       const res = await fetch(
         `http://localhost:3000/article/${this.article.id}/comment`,
@@ -86,7 +91,7 @@ export default {
       }
     },
 
-    // Chercher les auteurs d'articles
+    // Chercher l'auteur de l'article
     getUser() {
       if (this.article.userId) {
         axios
@@ -104,7 +109,7 @@ export default {
       }
     },
 
-    // supprimer post
+    // supprimer Article
     deleteArticle(id) {
       const postId = id;
       if (confirm("Voulez-vous supprimer votre Post?"))
@@ -122,23 +127,30 @@ export default {
             this.messError = "Une erreur s'est produite";
           });
     },
+    // Nouveau tableu de commentaires sans le commentaire supprimé
     commentDeleted(comment) {
       this.comments = this.comments.filter((c) => c !== comment);
     },
+    // Nouveau tableau avec le nouveau commentaire
     commentAdded(comment) {
       this.comments = [...this.comments, comment];
     },
   },
+
+
   computed: {
+    // Formatage de la date de l'article
     dateformate: function () {
       return new Date(this.article.createdAt).toLocaleString([], {
         dateStyle: "short",
         timeStyle: "short",
       });
     },
+    // Date de l'user connecté importé du Store
     user() {
       return this.$store.getters.user;
     },
+    // Verification statut Admin pour bouton "supprimer article"
     isAdmin() {
       return this.$store.getters.user?.isadmin;
     },
@@ -206,6 +218,16 @@ export default {
       box-shadow: 3px 4px 10px #b9b9b99d;
       transition: 0.5s;
     }
+  }
+  &__delarticle {
+    padding: 0.7rem;
+    border-radius: 5px;
+    border: none;
+    transition-duration: 0.4s;
+    &:hover {
+    background: #d86e6ea3;
+    }
+
   }
 }
 .avatar {

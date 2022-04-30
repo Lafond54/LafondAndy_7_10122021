@@ -4,12 +4,14 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 
 
-// Normalizer infos user
+// Normalizer images user
 // Pour les images d'utilisateur
 function normalizer(user, req) {
   return { id: user.id, lastName: user.lastName, firstName: user.firstName, isadmin: user.isadmin, createdAt: user.createdAt, updatedAt: user.updatedAt, imgUrl: user.avatar && `${req.protocol}://${req.get("host")}/${user.avatar}` }
 
 }
+
+//Normalizer pour infos de la page 
 // Pour my profile
 function normalizerFull(user, req) {
   return { ...normalizer(user, req), email: user.email, isadmin: user.isadmin }
@@ -113,7 +115,7 @@ exports.deleteAccount = (req, res, next) => {
     });
 }
 
-// PUT
+
 // Modification de l'user
 exports.modifyAccount = async (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
@@ -145,11 +147,7 @@ exports.modifyAccount = async (req, res, next) => {
         avatar: `images/${req.file.filename}`
       })
     }
-
-
     res.status(200).json(normalizerFull(await user.save(), req))
-
-
 
   }
   catch (error) {

@@ -7,12 +7,14 @@ const { request } = require('http');
 
 
 
-//Commentaire ******************************************
+//Commentaire ****************************
+
+
 //Pour les images Commentaire
 function normalizerImgComment(comment, req) {
     return { ...comment.toJSON(), imgUrl: `${req.protocol}://${req.get("host")}/${comment.imgComment}` }
-
 }
+
 
 // Créer un commentaire
 exports.createComment = (req, res) => {
@@ -43,21 +45,20 @@ exports.createComment = (req, res) => {
 
 }
 
-//GET
+
 // Voir les commentaires
 exports.getAllCommentaires = (req, res) => {
     Comment.findAll({
         where: { ArticleId: req.params.articleId },
     })
-
-        //todo  Mon normalizer fonctionne ???
+        
         .then(comments => res.status(200).json(comments.map(comment => normalizerImgComment(comment, req))))
         .catch(error => res.status(400).json({ error }));
 }
 
 
 
-//DELETE
+
 // Supprimer un commentaire
 exports.deleteComment = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];

@@ -5,7 +5,7 @@ const path = require('path');
 const sqlite3 = require('sqlite3')
 require('dotenv').config()
 
-
+// BDD :  Sync de Sequelize avec la BDD
 const { sequelize } = require('./database');
 sequelize.sync().then(() => console.log('db is ready'));
 
@@ -14,19 +14,6 @@ sequelize.sync().then(() => console.log('db is ready'));
 const app = express();
 //
 
-// 
-const ArticleRoutes = require('./routes/article');
-const CommentaireRoutes = require('./routes/commentaire');
-const userRoutes = require('./routes/user');
-const dbname = 'main.db'
-
-
-
-
-
-
-
-// ******************* Sequelize ***********************************
 
 
 
@@ -42,21 +29,27 @@ app.use(cors());
 app.use(express.json());
 
 
-// Encoder le contenu et bien gerer les accents
+//  analyse les requêtes entrantes avec des charges utiles JSON et est basé sur body-parser
 app.use(express.urlencoded({ extended: true }))
 
 //
-// app.use(express.static('images'))
+// express.static : middleware pour rendre possible l'accès aux fichiers de ce dossier via HTTP.
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+
+
+//  Déclaration des require pour les Routes
+const ArticleRoutes = require('./routes/article');
+const CommentaireRoutes = require('./routes/commentaire');
+const userRoutes = require('./routes/user');
+const dbname = 'main.db'
+
 
 // Routes + //Helmet protéger votre application de certaines des vulnérabilités bien connues du Web en configurant de manière appropriée des en-têtes HTTP
 app.use('/', helmet(), ArticleRoutes);
 app.use('/', helmet(), CommentaireRoutes);
 app.use('/user', helmet(), userRoutes);
-
-
-
 
 
 

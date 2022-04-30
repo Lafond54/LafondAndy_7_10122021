@@ -37,13 +37,13 @@ const store = createStore({
         const userId = Jwt.decode(token).userId
         const response = await axios.get(`http://localhost:3000/user/${userId}?full=true`)
         context.commit("user", response.data)
-        console.log(context)}
+        }
       }
   }
 })
 
-// export default store;
 
+//Format Headers si LocalStorage trouvé
 if (localStorage.getItem("token")) {
     axios.defaults.headers.common['Authorization'] = "bearer " + localStorage.getItem("token")
 

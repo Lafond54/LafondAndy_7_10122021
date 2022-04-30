@@ -1,17 +1,17 @@
 <template>
   <nav v-if="user === null" id="nav">
-    <router-link to="/login"><i class="fas fa-home"></i>Accueil</router-link> |
+    <router-link to="/login" title="Aller vers la page d'indentification"><i class="fas fa-home"></i>Accueil</router-link> |
     <router-link to="/login"
       ><i class="fas fa-sign-in-alt"></i>S'identifier</router-link
     >
     |
-    <router-link to="/signup"
+    <router-link to="/signup" title="Aller vers la page d'inscription"
       ><i class="fas fa-user-plus"></i>S'inscrire</router-link
     >
   </nav>
   <nav v-else id="nav2">
-    <router-link to="/"><i class="fas fa-home"></i>Accueil</router-link> |
-    <button class="butn" v-bind:href="'/'" v-on:click="disconnect()">
+    <router-link to="/" title="Page vers accueil"><i class="fas fa-home"></i>Accueil</router-link> |
+    <button class="butn" v-bind:href="'/'" v-on:click="disconnect()" title="Se déconnecter">
       <i class="fas fa-sign-in-alt"></i>Se déconnecter
     </button>
   </nav>
@@ -26,6 +26,7 @@ export default {
   components: {},
 
   methods: {
+    //Se déconnecter
     disconnect() {
       window.localStorage.clear();
       window.location.reload();

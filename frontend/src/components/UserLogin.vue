@@ -68,6 +68,7 @@ export default {
         const data = await res.json();
         localStorage.setItem("token", data.token);
         axios.defaults.headers.common["Authorization"] = "bearer " + data.token;
+        // Propager une action
         this.$store.dispatch("loadUser");
         this.$router.push({ name: "Home" });
       } else if (res.status === 400 || res.status === 401) {

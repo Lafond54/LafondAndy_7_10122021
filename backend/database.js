@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const path = require('path')
+//Utilisation de Dotenv pour la déclaration sequelize
 const sequelize = new Sequelize(process.env.BDD);
 
 
@@ -21,13 +22,12 @@ User.init({
 
 
 
+    
 
 class Article extends Model { }
 Article.init({
     text: { type: DataTypes.STRING, allowNull: false },
     imgArticle: { type: DataTypes.STRING, allowNull: true }
-
-
 
 },
     { sequelize, modelName: 'Article' });
@@ -36,6 +36,7 @@ Article.belongsTo(User)
 User.hasMany(Article, { onDelete: 'CASCADE', hooks: true })
 
 
+// Supression de l'image lié a un article
 Article.afterDestroy((article) => {
     if (article.imgArticle) {
         try {
@@ -66,7 +67,7 @@ User.hasMany(Comment, { onDelete: 'CASCADE', hooks: true })
 Comment.belongsTo(Article)
 Article.hasMany(Comment, { onDelete: 'CASCADE', hooks: true })
 
-
+// Supression des images de commentaires liés à un article
 Comment.afterDestroy((comment) => {
     if (comment.imgComment) {
         try {

@@ -21,13 +21,13 @@
             <input
               id="files"
               type="file"
-              ref="image"
+              ref="inputImage"
               @change="onFileUpload"
               name="image"
               accept="image/*"
             />
           </div>
-          <input
+          <input title="Poster cet article"
             type="submit"
             formaction=""
             id="submitpost"
@@ -79,7 +79,8 @@ export default {
         .then((response) => {
           this.$emit("newArticle", response.data);
           this.text = "";
-          this.$refs.image.value = "";
+          this.$refs.inputImage.value = "";
+          this.image = "";
         })
         .catch((error) => {
           console.error(

@@ -1,5 +1,6 @@
 <template>
   <div class="avatar">
+     <!-- si l'user n'a pas encore d'avatar, il aura des initials -->
     <img
       v-if="user?.imgUrl"
       class="avatar__image"

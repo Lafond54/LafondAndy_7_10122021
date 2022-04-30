@@ -2,7 +2,7 @@
   <div>
     <nav-bar />
     <div class="backgris">
-      <NewMessage @newArticle="(article) => articleAdded(article)" />
+      <NewArticle @newArticle="(article) => articleAdded(article)" />
       <TitleCategory v-bind:titleText="'Publications Récentes'" />
       <Article
         v-for="article in articles"
@@ -18,14 +18,14 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import NewMessage from "@/components/NewMessage.vue";
+import NewArticle from "@/components/NewArticle.vue";
 import Article from "@/components/Article.vue";
 import TitleCategory from "@/components/TitleCategory.vue";
 
 export default {
   components: {
     NavBar,
-    NewMessage,
+    NewArticle,
     Article,
     TitleCategory,
   },

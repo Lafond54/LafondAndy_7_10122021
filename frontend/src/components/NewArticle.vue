@@ -45,7 +45,7 @@ import Avatar from "@/components/Avatar.vue";
 import axios from "axios";
 
 export default {
-  name: "NewMessage",
+  name: "NewArticle",
   components: { Avatar },
 
   data() {
